@@ -1,0 +1,105 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RSB.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="server" Type="System.String" Scope="User">
+      <Value Profile="(Default)">172.16.0.152</Value>
+    </Setting>
+    <Setting Name="database" Type="System.String" Scope="User">
+      <Value Profile="(Default)">test2base</Value>
+    </Setting>
+    <Setting Name="port" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3306</Value>
+    </Setting>
+    <Setting Name="default_username" Type="System.String" Scope="User">
+      <Value Profile="(Default)">testadmin</Value>
+    </Setting>
+    <Setting Name="material_add" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CH-139</Value>
+    </Setting>
+    <Setting Name="type_prep" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Электрохимия</Value>
+    </Setting>
+    <Setting Name="producer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Искандаров</Value>
+    </Setting>
+    <Setting Name="project" Type="System.String" Scope="User">
+      <Value Profile="(Default)">РосАтом ЕОТП</Value>
+    </Setting>
+    <Setting Name="storage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Шлем</Value>
+    </Setting>
+    <Setting Name="treatment" Type="System.String" Scope="User">
+      <Value Profile="(Default)">400С 5Е15</Value>
+    </Setting>
+    <Setting Name="default_pass" Type="System.String" Scope="User">
+      <Value Profile="(Default)">m2nfcab2%</Value>
+    </Setting>
+    <Setting Name="respons" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Никитин</Value>
+    </Setting>
+    <Setting Name="pro_name" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="pro_surname" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="pro_access" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="material_name" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="material_composition" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="specimen_state" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Storage ready for APT</Value>
+    </Setting>
+    <Setting Name="sorting_specimens" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DESC</Value>
+    </Setting>
+    <Setting Name="show_only_specimens" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="no_pics" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="res_succ" Type="System.String" Scope="User">
+      <Value Profile="(Default)">+</Value>
+    </Setting>
+    <Setting Name="open_data_file" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\Apt-2\эксперименты азт-2</Value>
+    </Setting>
+    <Setting Name="res_temper" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">50</Value>
+    </Setting>
+    <Setting Name="res_laser_power" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">1.4</Value>
+    </Setting>
+    <Setting Name="trans_specim" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="main_spec_id" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">-1</Value>
+    </Setting>
+    <Setting Name="main_res_id" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">-1</Value>
+    </Setting>
+    <Setting Name="user_access_lvl" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="show_only_researches" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="show_techinfo" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="font_config" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="old_treatment" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>

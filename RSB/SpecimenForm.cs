@@ -2533,8 +2533,11 @@ namespace RSB
                         comand.Parameters.AddWithValue("@action", action_type);
                         comand.Parameters.AddWithValue("@old", val_old);
                         comand.Parameters.AddWithValue("@new", val_new);
+                        //DateTime.TryParse(new_spec.datetime, out DateTime temp_dat);
                         DateTime temp_dat = DateTime.Now;
+                        //MessageBox.Show("дата время"+temp_dat.ToString());
                         comand.Parameters.AddWithValue("@date", temp_dat.ToString("yyyy-MM-dd HH:mm:ss"));
+                        //MessageBox.Show("дата время  после конвертации"+temp_dat.ToString("yyyy-MM-dd HH:mm:ss"));
                         comand.Parameters.AddWithValue("@user", user);
                         _ = comand.ExecuteNonQuery();
                     }

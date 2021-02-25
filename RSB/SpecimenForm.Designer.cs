@@ -54,6 +54,7 @@
             this.txtbox_respon_inf = new System.Windows.Forms.TextBox();
             this.chbox_no_pics = new System.Windows.Forms.CheckBox();
             this.combox_position = new System.Windows.Forms.ComboBox();
+            this.btn_ch_treatment = new System.Windows.Forms.Button();
             this.table_layout_foto_inf = new System.Windows.Forms.TableLayoutPanel();
             this.picbox_inf_bef_1 = new System.Windows.Forms.PictureBox();
             this.picbox_inf_bef_2 = new System.Windows.Forms.PictureBox();
@@ -179,7 +180,7 @@
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer_for_refresh = new System.Windows.Forms.Timer(this.components);
-            this.btn_ch_treatment = new System.Windows.Forms.Button();
+            this.btn_test_telegrambot = new System.Windows.Forms.Button();
             this.tabcontrol_add_inf.SuspendLayout();
             this.tab_page_info.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.split_inf)).BeginInit();
@@ -517,6 +518,17 @@
             this.combox_position.Size = new System.Drawing.Size(145, 30);
             this.combox_position.TabIndex = 22;
             // 
+            // btn_ch_treatment
+            // 
+            this.btn_ch_treatment.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_ch_treatment.Location = new System.Drawing.Point(178, 349);
+            this.btn_ch_treatment.Name = "btn_ch_treatment";
+            this.btn_ch_treatment.Size = new System.Drawing.Size(290, 31);
+            this.btn_ch_treatment.TabIndex = 23;
+            this.btn_ch_treatment.Text = "Change treatment";
+            this.btn_ch_treatment.UseVisualStyleBackColor = true;
+            this.btn_ch_treatment.Click += new System.EventHandler(this.button1_Click_2);
+            // 
             // table_layout_foto_inf
             // 
             this.table_layout_foto_inf.ColumnCount = 3;
@@ -664,9 +676,9 @@
             this.tab_page_research.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.tab_page_research.Controls.Add(this.tableLayoutPanel6);
             this.tab_page_research.Controls.Add(this.tableLayoutPanel5);
-            this.tab_page_research.Location = new System.Drawing.Point(4, 22);
+            this.tab_page_research.Location = new System.Drawing.Point(4, 31);
             this.tab_page_research.Name = "tab_page_research";
-            this.tab_page_research.Size = new System.Drawing.Size(502, 786);
+            this.tab_page_research.Size = new System.Drawing.Size(502, 777);
             this.tab_page_research.TabIndex = 2;
             this.tab_page_research.Text = "Edit and make research";
             // 
@@ -1067,10 +1079,10 @@
             this.tab_page_new_edit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.tab_page_new_edit.Controls.Add(this.tableLayoutPanel1);
             this.tab_page_new_edit.Controls.Add(this.tbllay_add_edit);
-            this.tab_page_new_edit.Location = new System.Drawing.Point(4, 31);
+            this.tab_page_new_edit.Location = new System.Drawing.Point(4, 22);
             this.tab_page_new_edit.Name = "tab_page_new_edit";
             this.tab_page_new_edit.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_page_new_edit.Size = new System.Drawing.Size(502, 777);
+            this.tab_page_new_edit.Size = new System.Drawing.Size(502, 786);
             this.tab_page_new_edit.TabIndex = 1;
             this.tab_page_new_edit.Text = "Add new";
             this.tab_page_new_edit.Enter += new System.EventHandler(this.Tab_page_new_edit_Enter);
@@ -1439,9 +1451,9 @@
             // 
             this.tabPage_filters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.tabPage_filters.Controls.Add(this.tableLayoutPanel7);
-            this.tabPage_filters.Location = new System.Drawing.Point(4, 22);
+            this.tabPage_filters.Location = new System.Drawing.Point(4, 31);
             this.tabPage_filters.Name = "tabPage_filters";
-            this.tabPage_filters.Size = new System.Drawing.Size(502, 786);
+            this.tabPage_filters.Size = new System.Drawing.Size(502, 777);
             this.tabPage_filters.TabIndex = 3;
             this.tabPage_filters.Text = "Filters";
             // 
@@ -1472,6 +1484,7 @@
             this.tableLayoutPanel7.Controls.Add(this.dateTimePicker_start, 1, 4);
             this.tableLayoutPanel7.Controls.Add(this.lbl_time_end, 0, 5);
             this.tableLayoutPanel7.Controls.Add(this.dateTimePicker_end, 1, 5);
+            this.tableLayoutPanel7.Controls.Add(this.btn_test_telegrambot, 3, 4);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel7.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
@@ -1975,16 +1988,16 @@
             this.timer_for_refresh.Interval = 300000;
             this.timer_for_refresh.Tick += new System.EventHandler(this.Timer_for_refresh_Tick);
             // 
-            // btn_ch_treatment
+            // btn_test_telegrambot
             // 
-            this.btn_ch_treatment.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_ch_treatment.Location = new System.Drawing.Point(178, 349);
-            this.btn_ch_treatment.Name = "btn_ch_treatment";
-            this.btn_ch_treatment.Size = new System.Drawing.Size(290, 31);
-            this.btn_ch_treatment.TabIndex = 23;
-            this.btn_ch_treatment.Text = "Change treatment";
-            this.btn_ch_treatment.UseVisualStyleBackColor = true;
-            this.btn_ch_treatment.Click += new System.EventHandler(this.button1_Click_2);
+            this.btn_test_telegrambot.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_test_telegrambot.Location = new System.Drawing.Point(409, 643);
+            this.btn_test_telegrambot.Name = "btn_test_telegrambot";
+            this.btn_test_telegrambot.Size = new System.Drawing.Size(90, 30);
+            this.btn_test_telegrambot.TabIndex = 21;
+            this.btn_test_telegrambot.Text = "Test bot";
+            this.btn_test_telegrambot.UseVisualStyleBackColor = true;
+            this.btn_test_telegrambot.Click += new System.EventHandler(this.btn_test_telegrambot_Click);
             // 
             // Form_specimens
             // 
@@ -2204,5 +2217,6 @@
         private System.Windows.Forms.Label lbl_time_end;
         private System.Windows.Forms.DateTimePicker dateTimePicker_end;
         private System.Windows.Forms.Button btn_ch_treatment;
+        private System.Windows.Forms.Button btn_test_telegrambot;
     }
 }

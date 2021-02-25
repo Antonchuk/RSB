@@ -39,3 +39,8 @@ C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\obj\x64\Release\R
 C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\obj\x64\Release\RSB.csproj.CopyComplete
 C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\obj\x64\Release\RSB.exe
 C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\obj\x64\Release\RSB.pdb
+C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\Newtonsoft.Json.dll
+C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\Telegram.Bot.dll
+C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\Newtonsoft.Json.xml
+C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\Telegram.Bot.xml
+C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\MihaZupan.HttpToSocks5Proxy.dll

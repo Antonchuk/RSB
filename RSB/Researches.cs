@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using Word = Microsoft.Office.Interop.Word;
 
+
 namespace RSB
 {
     public partial class Researches : Form

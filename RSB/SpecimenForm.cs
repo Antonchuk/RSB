@@ -12,6 +12,9 @@ using System.Diagnostics;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using Excel = Microsoft.Office.Interop.Excel;
+using Telegram.Bot;
+using Telegram.Bot.Args;
+using MihaZupan;
 
 namespace RSB
 {
@@ -733,7 +736,7 @@ namespace RSB
             combox_sort.SelectedIndex = 3;
             Properties.Settings.Default.main_res_id = -1;
             Properties.Settings.Default.main_spec_id = -1;            
-            dateTimePicker_end.Value = DateTime.Now;
+            dateTimePicker_end.Value = DateTime.Now.AddDays(1);
             DateTime tem_dat;
             tem_dat = dateTimePicker_end.Value;
             dateTimePicker_start.Value = tem_dat.AddYears(-1);
@@ -2736,6 +2739,34 @@ namespace RSB
             //MessageBox.Show("кто-то пытается удалить важнейшую информацию");
             Properties.Settings.Default.old_treatment = txtbox_treat_inf.Text;
             Properties.Settings.Default.Save();
+        }
+
+        private void btn_test_telegrambot_Click(object sender, EventArgs e)
+        {
+            //тестируем телеграм бот
+            //1662678916:AAH63Zoolu7RgaZr_Cw9dtH6X3PIyQ5iQmk
+            var proxy = new HttpToSocks5Proxy(new[] {
+                new ProxyInfo("184.181.217.204", 4145),
+                new ProxyInfo("23.106.35.130",1637),
+                new ProxyInfo("135.181.203.208",80)
+            });
+            proxy.ResolveHostnamesLocally = true;
+            var botClient = new TelegramBotClient("1662678916:AAH63Zoolu7RgaZr_Cw9dtH6X3PIyQ5iQmk", proxy);
+            var me = botClient.GetMeAsync().Result;
+            MessageBox.Show("My first bot is "+me.FirstName);
+            //botClient.OnMessage += Bot_OnMessage;
+            //botClient.StartReceiving();            
+
+        }
+        static async void Bot_OnMessage(object sender, MessageEventArgs e)
+        {
+            if (e.Message.Text != null)
+            {
+                MessageBox.Show("Recieved a text message in chat"+e.Message.Chat.Id.ToString());
+                //await BotClient.SendTextMessageAsync(
+                  //  chatId: e.Message.Chat,
+                    //TextBox: "You said: " + e.Message.Text);
+            }
         }
     }
 }

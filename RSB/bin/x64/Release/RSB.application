@@ -14,14 +14,14 @@
     <framework targetVersion="4.7.2" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="RSB.exe.manifest" size="11747">
+    <dependentAssembly dependencyType="install" codebase="RSB.exe.manifest" size="13747">
       <assemblyIdentity name="RSB.exe" version="1.0.1.35" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>3XcAdFyDtH7LSRcTHSCJTaPGo48Mb2QsI8VOfgnnidk=</dsig:DigestValue>
+        <dsig:DigestValue>sDch2MmkNPFDcY7C414g1HmnWIGN+V/K6FCR1B1CqIM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

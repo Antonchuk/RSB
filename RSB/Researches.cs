@@ -107,9 +107,9 @@ namespace RSB
                                 if (reader.HasRows)
                                 {
                                     int num = 0;
-                                    while (num < show_only_spec)
+                                    while ((num < show_only_spec)&& (reader.Read()))
                                     {
-                                        if (reader.Read())
+                                        if (reader.HasRows)
                                         {
                                             //зачем это делать?                                    
                                             string srt;
@@ -127,6 +127,7 @@ namespace RSB
                                         num++;
                                     }
                                     reader.Close();
+                                    txtbox_stat_show_res.Text = num.ToString();
                                 }
                                 //else MessageBox.Show("nodata");
                             }
@@ -205,8 +206,9 @@ namespace RSB
                                         num++;
                                     }
                                     reader.Close();
+                                    txtbox_stat_show_res.Text = num.ToString();
                                 }
-                                else MessageBox.Show("nodata");
+                                //else MessageBox.Show("nodata");
                             }
                             conn.Close();
                         }
@@ -917,60 +919,33 @@ namespace RSB
             //сначала проверим есть ли уже в этот день запись этого же типа
             bool check_for_exist = false;
             int id_tech_work = -1;
-            using (MySqlConnection conn = New_connection(conn_str))
-            {
-                try
-                {
-                    conn.Open();
-                    DateTime.TryParse(dateTimePicker1.Text, out DateTime temp_dat);
-                    string sqlcom_4 = "SELECT id_tech_work FROM test2base.tech_work WHERE  (date = '"+ temp_dat.ToString("yyyy-MM-dd HH:mm:ss") + "' AND id_work_type = "+type.ToString()+
-                        " AND id_setups = (SELECT id_setups FROM test2base.setups WHERE (name= '"+combox_setups_select.Text+"')))";
-                    using (MySqlCommand comand = new MySqlCommand(sqlcom_4, conn))
-                    {
-                        using (MySqlDataReader reader = comand.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                reader.Read();
-                                check_for_exist = true;
-                                id_tech_work = Convert.ToInt32(reader[0]);
-                                reader.Close();
-                            }
-                            else
-                            {
-                                check_for_exist = false;                                
-                            }
-
-                        }
-                    }
-                    conn.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error,
-                    MessageBoxDefaultButton.Button1);
-                }
-            }
-            //если нет такого, то добавляем
-            if (check_for_exist==false)
+            if (txtbox_inf_dur_days.Text != "" && combox_setups_select.Text != "" && richTextBox_supp_comments.Text != "")
             {
                 using (MySqlConnection conn = New_connection(conn_str))
                 {
                     try
                     {
                         conn.Open();
-                        //string sqlcom_4 = "INSERT INTO test2base.history (id_spec, action, old, new, date, user) VALUES (@id_spec, @action, @old, @new, @date, @user)";
-                        string sqlcom_4 = "INSERT INTO test2base.tech_work (id_work_type, Comments, Duration, date, id_setups) VALUES(@id_work_type, @test_comments, @duration, @date," +
-                            " (SELECT id_setups FROM test2base.setups WHERE name = @id_setups))";
+                        DateTime.TryParse(dateTimePicker1.Text, out DateTime temp_dat);
+                        string sqlcom_4 = "SELECT id_tech_work FROM test2base.tech_work WHERE  (date = '" + temp_dat.ToString("yyyy-MM-dd HH:mm:ss") + "' AND id_work_type = " + type.ToString() +
+                            " AND id_setups = (SELECT id_setups FROM test2base.setups WHERE (name= '" + combox_setups_select.Text + "')))";
                         using (MySqlCommand comand = new MySqlCommand(sqlcom_4, conn))
                         {
-                            comand.Parameters.AddWithValue("@id_work_type", type);
-                            comand.Parameters.AddWithValue("@test_comments", comments);
-                            comand.Parameters.AddWithValue("@duration", duration);
-                            DateTime.TryParse(dateTimePicker1.Text, out DateTime temp_dat);
-                            comand.Parameters.AddWithValue("@date", temp_dat.ToString("yyyy-MM-dd HH:mm:ss"));
-                            comand.Parameters.AddWithValue("@id_setups", combox_setups_select.Text);
-                            _ = comand.ExecuteNonQuery();
+                            using (MySqlDataReader reader = comand.ExecuteReader())
+                            {
+                                if (reader.HasRows)
+                                {
+                                    reader.Read();
+                                    check_for_exist = true;
+                                    id_tech_work = Convert.ToInt32(reader[0]);
+                                    reader.Close();
+                                }
+                                else
+                                {
+                                    check_for_exist = false;
+                                }
+
+                            }
                         }
                         conn.Close();
                     }
@@ -980,30 +955,25 @@ namespace RSB
                         MessageBoxDefaultButton.Button1);
                     }
                 }
-            }
-            else
-            {
-                //если есть спрашиваем пользователя?
-                //UPDATE test2base.tech_work SET Comments = '' WHERE (id_tech_work = '');
-                DialogResult dialogResult = MessageBox.Show("Вы пытаетесь обновить запись технической информации, вы действительно этого хотитте?\n " +
-                    "Будет сохранено только то, что находится в данный момент в поле описания технической информации\n" +
-                    "Yes - информация будет сохранена\n" +
-                    "No - ничего не будет происходить", "Запрос сохранения", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes && id_tech_work!=-1)
+                //если нет такого, то добавляем
+                if (check_for_exist == false)
                 {
-                    //....
-                    MessageBox.Show("сохраняем, на самом деле нет, но мы пытаемся))) \n id_techwork="+id_tech_work.ToString());
-                    //обновляем поле сервисной информации
                     using (MySqlConnection conn = New_connection(conn_str))
                     {
                         try
                         {
                             conn.Open();
-                            DateTime.TryParse(dateTimePicker1.Text, out DateTime temp_dat);
-                            string sqlcom_4 = "UPDATE test2base.tech_work SET Comments = '"+richTextBox_supp_comments.Text+"', date = '"+
-                                temp_dat.ToString("yyyy-MM-dd HH:mm:ss") + "' WHERE (id_tech_work = '"+ id_tech_work.ToString() + "')";
+                            //string sqlcom_4 = "INSERT INTO test2base.history (id_spec, action, old, new, date, user) VALUES (@id_spec, @action, @old, @new, @date, @user)";
+                            string sqlcom_4 = "INSERT INTO test2base.tech_work (id_work_type, Comments, Duration, date, id_setups) VALUES(@id_work_type, @test_comments, @duration, @date," +
+                                " (SELECT id_setups FROM test2base.setups WHERE name = @id_setups))";
                             using (MySqlCommand comand = new MySqlCommand(sqlcom_4, conn))
-                            {     
+                            {
+                                comand.Parameters.AddWithValue("@id_work_type", type);
+                                comand.Parameters.AddWithValue("@test_comments", comments);
+                                comand.Parameters.AddWithValue("@duration", duration);
+                                DateTime.TryParse(dateTimePicker1.Text, out DateTime temp_dat);
+                                comand.Parameters.AddWithValue("@date", temp_dat.ToString("yyyy-MM-dd HH:mm:ss"));
+                                comand.Parameters.AddWithValue("@id_setups", combox_setups_select.Text);
                                 _ = comand.ExecuteNonQuery();
                             }
                             conn.Close();
@@ -1015,12 +985,48 @@ namespace RSB
                         }
                     }
                 }
-                else if (dialogResult == DialogResult.No)
+                else
                 {
-                    //...ничего не делаем, очищаем поле
+                    //если есть спрашиваем пользователя?
+                    //UPDATE test2base.tech_work SET Comments = '' WHERE (id_tech_work = '');
+                    DialogResult dialogResult = MessageBox.Show("Вы пытаетесь обновить запись технической информации, вы действительно этого хотитте?\n " +
+                        "Будет сохранено только то, что находится в данный момент в поле описания технической информации\n" +
+                        "Yes - информация будет сохранена\n" +
+                        "No - ничего не будет происходить", "Запрос сохранения", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes && id_tech_work != -1)
+                    {
+                        //....
+                        //MessageBox.Show("сохраняем, на самом деле нет, но мы пытаемся))) \n id_techwork="+id_tech_work.ToString());
+                        //обновляем поле сервисной информации
+                        using (MySqlConnection conn = New_connection(conn_str))
+                        {
+                            try
+                            {
+                                conn.Open();
+                                DateTime.TryParse(dateTimePicker1.Text, out DateTime temp_dat);
+                                string sqlcom_4 = "UPDATE test2base.tech_work SET Comments = '" + richTextBox_supp_comments.Text + "', date = '" +
+                                    temp_dat.ToString("yyyy-MM-dd HH:mm:ss") + "' WHERE (id_tech_work = '" + id_tech_work.ToString() + "')";
+                                using (MySqlCommand comand = new MySqlCommand(sqlcom_4, conn))
+                                {
+                                    _ = comand.ExecuteNonQuery();
+                                }
+                                conn.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message, "Ошибка в обновлении поля серв. информации", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                                MessageBoxDefaultButton.Button1);
+                            }
+                        }
+                    }
+                    else if (dialogResult == DialogResult.No)
+                    {
+                        //...ничего не делаем, очищаем поле
 
+                    }
                 }
             }
+            else MessageBox.Show("Шот-то ты, милок, не все поля заполнил. \nВозможно забыл заполнить поле 'Setup'");
         }
 
         private void Btn_make_serv_comm_Click(object sender, EventArgs e)

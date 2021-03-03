@@ -27,7 +27,8 @@ namespace RSB
         private static bool on_load = true;
         private string[] info_files_paths_bef;
         private string[] info_files_paths_aft;
-        private bool specimen_new_accepted = true;
+        private static bool specimen_new_accepted = true;
+        private static bool isrefreshing = true; // просто для исключения ненужных обновлений при нажатии кнопок Select All/Clear All
         //для картинки на кнопке
         private bool pic_change = true; //true - up, false - down
         private int show_only_spec;
@@ -265,7 +266,7 @@ namespace RSB
                                 }
                                 reader.Close();
                             }
-                            else MessageBox.Show("nodata in refresh");
+                            //else MessageBox.Show("nodata in refresh");
                         }
                         conn.Close();
 
@@ -352,6 +353,9 @@ namespace RSB
                                         case "setup":
                                             combox_setup.Items.Add(reader[0].ToString());
                                             break;
+                                        case "storage_filter":                                            
+                                            ch_listbox_storage_f.Items.Add(reader[0].ToString(),true);
+                                            break;
                                     }
                                 }
                                 reader.Close();
@@ -417,6 +421,8 @@ namespace RSB
                 Fill_one_combo("name", conn, "materials", "f_material");
                 //фильтр проекта
                 Fill_one_combo("name", conn, "projects", "f_project");
+                //фильтр Storage
+                Fill_one_combo("name", conn, "storage", "storage_filter");
                 
             }
         }
@@ -2261,7 +2267,7 @@ namespace RSB
                 }
             }
         }
-        private void Checked(ItemCheckEventArgs e, CheckedListBox obje)
+        private void Checked(ItemCheckEventArgs e, CheckedListBox obje, bool dorefresh)
         {
             if (!on_load)
             {
@@ -2280,6 +2286,10 @@ namespace RSB
                     case "ch_listbox_material":
                         str_f = "materials.name <> '";
                         break;
+                    case "ch_listbox_storage_f":
+                        //
+                        str_f = "storage.name <> '";
+                        break;
                 }
                 if (e.NewValue == CheckState.Checked)
                 {
@@ -2294,92 +2304,116 @@ namespace RSB
                     data_filters.Add(str_f +obje.Items[e.Index].ToString() + "'");
                 }
                 //Do_filters(data_filters);
-                Refresh_datagrid();
+                if (dorefresh) Refresh_datagrid();
             }
         }
 
         private void Ch_listbox_state_f_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Checked(e,ch_listbox_state_f);
+            Checked(e,ch_listbox_state_f, isrefreshing);
         }
 
         private void Ch_listbox_type_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Checked(e,ch_listbox_type);
+            Checked(e,ch_listbox_type, isrefreshing);
         }
 
         private void Ch_listbox_material_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Checked(e, ch_listbox_material);
+            Checked(e, ch_listbox_material, isrefreshing);
         }
 
         private void Ch_listbox_project_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Checked(e, ch_listbox_project);
+            Checked(e, ch_listbox_project, isrefreshing);
         }
 
         private void Btn_cl_type_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_type.Items.Count; i++)
             {
                 ch_listbox_type.SetItemChecked(i, false);
             }
+            isrefreshing = true;
+            Refresh_datagrid();
         }
 
         private void Btn_cl_proj_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_project.Items.Count; i++)
             {
                 ch_listbox_project.SetItemChecked(i, false);
             }
+            isrefreshing = true;
+            Refresh_datagrid();
         }
 
         private void Btn_cl_state_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_state_f.Items.Count; i++)
             {
                 ch_listbox_state_f.SetItemChecked(i, false);
             }
+            isrefreshing = true;
+            Refresh_datagrid();
         }
 
         private void Btn_cl_mat_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_material.Items.Count; i++)
             {
                 ch_listbox_material.SetItemChecked(i, false);
             }
+            isrefreshing = true;
+            Refresh_datagrid();
         }
 
         private void Btn_sel_type_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_type.Items.Count; i++)
             {
                 ch_listbox_type.SetItemChecked(i, true);
             }
+            isrefreshing = true;
+            Refresh_datagrid();
         }
 
         private void Btn_sel_proj_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_project.Items.Count; i++)
             {
                 ch_listbox_project.SetItemChecked(i, true);
             }
+            isrefreshing = true;
+            Refresh_datagrid();
         }
 
         private void Btn_sel_state_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_state_f.Items.Count; i++)
             {
                 ch_listbox_state_f.SetItemChecked(i, true);
             }
+            isrefreshing = true;
+            Refresh_datagrid();
         }
 
         private void Btn_sel_mat_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_material.Items.Count; i++)
             {
                 ch_listbox_material.SetItemChecked(i, true);
             }
+            isrefreshing = true;
+            Refresh_datagrid();
         }
 
 
@@ -2758,15 +2792,46 @@ namespace RSB
             //botClient.StartReceiving();            
 
         }
-        static async void Bot_OnMessage(object sender, MessageEventArgs e)
+
+        private void btn_test_Click(object sender, EventArgs e)
         {
-            if (e.Message.Text != null)
+            //кнопка для разных тестов
+            //пробуем сохранять фильтры
+            string mom_str = "";
+            foreach (string str in data_filters)
             {
-                MessageBox.Show("Recieved a text message in chat"+e.Message.Chat.Id.ToString());
-                //await BotClient.SendTextMessageAsync(
-                  //  chatId: e.Message.Chat,
-                    //TextBox: "You said: " + e.Message.Text);
+                mom_str = mom_str + str;
             }
+            MessageBox.Show("Все фильтры:\n" + mom_str);
+        }
+
+        private void btn_clr_storage_Click(object sender, EventArgs e)
+        {
+            //очистка фильтра storage
+            isrefreshing = false;
+            for (int i = 0; i < ch_listbox_storage_f.Items.Count; i++)
+            {
+                ch_listbox_storage_f.SetItemChecked(i, false);
+            }
+            isrefreshing = true;
+            Refresh_datagrid();
+        }
+
+        private void btn_sel_storage_Click(object sender, EventArgs e)
+        {
+            //выбор всех фильтров по Storage
+            isrefreshing = false;
+            for (int i = 0; i < ch_listbox_storage_f.Items.Count; i++)
+            {
+                ch_listbox_storage_f.SetItemChecked(i, true);
+            }
+            isrefreshing = true;
+            Refresh_datagrid();
+        }
+
+        private void ch_listbox_storage_f_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            Checked(e, ch_listbox_storage_f, isrefreshing);
         }
     }
 }

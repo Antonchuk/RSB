@@ -153,6 +153,12 @@
             this.dateTimePicker_start = new System.Windows.Forms.DateTimePicker();
             this.lbl_time_end = new System.Windows.Forms.Label();
             this.dateTimePicker_end = new System.Windows.Forms.DateTimePicker();
+            this.btn_test_telegrambot = new System.Windows.Forms.Button();
+            this.btn_test = new System.Windows.Forms.Button();
+            this.lbl_storage_filt = new System.Windows.Forms.Label();
+            this.ch_listbox_storage_f = new System.Windows.Forms.CheckedListBox();
+            this.btn_clr_storage = new System.Windows.Forms.Button();
+            this.btn_sel_storage = new System.Windows.Forms.Button();
             this.open_dial_im_before = new System.Windows.Forms.OpenFileDialog();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayout_datagrid = new System.Windows.Forms.TableLayoutPanel();
@@ -180,7 +186,6 @@
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer_for_refresh = new System.Windows.Forms.Timer(this.components);
-            this.btn_test_telegrambot = new System.Windows.Forms.Button();
             this.tabcontrol_add_inf.SuspendLayout();
             this.tab_page_info.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.split_inf)).BeginInit();
@@ -226,7 +231,7 @@
             this.tabcontrol_add_inf.Location = new System.Drawing.Point(0, 0);
             this.tabcontrol_add_inf.Name = "tabcontrol_add_inf";
             this.tabcontrol_add_inf.SelectedIndex = 0;
-            this.tabcontrol_add_inf.Size = new System.Drawing.Size(510, 812);
+            this.tabcontrol_add_inf.Size = new System.Drawing.Size(512, 1037);
             this.tabcontrol_add_inf.TabIndex = 5;
             // 
             // tab_page_info
@@ -236,7 +241,7 @@
             this.tab_page_info.Location = new System.Drawing.Point(4, 31);
             this.tab_page_info.Name = "tab_page_info";
             this.tab_page_info.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_page_info.Size = new System.Drawing.Size(502, 777);
+            this.tab_page_info.Size = new System.Drawing.Size(504, 1002);
             this.tab_page_info.TabIndex = 0;
             this.tab_page_info.Text = "Information";
             // 
@@ -256,8 +261,8 @@
             // 
             this.split_inf.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.split_inf.Panel2.Controls.Add(this.table_layout_foto_inf);
-            this.split_inf.Size = new System.Drawing.Size(496, 771);
-            this.split_inf.SplitterDistance = 395;
+            this.split_inf.Size = new System.Drawing.Size(498, 996);
+            this.split_inf.SplitterDistance = 510;
             this.split_inf.TabIndex = 1;
             // 
             // tableLayoutPanel3
@@ -304,7 +309,7 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(496, 395);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(498, 510);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // lbl_mater_inf
@@ -554,15 +559,15 @@
             this.table_layout_foto_inf.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.table_layout_foto_inf.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.table_layout_foto_inf.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.table_layout_foto_inf.Size = new System.Drawing.Size(496, 372);
+            this.table_layout_foto_inf.Size = new System.Drawing.Size(498, 482);
             this.table_layout_foto_inf.TabIndex = 0;
             // 
             // picbox_inf_bef_1
             // 
             this.picbox_inf_bef_1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_inf_bef_1.Location = new System.Drawing.Point(168, 33);
+            this.picbox_inf_bef_1.Location = new System.Drawing.Point(169, 33);
             this.picbox_inf_bef_1.Name = "picbox_inf_bef_1";
-            this.picbox_inf_bef_1.Size = new System.Drawing.Size(159, 108);
+            this.picbox_inf_bef_1.Size = new System.Drawing.Size(160, 144);
             this.picbox_inf_bef_1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbox_inf_bef_1.TabIndex = 0;
             this.picbox_inf_bef_1.TabStop = false;
@@ -572,9 +577,9 @@
             // picbox_inf_bef_2
             // 
             this.picbox_inf_bef_2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_inf_bef_2.Location = new System.Drawing.Point(168, 147);
+            this.picbox_inf_bef_2.Location = new System.Drawing.Point(169, 183);
             this.picbox_inf_bef_2.Name = "picbox_inf_bef_2";
-            this.picbox_inf_bef_2.Size = new System.Drawing.Size(159, 108);
+            this.picbox_inf_bef_2.Size = new System.Drawing.Size(160, 144);
             this.picbox_inf_bef_2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbox_inf_bef_2.TabIndex = 1;
             this.picbox_inf_bef_2.TabStop = false;
@@ -583,9 +588,9 @@
             // picbox_inf_bef_3
             // 
             this.picbox_inf_bef_3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_inf_bef_3.Location = new System.Drawing.Point(168, 261);
+            this.picbox_inf_bef_3.Location = new System.Drawing.Point(169, 333);
             this.picbox_inf_bef_3.Name = "picbox_inf_bef_3";
-            this.picbox_inf_bef_3.Size = new System.Drawing.Size(159, 108);
+            this.picbox_inf_bef_3.Size = new System.Drawing.Size(160, 146);
             this.picbox_inf_bef_3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbox_inf_bef_3.TabIndex = 2;
             this.picbox_inf_bef_3.TabStop = false;
@@ -597,34 +602,34 @@
             this.lbl_pic_1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbl_pic_1.Location = new System.Drawing.Point(3, 30);
             this.lbl_pic_1.Name = "lbl_pic_1";
-            this.lbl_pic_1.Size = new System.Drawing.Size(159, 114);
+            this.lbl_pic_1.Size = new System.Drawing.Size(160, 150);
             this.lbl_pic_1.TabIndex = 3;
             // 
             // lbl_pic_2
             // 
             this.lbl_pic_2.AutoSize = true;
             this.lbl_pic_2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_pic_2.Location = new System.Drawing.Point(3, 144);
+            this.lbl_pic_2.Location = new System.Drawing.Point(3, 180);
             this.lbl_pic_2.Name = "lbl_pic_2";
-            this.lbl_pic_2.Size = new System.Drawing.Size(159, 114);
+            this.lbl_pic_2.Size = new System.Drawing.Size(160, 150);
             this.lbl_pic_2.TabIndex = 4;
             // 
             // lbl_pic_3
             // 
             this.lbl_pic_3.AutoSize = true;
             this.lbl_pic_3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_pic_3.Location = new System.Drawing.Point(3, 258);
+            this.lbl_pic_3.Location = new System.Drawing.Point(3, 330);
             this.lbl_pic_3.Name = "lbl_pic_3";
-            this.lbl_pic_3.Size = new System.Drawing.Size(159, 114);
+            this.lbl_pic_3.Size = new System.Drawing.Size(160, 152);
             this.lbl_pic_3.TabIndex = 5;
             // 
             // lbl_TEM_before
             // 
             this.lbl_TEM_before.AutoSize = true;
             this.lbl_TEM_before.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_TEM_before.Location = new System.Drawing.Point(168, 0);
+            this.lbl_TEM_before.Location = new System.Drawing.Point(169, 0);
             this.lbl_TEM_before.Name = "lbl_TEM_before";
-            this.lbl_TEM_before.Size = new System.Drawing.Size(159, 30);
+            this.lbl_TEM_before.Size = new System.Drawing.Size(160, 30);
             this.lbl_TEM_before.TabIndex = 6;
             this.lbl_TEM_before.Text = "TEM before";
             // 
@@ -632,7 +637,7 @@
             // 
             this.lbl_TEM_after.AutoSize = true;
             this.lbl_TEM_after.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_TEM_after.Location = new System.Drawing.Point(333, 0);
+            this.lbl_TEM_after.Location = new System.Drawing.Point(335, 0);
             this.lbl_TEM_after.Name = "lbl_TEM_after";
             this.lbl_TEM_after.Size = new System.Drawing.Size(160, 30);
             this.lbl_TEM_after.TabIndex = 7;
@@ -641,9 +646,9 @@
             // picbox_inf_aft_1
             // 
             this.picbox_inf_aft_1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_inf_aft_1.Location = new System.Drawing.Point(333, 33);
+            this.picbox_inf_aft_1.Location = new System.Drawing.Point(335, 33);
             this.picbox_inf_aft_1.Name = "picbox_inf_aft_1";
-            this.picbox_inf_aft_1.Size = new System.Drawing.Size(160, 108);
+            this.picbox_inf_aft_1.Size = new System.Drawing.Size(160, 144);
             this.picbox_inf_aft_1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbox_inf_aft_1.TabIndex = 8;
             this.picbox_inf_aft_1.TabStop = false;
@@ -652,9 +657,9 @@
             // picbox_inf_aft_2
             // 
             this.picbox_inf_aft_2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_inf_aft_2.Location = new System.Drawing.Point(333, 147);
+            this.picbox_inf_aft_2.Location = new System.Drawing.Point(335, 183);
             this.picbox_inf_aft_2.Name = "picbox_inf_aft_2";
-            this.picbox_inf_aft_2.Size = new System.Drawing.Size(160, 108);
+            this.picbox_inf_aft_2.Size = new System.Drawing.Size(160, 144);
             this.picbox_inf_aft_2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbox_inf_aft_2.TabIndex = 9;
             this.picbox_inf_aft_2.TabStop = false;
@@ -663,9 +668,9 @@
             // picbox_inf_aft_3
             // 
             this.picbox_inf_aft_3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_inf_aft_3.Location = new System.Drawing.Point(333, 261);
+            this.picbox_inf_aft_3.Location = new System.Drawing.Point(335, 333);
             this.picbox_inf_aft_3.Name = "picbox_inf_aft_3";
-            this.picbox_inf_aft_3.Size = new System.Drawing.Size(160, 108);
+            this.picbox_inf_aft_3.Size = new System.Drawing.Size(160, 146);
             this.picbox_inf_aft_3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbox_inf_aft_3.TabIndex = 10;
             this.picbox_inf_aft_3.TabStop = false;
@@ -676,9 +681,9 @@
             this.tab_page_research.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.tab_page_research.Controls.Add(this.tableLayoutPanel6);
             this.tab_page_research.Controls.Add(this.tableLayoutPanel5);
-            this.tab_page_research.Location = new System.Drawing.Point(4, 31);
+            this.tab_page_research.Location = new System.Drawing.Point(4, 22);
             this.tab_page_research.Name = "tab_page_research";
-            this.tab_page_research.Size = new System.Drawing.Size(502, 777);
+            this.tab_page_research.Size = new System.Drawing.Size(504, 1011);
             this.tab_page_research.TabIndex = 2;
             this.tab_page_research.Text = "Edit and make research";
             // 
@@ -707,7 +712,7 @@
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(502, 191);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(504, 191);
             this.tableLayoutPanel6.TabIndex = 1;
             // 
             // lbl_from
@@ -785,7 +790,7 @@
             this.btn_priority_ch.Dock = System.Windows.Forms.DockStyle.Top;
             this.btn_priority_ch.Location = new System.Drawing.Point(305, 117);
             this.btn_priority_ch.Name = "btn_priority_ch";
-            this.btn_priority_ch.Size = new System.Drawing.Size(194, 44);
+            this.btn_priority_ch.Size = new System.Drawing.Size(196, 44);
             this.btn_priority_ch.TabIndex = 8;
             this.btn_priority_ch.Text = "Change priority";
             this.btn_priority_ch.UseVisualStyleBackColor = true;
@@ -797,7 +802,7 @@
             this.btn_move_new_stor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btn_move_new_stor.Location = new System.Drawing.Point(305, 61);
             this.btn_move_new_stor.Name = "btn_move_new_stor";
-            this.btn_move_new_stor.Size = new System.Drawing.Size(194, 50);
+            this.btn_move_new_stor.Size = new System.Drawing.Size(196, 50);
             this.btn_move_new_stor.TabIndex = 18;
             this.btn_move_new_stor.Text = "Change storage place";
             this.btn_move_new_stor.UseVisualStyleBackColor = true;
@@ -850,7 +855,7 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(502, 590);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(504, 590);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // label1
@@ -1082,7 +1087,7 @@
             this.tab_page_new_edit.Location = new System.Drawing.Point(4, 22);
             this.tab_page_new_edit.Name = "tab_page_new_edit";
             this.tab_page_new_edit.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_page_new_edit.Size = new System.Drawing.Size(502, 786);
+            this.tab_page_new_edit.Size = new System.Drawing.Size(504, 1011);
             this.tab_page_new_edit.TabIndex = 1;
             this.tab_page_new_edit.Text = "Add new";
             this.tab_page_new_edit.Enter += new System.EventHandler(this.Tab_page_new_edit_Enter);
@@ -1194,7 +1199,7 @@
             this.tbllay_add_edit.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tbllay_add_edit.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tbllay_add_edit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tbllay_add_edit.Size = new System.Drawing.Size(496, 344);
+            this.tbllay_add_edit.Size = new System.Drawing.Size(498, 344);
             this.tbllay_add_edit.TabIndex = 0;
             // 
             // btn_csv_load
@@ -1453,7 +1458,7 @@
             this.tabPage_filters.Controls.Add(this.tableLayoutPanel7);
             this.tabPage_filters.Location = new System.Drawing.Point(4, 31);
             this.tabPage_filters.Name = "tabPage_filters";
-            this.tabPage_filters.Size = new System.Drawing.Size(502, 777);
+            this.tabPage_filters.Size = new System.Drawing.Size(504, 1002);
             this.tabPage_filters.TabIndex = 3;
             this.tabPage_filters.Text = "Filters";
             // 
@@ -1468,8 +1473,8 @@
             this.tableLayoutPanel7.Controls.Add(this.ch_listbox_project, 1, 1);
             this.tableLayoutPanel7.Controls.Add(this.lbl_type_f, 0, 0);
             this.tableLayoutPanel7.Controls.Add(this.lbl_project_f, 0, 1);
-            this.tableLayoutPanel7.Controls.Add(this.lbl_material_f, 0, 3);
-            this.tableLayoutPanel7.Controls.Add(this.ch_listbox_material, 1, 3);
+            this.tableLayoutPanel7.Controls.Add(this.lbl_material_f, 0, 4);
+            this.tableLayoutPanel7.Controls.Add(this.ch_listbox_material, 1, 4);
             this.tableLayoutPanel7.Controls.Add(this.lbl_suc_f, 0, 2);
             this.tableLayoutPanel7.Controls.Add(this.ch_listbox_state_f, 1, 2);
             this.tableLayoutPanel7.Controls.Add(this.btn_cl_type, 2, 0);
@@ -1478,17 +1483,23 @@
             this.tableLayoutPanel7.Controls.Add(this.btn_sel_proj, 3, 1);
             this.tableLayoutPanel7.Controls.Add(this.btn_cl_state, 2, 2);
             this.tableLayoutPanel7.Controls.Add(this.btn_sel_state, 3, 2);
-            this.tableLayoutPanel7.Controls.Add(this.btn_cl_mat, 2, 3);
-            this.tableLayoutPanel7.Controls.Add(this.btn_sel_mat, 3, 3);
-            this.tableLayoutPanel7.Controls.Add(this.lbl_time_start, 0, 4);
-            this.tableLayoutPanel7.Controls.Add(this.dateTimePicker_start, 1, 4);
-            this.tableLayoutPanel7.Controls.Add(this.lbl_time_end, 0, 5);
-            this.tableLayoutPanel7.Controls.Add(this.dateTimePicker_end, 1, 5);
-            this.tableLayoutPanel7.Controls.Add(this.btn_test_telegrambot, 3, 4);
+            this.tableLayoutPanel7.Controls.Add(this.btn_cl_mat, 2, 4);
+            this.tableLayoutPanel7.Controls.Add(this.btn_sel_mat, 3, 4);
+            this.tableLayoutPanel7.Controls.Add(this.lbl_time_start, 0, 5);
+            this.tableLayoutPanel7.Controls.Add(this.dateTimePicker_start, 1, 5);
+            this.tableLayoutPanel7.Controls.Add(this.lbl_time_end, 0, 6);
+            this.tableLayoutPanel7.Controls.Add(this.dateTimePicker_end, 1, 6);
+            this.tableLayoutPanel7.Controls.Add(this.btn_test_telegrambot, 3, 5);
+            this.tableLayoutPanel7.Controls.Add(this.btn_test, 3, 6);
+            this.tableLayoutPanel7.Controls.Add(this.lbl_storage_filt, 0, 3);
+            this.tableLayoutPanel7.Controls.Add(this.ch_listbox_storage_f, 1, 3);
+            this.tableLayoutPanel7.Controls.Add(this.btn_clr_storage, 2, 3);
+            this.tableLayoutPanel7.Controls.Add(this.btn_sel_storage, 3, 3);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel7.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
-            this.tableLayoutPanel7.RowCount = 7;
+            this.tableLayoutPanel7.RowCount = 8;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -1496,7 +1507,7 @@
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(502, 765);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(504, 999);
             this.tableLayoutPanel7.TabIndex = 0;
             // 
             // ch_listbox_type
@@ -1507,7 +1518,7 @@
             this.ch_listbox_type.FormattingEnabled = true;
             this.ch_listbox_type.Location = new System.Drawing.Point(86, 3);
             this.ch_listbox_type.Name = "ch_listbox_type";
-            this.ch_listbox_type.Size = new System.Drawing.Size(224, 79);
+            this.ch_listbox_type.Size = new System.Drawing.Size(226, 79);
             this.ch_listbox_type.TabIndex = 0;
             this.ch_listbox_type.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.Ch_listbox_type_ItemCheck);
             // 
@@ -1519,7 +1530,7 @@
             this.ch_listbox_project.FormattingEnabled = true;
             this.ch_listbox_project.Location = new System.Drawing.Point(86, 88);
             this.ch_listbox_project.Name = "ch_listbox_project";
-            this.ch_listbox_project.Size = new System.Drawing.Size(224, 154);
+            this.ch_listbox_project.Size = new System.Drawing.Size(226, 154);
             this.ch_listbox_project.TabIndex = 1;
             this.ch_listbox_project.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.Ch_listbox_project_ItemCheck);
             // 
@@ -1547,7 +1558,7 @@
             // 
             this.lbl_material_f.AutoSize = true;
             this.lbl_material_f.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_material_f.Location = new System.Drawing.Point(3, 380);
+            this.lbl_material_f.Location = new System.Drawing.Point(3, 615);
             this.lbl_material_f.Name = "lbl_material_f";
             this.lbl_material_f.Size = new System.Drawing.Size(77, 260);
             this.lbl_material_f.TabIndex = 5;
@@ -1559,9 +1570,9 @@
             this.ch_listbox_material.CheckOnClick = true;
             this.ch_listbox_material.Dock = System.Windows.Forms.DockStyle.Top;
             this.ch_listbox_material.FormattingEnabled = true;
-            this.ch_listbox_material.Location = new System.Drawing.Point(86, 383);
+            this.ch_listbox_material.Location = new System.Drawing.Point(86, 618);
             this.ch_listbox_material.Name = "ch_listbox_material";
-            this.ch_listbox_material.Size = new System.Drawing.Size(224, 254);
+            this.ch_listbox_material.Size = new System.Drawing.Size(226, 254);
             this.ch_listbox_material.TabIndex = 2;
             this.ch_listbox_material.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.Ch_listbox_material_ItemCheck);
             // 
@@ -1583,13 +1594,13 @@
             this.ch_listbox_state_f.FormattingEnabled = true;
             this.ch_listbox_state_f.Location = new System.Drawing.Point(86, 248);
             this.ch_listbox_state_f.Name = "ch_listbox_state_f";
-            this.ch_listbox_state_f.Size = new System.Drawing.Size(224, 129);
+            this.ch_listbox_state_f.Size = new System.Drawing.Size(226, 129);
             this.ch_listbox_state_f.TabIndex = 8;
             this.ch_listbox_state_f.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.Ch_listbox_state_f_ItemCheck);
             // 
             // btn_cl_type
             // 
-            this.btn_cl_type.Location = new System.Drawing.Point(316, 3);
+            this.btn_cl_type.Location = new System.Drawing.Point(318, 3);
             this.btn_cl_type.Name = "btn_cl_type";
             this.btn_cl_type.Size = new System.Drawing.Size(87, 30);
             this.btn_cl_type.TabIndex = 9;
@@ -1599,7 +1610,7 @@
             // 
             // btn_sel_type
             // 
-            this.btn_sel_type.Location = new System.Drawing.Point(409, 3);
+            this.btn_sel_type.Location = new System.Drawing.Point(411, 3);
             this.btn_sel_type.Name = "btn_sel_type";
             this.btn_sel_type.Size = new System.Drawing.Size(90, 30);
             this.btn_sel_type.TabIndex = 10;
@@ -1609,7 +1620,7 @@
             // 
             // btn_cl_proj
             // 
-            this.btn_cl_proj.Location = new System.Drawing.Point(316, 88);
+            this.btn_cl_proj.Location = new System.Drawing.Point(318, 88);
             this.btn_cl_proj.Name = "btn_cl_proj";
             this.btn_cl_proj.Size = new System.Drawing.Size(87, 30);
             this.btn_cl_proj.TabIndex = 11;
@@ -1619,7 +1630,7 @@
             // 
             // btn_sel_proj
             // 
-            this.btn_sel_proj.Location = new System.Drawing.Point(409, 88);
+            this.btn_sel_proj.Location = new System.Drawing.Point(411, 88);
             this.btn_sel_proj.Name = "btn_sel_proj";
             this.btn_sel_proj.Size = new System.Drawing.Size(90, 30);
             this.btn_sel_proj.TabIndex = 12;
@@ -1629,7 +1640,7 @@
             // 
             // btn_cl_state
             // 
-            this.btn_cl_state.Location = new System.Drawing.Point(316, 248);
+            this.btn_cl_state.Location = new System.Drawing.Point(318, 248);
             this.btn_cl_state.Name = "btn_cl_state";
             this.btn_cl_state.Size = new System.Drawing.Size(87, 30);
             this.btn_cl_state.TabIndex = 13;
@@ -1639,7 +1650,7 @@
             // 
             // btn_sel_state
             // 
-            this.btn_sel_state.Location = new System.Drawing.Point(409, 248);
+            this.btn_sel_state.Location = new System.Drawing.Point(411, 248);
             this.btn_sel_state.Name = "btn_sel_state";
             this.btn_sel_state.Size = new System.Drawing.Size(90, 30);
             this.btn_sel_state.TabIndex = 14;
@@ -1649,7 +1660,7 @@
             // 
             // btn_cl_mat
             // 
-            this.btn_cl_mat.Location = new System.Drawing.Point(316, 383);
+            this.btn_cl_mat.Location = new System.Drawing.Point(318, 618);
             this.btn_cl_mat.Name = "btn_cl_mat";
             this.btn_cl_mat.Size = new System.Drawing.Size(87, 30);
             this.btn_cl_mat.TabIndex = 15;
@@ -1659,7 +1670,7 @@
             // 
             // btn_sel_mat
             // 
-            this.btn_sel_mat.Location = new System.Drawing.Point(409, 383);
+            this.btn_sel_mat.Location = new System.Drawing.Point(411, 618);
             this.btn_sel_mat.Name = "btn_sel_mat";
             this.btn_sel_mat.Size = new System.Drawing.Size(90, 30);
             this.btn_sel_mat.TabIndex = 16;
@@ -1671,7 +1682,7 @@
             // 
             this.lbl_time_start.AutoSize = true;
             this.lbl_time_start.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_time_start.Location = new System.Drawing.Point(3, 640);
+            this.lbl_time_start.Location = new System.Drawing.Point(3, 875);
             this.lbl_time_start.Name = "lbl_time_start";
             this.lbl_time_start.Size = new System.Drawing.Size(77, 36);
             this.lbl_time_start.TabIndex = 17;
@@ -1681,16 +1692,16 @@
             // dateTimePicker_start
             // 
             this.dateTimePicker_start.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dateTimePicker_start.Location = new System.Drawing.Point(86, 643);
+            this.dateTimePicker_start.Location = new System.Drawing.Point(86, 878);
             this.dateTimePicker_start.Name = "dateTimePicker_start";
-            this.dateTimePicker_start.Size = new System.Drawing.Size(224, 30);
+            this.dateTimePicker_start.Size = new System.Drawing.Size(226, 30);
             this.dateTimePicker_start.TabIndex = 18;
             // 
             // lbl_time_end
             // 
             this.lbl_time_end.AutoSize = true;
             this.lbl_time_end.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_time_end.Location = new System.Drawing.Point(3, 676);
+            this.lbl_time_end.Location = new System.Drawing.Point(3, 911);
             this.lbl_time_end.Name = "lbl_time_end";
             this.lbl_time_end.Size = new System.Drawing.Size(77, 36);
             this.lbl_time_end.TabIndex = 19;
@@ -1700,10 +1711,75 @@
             // dateTimePicker_end
             // 
             this.dateTimePicker_end.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dateTimePicker_end.Location = new System.Drawing.Point(86, 679);
+            this.dateTimePicker_end.Location = new System.Drawing.Point(86, 914);
             this.dateTimePicker_end.Name = "dateTimePicker_end";
-            this.dateTimePicker_end.Size = new System.Drawing.Size(224, 30);
+            this.dateTimePicker_end.Size = new System.Drawing.Size(226, 30);
             this.dateTimePicker_end.TabIndex = 20;
+            // 
+            // btn_test_telegrambot
+            // 
+            this.btn_test_telegrambot.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_test_telegrambot.Location = new System.Drawing.Point(411, 878);
+            this.btn_test_telegrambot.Name = "btn_test_telegrambot";
+            this.btn_test_telegrambot.Size = new System.Drawing.Size(90, 30);
+            this.btn_test_telegrambot.TabIndex = 21;
+            this.btn_test_telegrambot.Text = "Test bot";
+            this.btn_test_telegrambot.UseVisualStyleBackColor = true;
+            this.btn_test_telegrambot.Click += new System.EventHandler(this.btn_test_telegrambot_Click);
+            // 
+            // btn_test
+            // 
+            this.btn_test.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_test.Location = new System.Drawing.Point(411, 914);
+            this.btn_test.Name = "btn_test";
+            this.btn_test.Size = new System.Drawing.Size(90, 30);
+            this.btn_test.TabIndex = 22;
+            this.btn_test.Text = "Test but";
+            this.btn_test.UseVisualStyleBackColor = true;
+            this.btn_test.Click += new System.EventHandler(this.btn_test_Click);
+            // 
+            // lbl_storage_filt
+            // 
+            this.lbl_storage_filt.AutoSize = true;
+            this.lbl_storage_filt.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_storage_filt.Location = new System.Drawing.Point(3, 380);
+            this.lbl_storage_filt.Name = "lbl_storage_filt";
+            this.lbl_storage_filt.Size = new System.Drawing.Size(77, 235);
+            this.lbl_storage_filt.TabIndex = 23;
+            this.lbl_storage_filt.Text = "Storage";
+            // 
+            // ch_listbox_storage_f
+            // 
+            this.ch_listbox_storage_f.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.ch_listbox_storage_f.CheckOnClick = true;
+            this.ch_listbox_storage_f.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ch_listbox_storage_f.FormattingEnabled = true;
+            this.ch_listbox_storage_f.Location = new System.Drawing.Point(86, 383);
+            this.ch_listbox_storage_f.Name = "ch_listbox_storage_f";
+            this.ch_listbox_storage_f.Size = new System.Drawing.Size(226, 229);
+            this.ch_listbox_storage_f.TabIndex = 24;
+            this.ch_listbox_storage_f.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ch_listbox_storage_f_ItemCheck);
+            // 
+            // btn_clr_storage
+            // 
+            this.btn_clr_storage.Location = new System.Drawing.Point(318, 383);
+            this.btn_clr_storage.Name = "btn_clr_storage";
+            this.btn_clr_storage.Size = new System.Drawing.Size(87, 30);
+            this.btn_clr_storage.TabIndex = 25;
+            this.btn_clr_storage.Text = "Clear All";
+            this.btn_clr_storage.UseVisualStyleBackColor = true;
+            this.btn_clr_storage.Click += new System.EventHandler(this.btn_clr_storage_Click);
+            // 
+            // btn_sel_storage
+            // 
+            this.btn_sel_storage.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_sel_storage.Location = new System.Drawing.Point(411, 383);
+            this.btn_sel_storage.Name = "btn_sel_storage";
+            this.btn_sel_storage.Size = new System.Drawing.Size(90, 30);
+            this.btn_sel_storage.TabIndex = 26;
+            this.btn_sel_storage.Text = "Select All";
+            this.btn_sel_storage.UseVisualStyleBackColor = true;
+            this.btn_sel_storage.Click += new System.EventHandler(this.btn_sel_storage_Click);
             // 
             // open_dial_im_before
             // 
@@ -1724,8 +1800,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabcontrol_add_inf);
-            this.splitContainer1.Size = new System.Drawing.Size(1824, 812);
-            this.splitContainer1.SplitterDistance = 1310;
+            this.splitContainer1.Size = new System.Drawing.Size(1829, 1037);
+            this.splitContainer1.SplitterDistance = 1313;
             this.splitContainer1.TabIndex = 6;
             // 
             // tableLayout_datagrid
@@ -1753,7 +1829,7 @@
             this.tableLayout_datagrid.RowCount = 2;
             this.tableLayout_datagrid.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayout_datagrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayout_datagrid.Size = new System.Drawing.Size(1310, 812);
+            this.tableLayout_datagrid.Size = new System.Drawing.Size(1313, 1037);
             this.tableLayout_datagrid.TabIndex = 8;
             // 
             // lbl_sort
@@ -1791,7 +1867,7 @@
             this.dataGrid_specimens.ReadOnly = true;
             this.dataGrid_specimens.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGrid_specimens.ShowCellToolTips = false;
-            this.dataGrid_specimens.Size = new System.Drawing.Size(1304, 764);
+            this.dataGrid_specimens.Size = new System.Drawing.Size(1307, 989);
             this.dataGrid_specimens.TabIndex = 2;
             this.dataGrid_specimens.CurrentCellChanged += new System.EventHandler(this.DataGrid_specimens_CurrentCellChanged);
             this.dataGrid_specimens.SelectionChanged += new System.EventHandler(this.DataGrid_specimens_SelectionChanged);
@@ -1958,7 +2034,7 @@
             this.propertiesToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1824, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1829, 24);
             this.menuStrip1.TabIndex = 7;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -1988,23 +2064,12 @@
             this.timer_for_refresh.Interval = 300000;
             this.timer_for_refresh.Tick += new System.EventHandler(this.Timer_for_refresh_Tick);
             // 
-            // btn_test_telegrambot
-            // 
-            this.btn_test_telegrambot.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_test_telegrambot.Location = new System.Drawing.Point(409, 643);
-            this.btn_test_telegrambot.Name = "btn_test_telegrambot";
-            this.btn_test_telegrambot.Size = new System.Drawing.Size(90, 30);
-            this.btn_test_telegrambot.TabIndex = 21;
-            this.btn_test_telegrambot.Text = "Test bot";
-            this.btn_test_telegrambot.UseVisualStyleBackColor = true;
-            this.btn_test_telegrambot.Click += new System.EventHandler(this.btn_test_telegrambot_Click);
-            // 
             // Form_specimens
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1824, 836);
+            this.ClientSize = new System.Drawing.Size(1829, 1061);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Cambria", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -2218,5 +2283,10 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker_end;
         private System.Windows.Forms.Button btn_ch_treatment;
         private System.Windows.Forms.Button btn_test_telegrambot;
+        private System.Windows.Forms.Button btn_test;
+        private System.Windows.Forms.Label lbl_storage_filt;
+        private System.Windows.Forms.CheckedListBox ch_listbox_storage_f;
+        private System.Windows.Forms.Button btn_clr_storage;
+        private System.Windows.Forms.Button btn_sel_storage;
     }
 }

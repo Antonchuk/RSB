@@ -75,7 +75,7 @@
       <Value Profile="(Default)">50</Value>
     </Setting>
     <Setting Name="res_laser_power" Type="System.Decimal" Scope="User">
-      <Value Profile="(Default)">1.4</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="trans_specim" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -100,6 +100,12 @@
     </Setting>
     <Setting Name="old_treatment" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ini_split_add_new" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="ini_split_inf" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

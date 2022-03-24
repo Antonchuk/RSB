@@ -568,9 +568,9 @@
             // 
             this.tab_support.BackColor = System.Drawing.Color.PaleGreen;
             this.tab_support.Controls.Add(this.tableLayout_support);
-            this.tab_support.Location = new System.Drawing.Point(4, 31);
+            this.tab_support.Location = new System.Drawing.Point(4, 22);
             this.tab_support.Name = "tab_support";
-            this.tab_support.Size = new System.Drawing.Size(573, 542);
+            this.tab_support.Size = new System.Drawing.Size(573, 551);
             this.tab_support.TabIndex = 3;
             this.tab_support.Text = "Support";
             // 
@@ -603,7 +603,7 @@
             this.tableLayout_support.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayout_support.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayout_support.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayout_support.Size = new System.Drawing.Size(573, 542);
+            this.tableLayout_support.Size = new System.Drawing.Size(573, 551);
             this.tableLayout_support.TabIndex = 0;
             // 
             // dateTimePicker1
@@ -719,9 +719,9 @@
             // 
             this.tab_inf.BackColor = System.Drawing.Color.PaleGreen;
             this.tab_inf.Controls.Add(this.tableLayout_inform);
-            this.tab_inf.Location = new System.Drawing.Point(4, 22);
+            this.tab_inf.Location = new System.Drawing.Point(4, 31);
             this.tab_inf.Name = "tab_inf";
-            this.tab_inf.Size = new System.Drawing.Size(573, 551);
+            this.tab_inf.Size = new System.Drawing.Size(573, 542);
             this.tab_inf.TabIndex = 2;
             this.tab_inf.Text = "Information";
             // 
@@ -749,7 +749,7 @@
             this.tableLayout_inform.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayout_inform.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayout_inform.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayout_inform.Size = new System.Drawing.Size(573, 551);
+            this.tableLayout_inform.Size = new System.Drawing.Size(573, 542);
             this.tableLayout_inform.TabIndex = 0;
             // 
             // lbl_comments
@@ -839,7 +839,7 @@
             this.lbl_tech_inf.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbl_tech_inf.Location = new System.Drawing.Point(3, 130);
             this.lbl_tech_inf.Name = "lbl_tech_inf";
-            this.lbl_tech_inf.Size = new System.Drawing.Size(132, 421);
+            this.lbl_tech_inf.Size = new System.Drawing.Size(132, 412);
             this.lbl_tech_inf.TabIndex = 8;
             this.lbl_tech_inf.Text = "Technical inf";
             this.lbl_tech_inf.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -850,7 +850,7 @@
             this.rich_txtbox_tech_inf.Location = new System.Drawing.Point(141, 133);
             this.rich_txtbox_tech_inf.Name = "rich_txtbox_tech_inf";
             this.rich_txtbox_tech_inf.ReadOnly = true;
-            this.rich_txtbox_tech_inf.Size = new System.Drawing.Size(429, 415);
+            this.rich_txtbox_tech_inf.Size = new System.Drawing.Size(429, 406);
             this.rich_txtbox_tech_inf.TabIndex = 9;
             this.rich_txtbox_tech_inf.Text = "";
             // 

@@ -23,7 +23,6 @@ C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\S
 C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\System.Memory.xml
 C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\System.Numerics.Vectors.xml
 C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\System.Runtime.CompilerServices.Unsafe.xml
-C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\obj\x64\Release\RSB.csprojAssemblyReference.cache
 C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\obj\x64\Release\RSB.Materials_new.resources
 C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\obj\x64\Release\RSB.New_producer_add.resources
 C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\obj\x64\Release\RSB.Researches.resources
@@ -44,3 +43,15 @@ C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\T
 C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\Newtonsoft.Json.xml
 C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\Telegram.Bot.xml
 C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\MihaZupan.HttpToSocks5Proxy.dll
+C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\K4os.Compression.LZ4.dll
+C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\K4os.Compression.LZ4.Streams.dll
+C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\K4os.Hash.xxHash.dll
+C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\Ubiety.Dns.Core.dll
+C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\Zstandard.Net.dll
+C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\BouncyCastle.Crypto.xml
+C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\K4os.Compression.LZ4.xml
+C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\K4os.Compression.LZ4.Streams.xml
+C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\K4os.Hash.xxHash.xml
+C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\MailKit.pdb
+C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\bin\x64\Release\MimeKit.pdb
+C:\Users\antch\YandexDisk\Работа\VS projects\RSB\RSB\RSB\obj\x64\Release\RSB.csproj.AssemblyReference.cache

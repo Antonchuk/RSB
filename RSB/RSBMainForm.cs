@@ -11,6 +11,7 @@ using MySql.Data.MySqlClient;
 using System.Diagnostics;
 using System.Net.Mail;
 using System.Net;
+using System.IO;
 
 namespace RSB
 {
@@ -61,6 +62,17 @@ namespace RSB
             //ЗАГЛУШКА
             txtbox_pass.Text = Properties.Settings.Default.default_pass;
             cbox_username.Text = Properties.Settings.Default.default_username;
+
+            //проверяем создана ли директори для записи настроек
+            string json_path = Directory.GetCurrentDirectory();
+            DirectoryInfo dirInfo = new DirectoryInfo(json_path + @"\Settings");
+            //если не создана - создаем
+            if (!dirInfo.Exists)
+            {
+                dirInfo.Create();
+                MessageBox.Show("создали");
+            }
+
             //конект к базе 
             //запрос пользователей SELECT User FROM mys ql.user;
             //добавление в комбобокс
@@ -267,12 +279,22 @@ namespace RSB
         {
             //проверить не запущено ли приложение
             Process procc = Process.GetCurrentProcess();
-            //MessageBox.Show("Procc name ="+procc.ProcessName.ToString());
-            //MessageBox.Show("proc count ="+Process.GetProcessesByName(procc.ProcessName.ToString()).Count().ToString());
-            if (Process.GetProcessesByName(procc.ProcessName.ToString()).Count()>1)
+            if (Process.GetProcessesByName(procc.ProcessName.ToString()).Count() > 1)
             {
                 MessageBox.Show("Copies of program not allowed!");
                 Close();
+            }
+            else
+            {
+                //проверяем создана ли директори для записи настроек
+                string json_path = Directory.GetCurrentDirectory();
+                DirectoryInfo dirInfo = new DirectoryInfo(json_path+ @"Settings");
+                //если не создана - создаем
+                if (!dirInfo.Exists)
+                {
+                    dirInfo.Create();
+                    MessageBox.Show("создали");
+                }                
             }
         }
         public void Show_researches_from(int id_research)
@@ -306,8 +328,13 @@ namespace RSB
 
         private void btn_reports_Click(object sender, EventArgs e)
         {
-
+            //показать форму Проектов
             
+        }
+
+        private void howToBaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("chrome", @"https://apt-develop.atlassian.net/wiki/spaces/AT/pages/425992/RSB");
         }
     }
 }

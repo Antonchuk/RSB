@@ -46,6 +46,8 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.howToBaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbl_status = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -209,7 +211,7 @@
             this.btn_reports.Name = "btn_reports";
             this.btn_reports.Size = new System.Drawing.Size(190, 70);
             this.btn_reports.TabIndex = 2;
-            this.btn_reports.Text = "Reports";
+            this.btn_reports.Text = "Projects";
             this.btn_reports.UseVisualStyleBackColor = false;
             this.btn_reports.Click += new System.EventHandler(this.btn_reports_Click);
             // 
@@ -217,7 +219,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.connectionToolStripMenuItem});
+            this.connectionToolStripMenuItem,
+            this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(988, 24);
@@ -235,7 +238,7 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
@@ -253,6 +256,21 @@
             this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
             this.propertiesToolStripMenuItem.Text = "Properties";
             this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.PropertiesToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.howToBaseToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // howToBaseToolStripMenuItem
+            // 
+            this.howToBaseToolStripMenuItem.Name = "howToBaseToolStripMenuItem";
+            this.howToBaseToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.howToBaseToolStripMenuItem.Text = "HowTo base";
+            this.howToBaseToolStripMenuItem.Click += new System.EventHandler(this.howToBaseToolStripMenuItem_Click);
             // 
             // lbl_status
             // 
@@ -313,6 +331,8 @@
         public System.Windows.Forms.ComboBox cbox_username;
         private System.Windows.Forms.Label lbl_status;
         private System.Windows.Forms.Button btn_connect;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem howToBaseToolStripMenuItem;
     }
 }
 

@@ -77,14 +77,15 @@
             this.tab_page_research = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_from = new System.Windows.Forms.Label();
-            this.lbl_to = new System.Windows.Forms.Label();
-            this.combox_move_to = new System.Windows.Forms.ComboBox();
-            this.combox_move_pos = new System.Windows.Forms.ComboBox();
             this.txtbox_move_from = new System.Windows.Forms.TextBox();
             this.lbl_priority = new System.Windows.Forms.Label();
             this.combox_change_priority = new System.Windows.Forms.ComboBox();
             this.btn_priority_ch = new System.Windows.Forms.Button();
             this.btn_move_new_stor = new System.Windows.Forms.Button();
+            this.combox_move_pos = new System.Windows.Forms.ComboBox();
+            this.combox_move_to = new System.Windows.Forms.ComboBox();
+            this.lbl_to = new System.Windows.Forms.Label();
+            this.txtbox_move_from_pos = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -209,6 +210,7 @@
             this.fontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer_for_refresh = new System.Windows.Forms.Timer(this.components);
             this.folderBrowserDialog_for_json = new System.Windows.Forms.FolderBrowserDialog();
+            this.btn_ch_comments = new System.Windows.Forms.Button();
             this.tabcontrol_add_inf.SuspendLayout();
             this.tab_page_info.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.split_inf)).BeginInit();
@@ -332,6 +334,7 @@
             this.tableLayoutPanel3.Controls.Add(this.btn_ch_targer_setups, 2, 13);
             this.tableLayoutPanel3.Controls.Add(this.rich_txtbox_comments_info, 1, 12);
             this.tableLayoutPanel3.Controls.Add(this.label3, 0, 13);
+            this.tableLayoutPanel3.Controls.Add(this.btn_ch_comments, 2, 12);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -580,7 +583,6 @@
             // combox_position
             // 
             this.combox_position.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.combox_position.Enabled = false;
             this.combox_position.FormattingEnabled = true;
             this.combox_position.Location = new System.Drawing.Point(423, 255);
             this.combox_position.Name = "combox_position";
@@ -809,14 +811,15 @@
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel6.Controls.Add(this.lbl_from, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.lbl_to, 1, 0);
-            this.tableLayoutPanel6.Controls.Add(this.combox_move_to, 1, 1);
-            this.tableLayoutPanel6.Controls.Add(this.combox_move_pos, 2, 1);
             this.tableLayoutPanel6.Controls.Add(this.txtbox_move_from, 0, 1);
             this.tableLayoutPanel6.Controls.Add(this.lbl_priority, 0, 3);
             this.tableLayoutPanel6.Controls.Add(this.combox_change_priority, 1, 3);
             this.tableLayoutPanel6.Controls.Add(this.btn_priority_ch, 2, 3);
             this.tableLayoutPanel6.Controls.Add(this.btn_move_new_stor, 2, 2);
+            this.tableLayoutPanel6.Controls.Add(this.combox_move_pos, 3, 1);
+            this.tableLayoutPanel6.Controls.Add(this.combox_move_to, 2, 1);
+            this.tableLayoutPanel6.Controls.Add(this.lbl_to, 2, 0);
+            this.tableLayoutPanel6.Controls.Add(this.txtbox_move_from_pos, 1, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 590);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
@@ -838,36 +841,6 @@
             this.lbl_from.Size = new System.Drawing.Size(140, 22);
             this.lbl_from.TabIndex = 0;
             this.lbl_from.Text = "Move from:";
-            // 
-            // lbl_to
-            // 
-            this.lbl_to.AutoSize = true;
-            this.lbl_to.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_to.Location = new System.Drawing.Point(149, 0);
-            this.lbl_to.Name = "lbl_to";
-            this.lbl_to.Size = new System.Drawing.Size(150, 22);
-            this.lbl_to.TabIndex = 1;
-            this.lbl_to.Text = "to:";
-            // 
-            // combox_move_to
-            // 
-            this.combox_move_to.Dock = System.Windows.Forms.DockStyle.Top;
-            this.combox_move_to.FormattingEnabled = true;
-            this.combox_move_to.Location = new System.Drawing.Point(149, 25);
-            this.combox_move_to.Name = "combox_move_to";
-            this.combox_move_to.Size = new System.Drawing.Size(150, 30);
-            this.combox_move_to.TabIndex = 3;
-            this.combox_move_to.SelectedIndexChanged += new System.EventHandler(this.Combox_move_to_SelectedIndexChanged);
-            this.combox_move_to.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Combox_move_to_KeyUp);
-            // 
-            // combox_move_pos
-            // 
-            this.combox_move_pos.FormattingEnabled = true;
-            this.combox_move_pos.Location = new System.Drawing.Point(305, 25);
-            this.combox_move_pos.Name = "combox_move_pos";
-            this.combox_move_pos.Size = new System.Drawing.Size(73, 30);
-            this.combox_move_pos.TabIndex = 4;
-            this.combox_move_pos.SelectedIndexChanged += new System.EventHandler(this.Combox_move_pos_SelectedIndexChanged);
             // 
             // txtbox_move_from
             // 
@@ -921,6 +894,45 @@
             this.btn_move_new_stor.Text = "Change storage place";
             this.btn_move_new_stor.UseVisualStyleBackColor = true;
             this.btn_move_new_stor.Click += new System.EventHandler(this.Btn_move_new_stor_Click);
+            // 
+            // combox_move_pos
+            // 
+            this.combox_move_pos.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.combox_move_pos.FormattingEnabled = true;
+            this.combox_move_pos.Location = new System.Drawing.Point(461, 25);
+            this.combox_move_pos.Name = "combox_move_pos";
+            this.combox_move_pos.Size = new System.Drawing.Size(100, 30);
+            this.combox_move_pos.TabIndex = 4;
+            this.combox_move_pos.SelectedIndexChanged += new System.EventHandler(this.Combox_move_pos_SelectedIndexChanged);
+            // 
+            // combox_move_to
+            // 
+            this.combox_move_to.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.combox_move_to.FormattingEnabled = true;
+            this.combox_move_to.Location = new System.Drawing.Point(305, 25);
+            this.combox_move_to.Name = "combox_move_to";
+            this.combox_move_to.Size = new System.Drawing.Size(150, 30);
+            this.combox_move_to.TabIndex = 3;
+            this.combox_move_to.SelectedIndexChanged += new System.EventHandler(this.Combox_move_to_SelectedIndexChanged);
+            this.combox_move_to.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Combox_move_to_KeyUp);
+            // 
+            // lbl_to
+            // 
+            this.lbl_to.AutoSize = true;
+            this.lbl_to.Location = new System.Drawing.Point(305, 0);
+            this.lbl_to.Name = "lbl_to";
+            this.lbl_to.Size = new System.Drawing.Size(31, 22);
+            this.lbl_to.TabIndex = 1;
+            this.lbl_to.Text = "to:";
+            // 
+            // txtbox_move_from_pos
+            // 
+            this.txtbox_move_from_pos.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtbox_move_from_pos.Location = new System.Drawing.Point(149, 25);
+            this.txtbox_move_from_pos.Name = "txtbox_move_from_pos";
+            this.txtbox_move_from_pos.ReadOnly = true;
+            this.txtbox_move_from_pos.Size = new System.Drawing.Size(150, 30);
+            this.txtbox_move_from_pos.TabIndex = 19;
             // 
             // tableLayoutPanel5
             // 
@@ -1530,9 +1542,9 @@
             // 
             this.tabPage_sql_special.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.tabPage_sql_special.Controls.Add(this.flowLayoutPanel_sql);
-            this.tabPage_sql_special.Location = new System.Drawing.Point(4, 31);
+            this.tabPage_sql_special.Location = new System.Drawing.Point(4, 22);
             this.tabPage_sql_special.Name = "tabPage_sql_special";
-            this.tabPage_sql_special.Size = new System.Drawing.Size(564, 1002);
+            this.tabPage_sql_special.Size = new System.Drawing.Size(564, 1011);
             this.tabPage_sql_special.TabIndex = 4;
             this.tabPage_sql_special.Text = "Sp. filters";
             // 
@@ -1542,7 +1554,7 @@
             this.flowLayoutPanel_sql.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel_sql.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel_sql.Name = "flowLayoutPanel_sql";
-            this.flowLayoutPanel_sql.Size = new System.Drawing.Size(564, 1002);
+            this.flowLayoutPanel_sql.Size = new System.Drawing.Size(564, 1011);
             this.flowLayoutPanel_sql.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -1688,7 +1700,7 @@
             // 
             this.splitContainer_add_new.Panel2.Controls.Add(this.tableLayoutPanel1);
             this.splitContainer_add_new.Size = new System.Drawing.Size(558, 1005);
-            this.splitContainer_add_new.SplitterDistance = 504;
+            this.splitContainer_add_new.SplitterDistance = 503;
             this.splitContainer_add_new.TabIndex = 3;
             // 
             // tbllay_add_edit
@@ -1740,7 +1752,7 @@
             this.tbllay_add_edit.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tbllay_add_edit.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tbllay_add_edit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tbllay_add_edit.Size = new System.Drawing.Size(558, 504);
+            this.tbllay_add_edit.Size = new System.Drawing.Size(558, 503);
             this.tbllay_add_edit.TabIndex = 0;
             // 
             // date_time_add_edit
@@ -1997,7 +2009,7 @@
             this.btn_aproove.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btn_aproove.Location = new System.Drawing.Point(3, 463);
             this.btn_aproove.Name = "btn_aproove";
-            this.btn_aproove.Size = new System.Drawing.Size(118, 38);
+            this.btn_aproove.Size = new System.Drawing.Size(118, 37);
             this.btn_aproove.TabIndex = 23;
             this.btn_aproove.Text = "Aproove";
             this.btn_aproove.UseVisualStyleBackColor = true;
@@ -2005,9 +2017,10 @@
             // 
             // btn_default_save
             // 
+            this.btn_default_save.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btn_default_save.Location = new System.Drawing.Point(127, 463);
             this.btn_default_save.Name = "btn_default_save";
-            this.btn_default_save.Size = new System.Drawing.Size(142, 34);
+            this.btn_default_save.Size = new System.Drawing.Size(142, 37);
             this.btn_default_save.TabIndex = 24;
             this.btn_default_save.Text = "Save default";
             this.btn_default_save.UseVisualStyleBackColor = true;
@@ -2015,9 +2028,10 @@
             // 
             // btn_foto_clr
             // 
+            this.btn_foto_clr.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btn_foto_clr.Location = new System.Drawing.Point(420, 463);
             this.btn_foto_clr.Name = "btn_foto_clr";
-            this.btn_foto_clr.Size = new System.Drawing.Size(135, 34);
+            this.btn_foto_clr.Size = new System.Drawing.Size(135, 37);
             this.btn_foto_clr.TabIndex = 25;
             this.btn_foto_clr.Text = "Clear foto";
             this.btn_foto_clr.UseVisualStyleBackColor = true;
@@ -2039,7 +2053,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(558, 497);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(558, 498);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // picbox_before_big
@@ -2050,7 +2064,7 @@
             this.picbox_before_big.Location = new System.Drawing.Point(3, 3);
             this.picbox_before_big.Name = "picbox_before_big";
             this.tableLayoutPanel1.SetRowSpan(this.picbox_before_big, 3);
-            this.picbox_before_big.Size = new System.Drawing.Size(293, 491);
+            this.picbox_before_big.Size = new System.Drawing.Size(293, 492);
             this.picbox_before_big.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbox_before_big.TabIndex = 2;
             this.picbox_before_big.TabStop = false;
@@ -2062,7 +2076,7 @@
             this.picbox_before_sm1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.picbox_before_sm1.Location = new System.Drawing.Point(302, 3);
             this.picbox_before_sm1.Name = "picbox_before_sm1";
-            this.picbox_before_sm1.Size = new System.Drawing.Size(253, 159);
+            this.picbox_before_sm1.Size = new System.Drawing.Size(253, 160);
             this.picbox_before_sm1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbox_before_sm1.TabIndex = 3;
             this.picbox_before_sm1.TabStop = false;
@@ -2071,9 +2085,9 @@
             // 
             this.picbox_before_sm2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.picbox_before_sm2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_before_sm2.Location = new System.Drawing.Point(302, 168);
+            this.picbox_before_sm2.Location = new System.Drawing.Point(302, 169);
             this.picbox_before_sm2.Name = "picbox_before_sm2";
-            this.picbox_before_sm2.Size = new System.Drawing.Size(253, 159);
+            this.picbox_before_sm2.Size = new System.Drawing.Size(253, 160);
             this.picbox_before_sm2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbox_before_sm2.TabIndex = 4;
             this.picbox_before_sm2.TabStop = false;
@@ -2082,9 +2096,9 @@
             // 
             this.picbox_before_sm3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.picbox_before_sm3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_before_sm3.Location = new System.Drawing.Point(302, 333);
+            this.picbox_before_sm3.Location = new System.Drawing.Point(302, 335);
             this.picbox_before_sm3.Name = "picbox_before_sm3";
-            this.picbox_before_sm3.Size = new System.Drawing.Size(253, 161);
+            this.picbox_before_sm3.Size = new System.Drawing.Size(253, 160);
             this.picbox_before_sm3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbox_before_sm3.TabIndex = 5;
             this.picbox_before_sm3.TabStop = false;
@@ -2378,6 +2392,17 @@
             this.timer_for_refresh.Interval = 300000;
             this.timer_for_refresh.Tick += new System.EventHandler(this.Timer_for_refresh_Tick);
             // 
+            // btn_ch_comments
+            // 
+            this.btn_ch_comments.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_ch_comments.Location = new System.Drawing.Point(423, 385);
+            this.btn_ch_comments.Name = "btn_ch_comments";
+            this.btn_ch_comments.Size = new System.Drawing.Size(150, 68);
+            this.btn_ch_comments.TabIndex = 31;
+            this.btn_ch_comments.Text = "Ch comments";
+            this.btn_ch_comments.UseVisualStyleBackColor = true;
+            this.btn_ch_comments.Click += new System.EventHandler(this.btn_ch_comments_Click);
+            // 
             // Form_specimens
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -2635,5 +2660,7 @@
         private System.Windows.Forms.Button btn_aproove;
         private System.Windows.Forms.Button btn_default_save;
         private System.Windows.Forms.Button btn_foto_clr;
+        private System.Windows.Forms.TextBox txtbox_move_from_pos;
+        private System.Windows.Forms.Button btn_ch_comments;
     }
 }

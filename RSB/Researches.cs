@@ -713,7 +713,7 @@ namespace RSB
                 Properties.Settings.Default.main_res_id = Convert.ToInt32(index);
                 Properties.Settings.Default.Save();
                 int id_res = Get_id_research("specimens", index);
-                Parent_form.Show_specimens_form(id_res);
+                Parent_form.Show_from(Convert.ToInt32(index), id_res, 0);
             }
         }
 

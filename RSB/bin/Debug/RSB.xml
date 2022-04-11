@@ -55,6 +55,19 @@
             the contents of this method with the code editor.
             </summary>
         </member>
+        <member name="M:RSB.RSBMainForm.Close_all">
+            <summary>
+            закрывает все формы
+            </summary>
+        </member>
+        <member name="M:RSB.RSBMainForm.Show_from(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            показывает форму или создает, если она не существовала, 0 - specimens, 1 - researches, 2 -projects
+            </summary>
+            <param name="id_research"></param>
+            <param name="id_spec"></param>
+            <param name="witch_frm"></param>
+        </member>
         <member name="F:RSB.RSBMainForm.components">
             <summary>
             Обязательная переменная конструктора.
@@ -88,6 +101,139 @@
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
             </summary>
+        </member>
+        <member name="M:RSB.Form_specimens.Fill_list_box(System.Int32,MySql.Data.MySqlClient.MySqlConnection,System.Windows.Forms.CheckedListBox)">
+            <summary>
+            Заполняем лист бокс галочками
+            </summary>
+        </member>
+        <member name="M:RSB.Form_specimens.Get_max_positions(MySql.Data.MySqlClient.MySqlConnection,System.String)">
+            <summary>
+            получаем максимальное значение позиций в хранилище
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RSB.Form_specimens.Get_ocupied_pos(MySql.Data.MySqlClient.MySqlConnection,System.String)">
+            <summary>
+            Получить занятые позиции
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RSB.Form_specimens.Get_stor_pos(System.Int32,System.Int32)">
+            <summary>
+            есть ли запись с по этому хранилищу и с этой позицией, возращается ИД записи или 0
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RSB.Form_specimens.Ch_or_create_stor_pos(System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            изменяет или создает запись с указанным ид образца, 
+            </summary>
+        </member>
+        <member name="M:RSB.Form_specimens.Simple_SQL_req(System.String)">
+            <summary>
+            простой апрос sql
+            </summary>
+            <param name="sql_req"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.Ch_list_ad_new(System.Windows.Forms.CheckedListBox,System.Int32)">
+            <summary>
+            добавляет  новые целевые установки в базу по чек-листбоксу
+            </summary>
+            <param name="l_box"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.button1_Click_4(System.Object,System.EventArgs)">
+            <summary>
+            изменение целевых установок
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.Setup_filter(System.Int32,System.Boolean)">
+            <summary>
+            Фильтруем табличку по образца для установки с ид
+            is_in - если true - внутри установок
+            false - очередь+ внутри установок
+            </summary>
+            <param name="id">1 - ПАЗЛ, 2 - ЛАЗТ, 3 - АТЛАЗ</param>
+            <param name="is_in"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.radioButton2_CheckedChanged(System.Object,System.EventArgs)">
+            <summary>
+            включено отображение очереди АТЛАЗ
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.radio_btn_none_CheckedChanged(System.Object,System.EventArgs)">
+            <summary>
+            ОТключено отображение очереди
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.radio_btn_LAZT_CheckedChanged(System.Object,System.EventArgs)">
+            <summary>
+            включено отображение очереди ЛАЗТ
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.radio_btn_APPLE_CheckedChanged(System.Object,System.EventArgs)">
+            <summary>
+            включено отображение очереди ПАЗЛ
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.radio_btn_inAPPLE_CheckedChanged(System.Object,System.EventArgs)">
+            <summary>
+            включено отображение внутри ПАЗЛ
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.radio_btn_inATLAS_CheckedChanged(System.Object,System.EventArgs)">
+            <summary>
+            включено отображение внутри АТЛАЗ
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.radio_btn_inLAZT_CheckedChanged(System.Object,System.EventArgs)">
+            <summary>
+            включено отображение внутри ЛАЗТ
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.btn_aproove_Click(System.Object,System.EventArgs)">
+            <summary>
+            создаем новый образец
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.btn_default_save_Click(System.Object,System.EventArgs)">
+            <summary>
+            сохраняем дефолтные настройки
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.btn_foto_clr_Click(System.Object,System.EventArgs)">
+            <summary>
+            Очистка фото
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.btn_ch_comments_Click(System.Object,System.EventArgs)">
+            <summary>
+            Изменить комментарии
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
         </member>
         <member name="F:RSB.Form_specimens.components">
             <summary>

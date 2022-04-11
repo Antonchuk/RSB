@@ -29,6 +29,7 @@ namespace RSB
         private string[] info_files_paths_bef;
         private string[] info_files_paths_aft;
         private static bool specimen_new_accepted = true;
+        private int refresh_counter = 0;
         private static bool isrefreshing = true; // просто для исключения ненужных обновлений при нажатии кнопок Select All/Clear All
         //для картинки на кнопке
         private bool pic_change = true; //true - up, false - down
@@ -149,31 +150,19 @@ namespace RSB
         private void Refresh_datagrid()
         {
             int selected_id = Properties.Settings.Default.main_spec_id;
-            //MessageBox.Show("Число строк = " + dataGrid_specimens.Rows.Count.ToString());
             if ((!on_load) && dataGrid_specimens.Rows.Count>1 && dataGrid_specimens.CurrentRow!=null)
             {
-                //MessageBox.Show("Число строк = "+ dataGrid_specimens.Rows.Count.ToString());
                 if (dataGrid_specimens.CurrentRow.Cells[0].Value!=null)
                 {
-                    //MessageBox.Show("Был ИД= " + selected_id.ToString()+
-                        //"\n Стал ИД= "+ dataGrid_specimens.CurrentRow.Cells[0].Value.ToString());
                     selected_id = Convert.ToInt32(dataGrid_specimens.CurrentRow.Cells[0].Value);
                     Properties.Settings.Default.main_spec_id = selected_id;
                     Properties.Settings.Default.Save();
-                    //MessageBox.Show("сохранный номер строки в параметрах " + Properties.Settings.Default.main_spec_id.ToString());
-                    //MessageBox.Show(" " + selected_id.ToString());
-                    //MessageBox.Show("сохранный номер строки в параметрах " + Properties.Settings.Default.main_spec_id.ToString());
                 }
             }
             dataGrid_specimens.Rows.Clear();
             //удалить предыдущие
             conn_str = Get_conn_string(Properties.Settings.Default.server, Properties.Settings.Default.port,
                 Properties.Settings.Default.database, Parent_form.cbox_username.Text, Parent_form.txtbox_pass.Text);
-            //MessageBox.Show(conn_str);
-
-            //может быть удалено?
-            //
-
             using (MySqlConnection conn = New_connection(conn_str))
             {
                 try
@@ -227,15 +216,16 @@ namespace RSB
                         sql_filtres = filt_master.special_filter;
                     }
                     string sqlcom = "SELECT DISTINCT specimens.idspecimens, materials.name, type.name, projects.name, specimens.date_prep, producers.surname, storage.name, " +
-                        "state.name, specimens.stor_position, specimens.priority " +
+                        "state.name, storage_position.position, specimens.priority " +
                     "FROM test2base.specimens " +
                     "LEFT OUTER JOIN test2base.materials ON test2base.specimens.id_material = test2base.materials.id_material " +
                     "LEFT OUTER JOIN test2base.type ON specimens.id_treat_type = type.id_type " +
                     "LEFT OUTER JOIN test2base.projects ON specimens.id_project = projects.id_project " +
                     "LEFT OUTER JOIN test2base.producers ON specimens.id_producer = producers.id_producer " +
-                    "LEFT OUTER JOIN test2base.storage ON specimens.id_storage = storage.id_storage " +
+                    "LEFT OUTER JOIN test2base.storage_position ON specimens.idspecimens = storage_position.id_specimen " +
                     "LEFT OUTER JOIN test2base.state ON specimens.id_state = state.id_state "+
-                    "LEFT OUTER JOIN test2base.setup_specimen ON specimens.idspecimens = setup_specimen.id_specimen";
+                    "LEFT OUTER JOIN test2base.setup_specimen ON specimens.idspecimens = setup_specimen.id_specimen " +
+                    "LEFT OUTER JOIN test2base.storage ON storage_position.id_storage = storage.id_storage";
                     if (filt_master.is_special_filter == false)
                     {
                         sqlcom = sqlcom +
@@ -342,8 +332,6 @@ namespace RSB
         {
             try
             {
-                if (combo != "f_succ")
-                {
                     conect.Open();
                     string sqlcom = "SELECT " + colname + " FROM test2base." + table_name + " ORDER BY " + colname;
                     using (MySqlCommand comand = new MySqlCommand(sqlcom, conect))
@@ -360,6 +348,7 @@ namespace RSB
                                             combox_producer.Items.Add(reader[0].ToString());
                                             break;
                                         case "storage":
+
                                             combox_storage.Items.Add(reader[0].ToString());
                                             combox_move_to.Items.Add(reader[0].ToString());
                                             break;
@@ -410,7 +399,7 @@ namespace RSB
                         //проверить выполнен ли запрос
                         conect.Close();
                     }
-                }
+                
             }
             catch (Exception ex)
             {
@@ -729,7 +718,11 @@ namespace RSB
             if (dataGrid_specimens.Rows[index].Cells[4].Value != null) txtbox_date_inf.Text = dataGrid_specimens.Rows[index].Cells[4].Value.ToString();
             if (dataGrid_specimens.Rows[index].Cells[3].Value != null) txtbox_project_inf.Text = dataGrid_specimens.Rows[index].Cells[3].Value.ToString();
             if (dataGrid_specimens.Rows[index].Cells[7].Value != null) txtbox_state_inf.Text = dataGrid_specimens.Rows[index].Cells[7].Value.ToString();
-            if (dataGrid_specimens.Rows[index].Cells[6].Value != null) txtbox_storage_inf.Text = dataGrid_specimens.Rows[index].Cells[6].Value.ToString();
+            if (dataGrid_specimens.Rows[index].Cells[6].Value != null)
+            {
+                txtbox_storage_inf.Text = dataGrid_specimens.Rows[index].Cells[6].Value.ToString();
+                //txtbox_m
+            }
             if (dataGrid_specimens.Rows[index].Cells[6].Value != null)
             {
                 txtbox_move_from.Text = dataGrid_specimens.Rows[index].Cells[6].Value.ToString();
@@ -1176,37 +1169,34 @@ namespace RSB
                         }
                         
                         conn.Open();
-                        string sqlcom_3 = "INSERT INTO test2base.specimens (id_producer, id_state, date_prep, id_project, id_storage, id_treatment, " +
-                            "id_treat_type, id_respon, place_foto_bef, place_foto_after, id_material,stor_position,priority) VALUES (@id_producer,@id_state,@datetime,@id_project,@id_storage,@treatment," +
-                        "@id_treat_type,@id_respon,@foto_before,@foro_after,@id_material,@stor_position,@priority)";
+                        string sqlcom_3 = "INSERT INTO test2base.specimens (id_producer, id_state, date_prep, id_project, id_treatment, " +
+                            "id_treat_type, id_respon, place_foto_bef, place_foto_after, id_material, priority) VALUES (@id_producer,@id_state,@datetime,@id_project,@treatment," +
+                        "@id_treat_type,@id_respon,@foto_before,@foro_after,@id_material,@priority)";
                         using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conn))
                         {
                             comand.Parameters.AddWithValue("@id_producer", new_spec.producer);
                             comand.Parameters.AddWithValue("@id_state", new_spec.state);
                             comand.Parameters.AddWithValue("@datetime", new_spec.datetime);
                             comand.Parameters.AddWithValue("@id_project", new_spec.project);
-                            comand.Parameters.AddWithValue("@id_storage", new_spec.storage);
+                            //comand.Parameters.AddWithValue("@id_storage", new_spec.storage);
                             comand.Parameters.AddWithValue("@treatment", new_spec.treatment);
                             comand.Parameters.AddWithValue("@id_treat_type", new_spec.type);
                             comand.Parameters.AddWithValue("@foto_before", new_spec.foto_before);
                             comand.Parameters.AddWithValue("@foro_after", new_spec.foto_after);
                             comand.Parameters.AddWithValue("@id_material", new_spec.material);
                             comand.Parameters.AddWithValue("@id_respon", new_spec.resonse);
-                            comand.Parameters.AddWithValue("@stor_position", new_spec.stor_pos);
+                            //comand.Parameters.AddWithValue("@stor_position", new_spec.stor_pos);
                             comand.Parameters.AddWithValue("@priority", new_spec.priority);
                             //MessageBox.Show(comand.CommandText);
                             comand.ExecuteNonQuery();
                             //проверить выполнен ли запрос
                             conn.Close();
                         }
-                        //записать местоположение в новую базу данных
-
-
                         //получить новый ID                        
                         conn.Open();
                         //MessageBox.Show("Дата для сравнения"+new_spec.datetime);
                         sqlcom_3 = "SELECT idspecimens FROM test2base.specimens WHERE id_producer=@id_producer AND id_state=@id_state AND date_prep=@datetime AND " +
-                            "id_project=@id_project AND id_storage=@id_storage AND id_treatment=@id_treatment AND " +
+                            "id_project=@id_project AND id_treatment=@id_treatment AND " +
                             "id_treat_type=@id_treat_type AND id_respon=@id_respon AND id_material=@id_material";
                         using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conn))
                         {
@@ -1214,7 +1204,7 @@ namespace RSB
                             comand.Parameters.AddWithValue("@id_state", new_spec.state);
                             comand.Parameters.AddWithValue("@datetime", new_spec.datetime);
                             comand.Parameters.AddWithValue("@id_project", new_spec.project);
-                            comand.Parameters.AddWithValue("@id_storage", new_spec.storage);
+                            //comand.Parameters.AddWithValue("@id_storage", new_spec.storage);
                             comand.Parameters.AddWithValue("@id_treatment", new_spec.treatment);
                             comand.Parameters.AddWithValue("@id_treat_type", new_spec.type);
                             comand.Parameters.AddWithValue("@id_material", new_spec.material);
@@ -1236,8 +1226,12 @@ namespace RSB
                         }
                         //MessageBox.Show("найденный индекс ="+indexx.ToString());
                         conn.Close();
-
-                        //MessageBox.Show("Проверка на ошибку, это до копирования фото");
+                        if (id_new != -1)
+                        {
+                            //записать местоположение в новую базу данных
+                            Simple_SQL_req("INSERT INTO test2base.storage_position (id_storage, position, id_specimen) " +
+                                "VALUES (" + new_spec.storage + ", " + new_spec.stor_pos + ", " + id_new.ToString() + ");");
+                        }
 
                         new_spec.foto_before = Copy_fotos(new_spec.foto_before, dir_foto_new, 1,id_new);
 
@@ -1309,7 +1303,11 @@ namespace RSB
                     {
                         //MessageBox.Show(image_path);
                         string ext_name = Path.GetExtension(image_path);
-                        if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff" || ext_name == ".JPG")
+                        if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff" 
+                            || ext_name == ".JPG"
+                            || ext_name == ".PNG"
+                            || ext_name == ".JPEG"
+                            || ext_name == ".BMP")
                         {
                             Image image_new = Image.FromFile(image_path);
                             images_paths.Add(image_path);
@@ -1700,76 +1698,138 @@ namespace RSB
             //шоб своих не писали
             combox_researcher.Text = "";
         }
+        /// <summary>
+        /// получаем максимальное значение позиций в хранилище
+        /// </summary>
+        /// <returns></returns>
+        private int Get_max_positions(MySqlConnection conection, string stor_name)
+        {
+            int deflt = 0;
+            //using (MySqlConnection conn = New_connection(conn_str))
+            using (conection)
+            {
+                try
+                {
+                    conection.Open();
+                    string sqlcom_3 = "SELECT capacity FROM test2base.storage WHERE storage.name ='" + stor_name + "'";
+                    //MessageBox.Show("Запрос ="+sqlcom_3);
+                    using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conection))
+                    {
+                        using (MySqlDataReader reader = comand.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {                                    
+                                    deflt = Convert.ToInt32(reader[0]);
+                                    
+                                }
+                                reader.Close();
+                            }
+                        }
+                    }
+                    //изменяем состояние образца                    
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                MessageBoxDefaultButton.Button1);
+                }
+                conection.Close();
 
+            }
+            return deflt;
+        }
+        /// <summary>
+        /// Получить занятые позиции
+        /// </summary>
+        /// <returns></returns>
+        private List<int> Get_ocupied_pos(MySqlConnection conection, string stor_name)
+        {
+            List<int> ans = new List<int>();
+            using (conection)
+            {
+                try
+                {
+                    conection.Open();
+                    string sqlcom_3 = "SELECT position, id_specimen FROM test2base.storage_position " +
+                        "WHERE (id_storage = (SELECT id_storage FROM test2base.storage WHERE (name = '"+stor_name+"')))";
+                    using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conection))
+                    {
+                        using (MySqlDataReader reader = comand.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    //deflt = Convert.ToInt32(reader[0]);
+                                    if (Convert.ToInt32(reader[1])!=0)
+                                    ans.Add(Convert.ToInt32(reader[0]));
+
+                                }
+                                reader.Close();
+                            }
+                        }
+                    }                   
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка в выборе свободных позиций хранилища", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                MessageBoxDefaultButton.Button1);
+                }
+                conection.Close();
+
+            }
+
+            return ans;
+        }
         private void Fill_num_combo(string storage_name, int type_fill)
         {
             //подгрузить другой набор позиций
             if (storage_name != "")
-            {
+            {                
+                //MessageBox.Show("Тип = "+ type_fill.ToString());
+                conn_str = Get_conn_string(Properties.Settings.Default.server, Properties.Settings.Default.port,
+                    Properties.Settings.Default.database, Parent_form.cbox_username.Text, Parent_form.txtbox_pass.Text);
+                //получаем макс значение позиций
+                int max_pos = Get_max_positions(New_connection(conn_str), storage_name);
+                //делаем список позиций
+                List<string> position_list = new List<string>(max_pos);                
+                for (int i = 1; i <=max_pos;i++)
+                {
+                    position_list.Add(i.ToString());
+                }
+                //запрашиваем занятые позиции
+                List<int> occupied = Get_ocupied_pos(New_connection(conn_str), storage_name);
+                //если позиция занята - удаляем из списка
+                foreach (int pos in occupied)
+                {
+                    if (position_list.Contains(pos.ToString()))
+                    {
+                        position_list.Remove(pos.ToString());
+                    }
+                }
+                //выводим список позиций
                 switch (type_fill)
                 {
                     case 1:
                         combox_pos_add.Items.Clear();
+                        combox_pos_add.Items.AddRange(position_list.ToArray());
                         break;
                     case 2:
                         combox_move_pos.Items.Clear();
+                        combox_move_pos.Items.AddRange(position_list.ToArray());
                         break;
                 }
-                //MessageBox.Show("Тип = "+ type_fill.ToString());
-                conn_str = Get_conn_string(Properties.Settings.Default.server, Properties.Settings.Default.port,
-                    Properties.Settings.Default.database, Parent_form.cbox_username.Text, Parent_form.txtbox_pass.Text);
-                using (MySqlConnection conn = New_connection(conn_str))
-                {
-                    try
-                    {
-                        conn.Open();
-                        string sqlcom_3 = "SELECT capacity FROM test2base.storage WHERE storage.name ='" + storage_name + "'";
-                        //MessageBox.Show("Запрос ="+sqlcom_3);
-                        using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conn))
-                        {
-                            using (MySqlDataReader reader = comand.ExecuteReader())
-                            {
-                                if (reader.HasRows)
-                                {
-                                    while (reader.Read())
-                                    {
-                                        //ans = reader[0].ToString();
-                                        int max = Convert.ToInt32(reader[0]);
-                                        //MessageBox.Show("Capacity = "+max.ToString());
-                                        for (int i = 1; i < max; i++)
-                                        {
-                                            switch (type_fill)
-                                            {
-                                                case 1:
-                                                    combox_pos_add.Items.Add(i.ToString());
-                                                    break;
-                                                case 2:
-                                                    combox_move_pos.Items.Add(i.ToString());
-                                                    break;
-                                            }
-                                        }
-                                        //MessageBox.Show("новый ид"+table_name+"=" + ans);
-                                    }
-                                    reader.Close();
-                                }
-                            }
-                        }
-                        //изменяем состояние образца                    
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error,
-                    MessageBoxDefaultButton.Button1);
-                    }
-                    conn.Close();
 
-                }
             }
         }
         private void Combox_storage_SelectedIndexChanged(object sender, EventArgs e)
         {
             //подгрузить другой набор позиций
             Fill_num_combo(combox_storage.Text, 1);
+
+
         }
         private void Ch_btn_state(bool make, bool new_stor, bool add_tem, bool add_foto_after, bool add_foto_before)
         {
@@ -1913,68 +1973,116 @@ namespace RSB
             }
             return ans;
         }
-        private void Btn_move_new_stor_Click(object sender, EventArgs e)
+        /// <summary>
+        /// есть ли запись с по этому хранилищу и с этой позицией, возращается ИД записи или 0
+        /// </summary>
+        /// <returns></returns>
+        private int Get_stor_pos(int ID_stor, int stor_pos)
         {
-            if ((combox_move_to.Text != "ПАЗЛ"
-                && combox_move_to.Text != "ECOTAP"
-                && combox_move_to.Text != "МАЗТ"
-                && combox_move_to.Text != "МАЗТ Барабан"
-                && combox_move_to.Text != "ПАЗЛ Кассета"
-                && combox_move_to.Text != "ECOTAP Барабан"
-                && combox_move_to.Text != "ECOTAP загрузка") 
-                ^ ((combox_move_to.Text == "ПАЗЛ"
-                ^ combox_move_to.Text == "ECOTAP"
-                ^ combox_move_to.Text == "МАЗТ"
-                ^ combox_move_to.Text == "МАЗТ Барабан"
-                ^ combox_move_to.Text == "ПАЗЛ Кассета"
-                ^ combox_move_to.Text == "ECOTAP Барабан"
-                ^ combox_move_to.Text == "ECOTAP загрузка")
-                && Properties.Settings.Default.user_access_lvl <= 2))
-            {
-                //перемещение образца
-                int to_ind = Get_stor_index(combox_move_to.Text);
-                int to_ind_pos;
-                int indexx = Convert.ToInt32(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[0].Value);
-                if (combox_move_pos.Text != "")
-                {
-                    to_ind_pos = Convert.ToInt32(combox_move_pos.Text);
-                }
-                else to_ind_pos = -100;
-                conn_str = Get_conn_string(Properties.Settings.Default.server, Properties.Settings.Default.port,
+            int ans = 0;
+            conn_str = Get_conn_string(Properties.Settings.Default.server, Properties.Settings.Default.port,
                     Properties.Settings.Default.database, Parent_form.cbox_username.Text, Parent_form.txtbox_pass.Text);
-                using (MySqlConnection conn = New_connection(conn_str))
+            using (MySqlConnection conn = New_connection(conn_str))
+            {
+                try
                 {
-                    try
+                    conn.Open();
+                    //indexx = Convert.ToInt32(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[0].Value);
+                    string sqlcom_3 = "SELECT id_storage_position FROM test2base.storage_position " +
+                        "WHERE (id_storage = "+ ID_stor.ToString()+ ") AND (position = "+stor_pos.ToString() +")";
+                    using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conn))
                     {
-                        if (to_ind != 0 && dataGrid_specimens.CurrentRow != null && to_ind_pos != -100)
+                        using (MySqlDataReader reader = comand.ExecuteReader())
                         {
-                            conn.Open();
-                            indexx = Convert.ToInt32(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[0].Value);
-                            string sqlcom_3 = "UPDATE test2base.specimens SET specimens.id_storage=" + to_ind.ToString() + ", specimens.stor_position=" + to_ind_pos.ToString() + " WHERE specimens.idspecimens =" + indexx.ToString();
-                            using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conn))
+                            if (reader.HasRows)
                             {
-                                comand.ExecuteNonQuery();
+                                while (reader.Read())
+                                {
+                                    ans = Convert.ToInt32(reader[0]);
+                                }
+                                reader.Close();
                             }
-                            conn.Close();
-                            combox_pos_add.Text = "";
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error,
-                        MessageBoxDefaultButton.Button1);
-                    }
+                    conn.Close();                    
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка в модуле определения есть ли запись с образцом в storage_position", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+                }
+            }
+
+            return ans;
+        }
+        /// <summary>
+        /// изменяет или создает запись с указанным ид образца, 
+        /// </summary>
+        private void Ch_or_create_stor_pos(int stor, int pos, int ID_spec, bool is_delete)
+        {
+            //проверяем есть ли запись c таким ИД_хранилища, если есть - получаем
+            int ID_stor_pos_new = Get_stor_pos(stor, pos);
+            string sql_m = "";
+            int new_val = 0;
+            if (!is_delete) new_val = ID_spec;
+            //если 0 - значит создаем запись
+            //если нет - апдейтим
+            if (ID_stor_pos_new == 0)
+            {
+                sql_m = "INSERT INTO test2base.storage_position (id_storage, position, id_specimen) " +
+                    "VALUES('" + stor.ToString() + "', '" + pos.ToString() + "', '" + new_val.ToString() + "')";
+            }
+            else
+            {
+                sql_m = "UPDATE test2base.storage_position SET id_specimen = '" + new_val.ToString() + "' WHERE (id_storage_position = '" + ID_stor_pos_new.ToString() + "')";
+            }
+            //выполняем запрос
+            //MessageBox.Show("SQL=" + sql_m);
+            Simple_SQL_req(sql_m);
+        }
+        private void Btn_move_new_stor_Click(object sender, EventArgs e)
+        {
+            //изменить проверку
+            if (Properties.Settings.Default.user_access_lvl <= 3
+                && combox_move_pos.Text!=""
+                && combox_move_to.Text!=""
+                && txtbox_move_from.Text!=""
+                && txtbox_move_from.Text.Length>3)
+            {
+                //получаем ид образца, позицию
+                int stor_new_id = Get_stor_index(combox_move_to.Text);                
+                int indexx = Convert.ToInt32(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[0].Value);
+                int pos_new = Convert.ToInt32(combox_move_pos.Text);
+                //MessageBox.Show(txtbox_move_from.Text.Substring(0, txtbox_move_from.Text.Length - txtbox_move_from.Text.IndexOf(' ')+1));
+                //MessageBox.Show("-"+txtbox_move_from.Text.Substring(txtbox_move_from.Text.LastIndexOf(' ')+1)+"-");
+                int pos_old = Convert.ToInt32(txtbox_move_from.Text.Substring(txtbox_move_from.Text.LastIndexOf(' ') + 1));
+                string pos_o = txtbox_move_from.Text.Substring(txtbox_move_from.Text.LastIndexOf(' ') + 1);
+                int stor_old_id = Get_stor_index(txtbox_move_from.Text.Substring(0, txtbox_move_from.Text.IndexOf(pos_o)-1));
+                                
+                //удаляем запись о старом месте
+                Ch_or_create_stor_pos(stor_old_id, pos_old, indexx, true);
+                //делаем новую запись о новом положении
+                //если не нужно удалять образец
+                if (combox_move_to.Text != "Deleted")
+                {
+                    Ch_or_create_stor_pos(stor_new_id, pos_new, indexx, false);
+                }
+                else MessageBox.Show("Образец к вам больше не вернется!");
+
                 if (indexx != -1)
                 {
                     Log_action(Properties.Settings.Default.default_username, "change position", txtbox_move_from.Text, combox_move_to.Text + " " + combox_move_pos.Text, indexx.ToString());
                 }
                 Refresh_datagrid();
-                //Do_filters(data_filters);
+                combox_move_pos.Text = "";
+                combox_move_to.Text = "";
             }
             else
             {
-                MessageBox.Show("У вас не достаточно прав доступа для перемещения образца в установку, обратитесь к администратору");
+                MessageBox.Show("У вас не достаточно прав доступа для перемещения образца, обратитесь к администратору\n" +
+                    "или вы пытаетесь переместить удаленный уже образец");
+                combox_move_pos.Text = "";
+                combox_move_to.Text = "";
             }
         }
 
@@ -2055,7 +2163,7 @@ namespace RSB
                 //MessageBox.Show("показываем форму исследовнаий, выбранный индекс = "+index);
                 Properties.Settings.Default.Save();
                 int id_res = Get_id_research("researches", index);
-                Parent_form.Show_researches_from(id_res);
+                Parent_form.Show_from(id_res, Convert.ToInt32(index),1);
             }
         }
         private void Select_index()
@@ -2820,7 +2928,17 @@ namespace RSB
         private void Timer_for_refresh_Tick(object sender, EventArgs e)
         {
             //просто таймер для обновления системы раз в Х секунд
-            Refresh_datagrid();
+            refresh_counter = refresh_counter+1;
+            //закрываем базу после 3 по 5 минут простоя
+            //MessageBox.Show("tick "+refresh_counter.ToString());
+            if (refresh_counter == 4)
+            {
+                Parent_form.Close_all();
+            }
+            else
+            {
+                Refresh_datagrid();
+            }
         }
 
 
@@ -2828,12 +2946,14 @@ namespace RSB
         {
             timer_for_refresh.Stop();
             timer_for_refresh.Start();
+            refresh_counter = 0;
         }
 
         private void dataGrid_specimens_MouseMove(object sender, MouseEventArgs e)
         {
             timer_for_refresh.Stop();
             timer_for_refresh.Start();
+            refresh_counter = 0;
         }
 
         private void combox_setup_KeyUp(object sender, KeyEventArgs e)
@@ -3137,8 +3257,8 @@ namespace RSB
             using (MySqlConnection conn = New_connection(conn_str))
             {
                 conn.Open();
-                string sqlcom_3 = sql_req;
-                using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conn))
+                //string sqlcom_3 = sql_req;
+                using (MySqlCommand comand = new MySqlCommand(sql_req, conn))
                 {
                     try
                     {
@@ -3146,7 +3266,7 @@ namespace RSB
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, "Ошибка при обнолвении целевых установок для исследования", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                        MessageBox.Show(ex.Message + " :\n "+sql_req, "Ошибка в Simple_SQL_req в запросе", MessageBoxButtons.OK, MessageBoxIcon.Error,
                     MessageBoxDefaultButton.Button1);
                     }
                 }
@@ -3350,6 +3470,19 @@ namespace RSB
             GC.Collect();
             //обнулить путь картинок
             images_paths.Clear();
+        }
+        /// <summary>
+        /// Изменить комментарии
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_ch_comments_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[0].Value);
+            if (id.ToString() != "")
+            {
+                Simple_SQL_req("UPDATE test2base.specimens SET comments = '" + rich_txtbox_comments_info.Text + "' WHERE (idspecimens = " + id.ToString() + ");");
+            }
         }
     }
 }

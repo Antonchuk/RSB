@@ -35,24 +35,32 @@ namespace RSB
             MySqlConnection conn = new MySqlConnection(connString);
             return conn;
         }
-        private void Btn_exit_Click(object sender, EventArgs e)
+        /// <summary>
+        /// закрывает все формы
+        /// </summary>
+        public void Close_all()
         {
-            if (spec_form!=null)
+            if (spec_form != null)
             {
                 spec_form.Dispose();
             }
-            if (reserch_form!=null)
+            if (reserch_form != null)
             {
                 reserch_form.Dispose();
             }
             if (btn_research.Enabled)
             {
                 Properties.Settings.Default.default_username = cbox_username.Text;
-                Properties.Settings.Default.default_pass = txtbox_pass.Text;                
+                Properties.Settings.Default.default_pass = txtbox_pass.Text;
                 Properties.Settings.Default.Save();
             }
             GC.Collect();
             Close();
+        }
+
+        private void Btn_exit_Click(object sender, EventArgs e)
+        {
+            Close_all();
         }
 
         private void Form1_Shown(object sender, EventArgs e)
@@ -70,7 +78,7 @@ namespace RSB
             if (!dirInfo.Exists)
             {
                 dirInfo.Create();
-                MessageBox.Show("создали");
+                //MessageBox.Show("создали");
             }
 
             //конект к базе 
@@ -215,25 +223,6 @@ namespace RSB
             //ЗАГЛУШКА
             txtbox_pass.Text = Properties.Settings.Default.default_pass;
         }
-        public void Show_specimens_form(int id_spec)
-        {
-            //шайтан работает, никто не знает как, короче форма вообще не удаляется
-            Properties.Settings.Default.main_spec_id = id_spec;
-            Properties.Settings.Default.Save();
-            if (spec_form != null)
-            {
-                spec_form.Show();
-                spec_form.BringToFront();
-
-            }
-            else
-            {
-                GC.Collect();
-                spec_form = new Form_specimens(this);
-                spec_form.Show();
-            }
-
-        }
         private void Btn_specimen_Click(object sender, EventArgs e)
         {
             //блокируем изменение пароля и логина
@@ -242,7 +231,7 @@ namespace RSB
             Properties.Settings.Default.default_username = cbox_username.Text;
             Properties.Settings.Default.default_pass = txtbox_pass.Text;
             Properties.Settings.Default.Save();
-            Show_specimens_form(-1);
+            Show_from(-1, -1, 0);
         }
 
 
@@ -297,21 +286,61 @@ namespace RSB
                 }                
             }
         }
-        public void Show_researches_from(int id_research)
+        /// <summary>
+        /// показывает форму или создает, если она не существовала, 0 - specimens, 1 - researches, 2 -projects
+        /// </summary>
+        /// <param name="id_research"></param>
+        /// <param name="id_spec"></param>
+        /// <param name="witch_frm"></param>
+        public void Show_from(int id_research, int id_spec, int witch_frm)
         {
             //шайтан работает, никто не знает как, короче форма вообще не удаляется
+            //_ = new Form();
             Properties.Settings.Default.main_res_id = id_research;
+            Properties.Settings.Default.main_spec_id = id_spec;
             Properties.Settings.Default.Save();
-            if (reserch_form != null)
+            Form frm;
+            switch (witch_frm)
             {
-                reserch_form.Show();
-                reserch_form.BringToFront();
+                case 0:
+                    frm = spec_form;
+                    break;
+                case 1:
+                    frm = reserch_form;
+                    break;
+                case 2:
+                    frm = null;
+                    break;
+                default:
+                    frm = null;
+                    break;
+            }
+            if (frm != null)
+            {
+                frm.Show();
+                frm.BringToFront();
             }
             else
             {
                 GC.Collect();
-                reserch_form = new Researches(this);
-                reserch_form.Show();
+                switch (witch_frm)
+                {
+                    case 0:
+                        frm = new Form_specimens(this);
+                        spec_form = frm;
+                        break;
+                    case 1:
+                        frm = new Researches(this);
+                        reserch_form = frm;
+                        break;
+                    case 2:
+                        frm = null;
+                        break;
+                    default:
+                        frm = null;
+                        break;
+                }
+                frm.Show();
             }
         }
 
@@ -323,13 +352,16 @@ namespace RSB
             Properties.Settings.Default.default_username = cbox_username.Text;
             Properties.Settings.Default.default_pass = txtbox_pass.Text;
             Properties.Settings.Default.Save();
-            Show_researches_from(-1);                   
+            Show_from(-1,-1, 1);                   
         }
 
         private void btn_reports_Click(object sender, EventArgs e)
         {
             //показать форму Проектов
-            
+            Properties.Settings.Default.default_username = cbox_username.Text;
+            Properties.Settings.Default.default_pass = txtbox_pass.Text;
+            Properties.Settings.Default.Save();
+
         }
 
         private void howToBaseToolStripMenuItem_Click(object sender, EventArgs e)

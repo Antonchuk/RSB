@@ -535,7 +535,8 @@ namespace RSB
                                             foreach (string path in info_files_paths_bef)
                                             {
                                                 string ext_name = Path.GetExtension(path);
-                                                if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff" || ext_name == ".JPG")
+                                                if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff" 
+                                                    || ext_name == ".JPG" || ext_name == ".JPEG" || ext_name == ".PNG" || ext_name == ".BMP" || ext_name == ".TIFF")
                                                 {
                                                     num++;
                                                     switch (num)
@@ -575,7 +576,8 @@ namespace RSB
                                             foreach (string path in info_files_paths_aft)
                                             {
                                                 string ext_name = Path.GetExtension(path);
-                                                if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff" || ext_name == ".JPG")
+                                                if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff" 
+                                                    || ext_name == ".JPG" || ext_name == ".JPEG" || ext_name == ".PNG" || ext_name == ".BMP" || ext_name == ".TIFF")
                                                 {
                                                     num++;
                                                     switch (num)
@@ -643,6 +645,10 @@ namespace RSB
                 box.Image = null;
             }
         }
+        /// <summary>
+        /// удаляет картинки  1 - before, 2 - after
+        /// </summary>
+        /// <param name="type"> 1 - before, 2 - after</param>
         private void Clear_pics_info(int type)
         {
             switch (type)
@@ -721,6 +727,22 @@ namespace RSB
             if (dataGrid_specimens.Rows[index].Cells[6].Value != null)
             {
                 txtbox_storage_inf.Text = dataGrid_specimens.Rows[index].Cells[6].Value.ToString();
+                switch (dataGrid_specimens.Rows[index].Cells[6].Value.ToString())
+                {
+                    case "ПАЗЛ 1":
+                        combox_setup.SelectedIndex = combox_setup.Items.IndexOf("ПАЗЛ");
+                        break;
+                    case "АТЛАЗ 1":
+                        combox_setup.SelectedIndex = combox_setup.Items.IndexOf("АТЛАЗ");
+                        break;
+                    case "ЛАЗТ 1":
+                        combox_setup.SelectedIndex = combox_setup.Items.IndexOf("ЛАЗТ");
+                        break;
+                    default:
+                        combox_setup.Text = "";
+                        combox_setup.SelectedIndex = -1;
+                        break;
+                }
                 //txtbox_m
             }
             if (dataGrid_specimens.Rows[index].Cells[6].Value != null)
@@ -876,13 +898,26 @@ namespace RSB
             }
 
         }
+
+        /// <summary>
+        /// Ищем и если нужно добавляем новую запись
+        /// surname - искомое
+        /// name2 - название поля(столбца) таблицы
+        /// col_name - что ищем (обычно ИД)
+        /// возращает ИД найденной или созданной записи
+        /// </summary>
+        /// <param name="surname"></param>
+        /// <param name="connect"></param>
+        /// <param name="table_name"></param>
+        /// <param name="col_name"></param>
+        /// <param name="name2"></param>
+        /// <returns></returns>
         private string Check_for_exist(string surname, MySqlConnection connect, string table_name, string col_name, string name2)
         {
             bool need_new = false;
             string ans = "";
             connect.Open();
             string sqlcom = "SELECT " + col_name + " FROM test2base." + table_name + " WHERE " + name2 + " = '" + surname + "'";
-            //MessageBox.Show(sqlcom);
             using (MySqlCommand comand = new MySqlCommand(sqlcom, connect))
             {
                 using (MySqlDataReader reader = comand.ExecuteReader())
@@ -898,8 +933,6 @@ namespace RSB
                     }
                     else
                     {
-                        //MessageBox.Show("не такого "+table_name+", сейчас добавим");                        
-                        //add_new producer
                         need_new = true;
                         reader.Close();
                     }
@@ -994,9 +1027,6 @@ namespace RSB
                         //add new treatment
                         Properties.Settings.Default.treatment = surname;
                         Properties.Settings.Default.Save();
-                        //Form add_new_material = new Materials_new();
-                        //add_new_material.ShowDialog();
-                        //add_new_material.Dispose();
                         New_treatment treat_new = new New_treatment
                         {
                             name = Properties.Settings.Default.treatment,
@@ -1114,6 +1144,53 @@ namespace RSB
             }
             return directory_new;
         }
+
+        private bool Is_state_exist(MySqlConnection c,string tr, string mat)
+        {
+            bool ans = false;
+            c.Open();            
+            string com = "SELECT materialstate.Name FROM test2base.materialstate " +
+                "WHERE (id_treatment="+tr+") AND " +
+                "(id_material='"+mat+"')";
+            using (MySqlCommand comand = new MySqlCommand(com, c))
+            {                
+                using (MySqlDataReader reader = comand.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        ans = true;
+                        reader.Close();
+                    }
+                }
+            }
+            c.Close();
+            //MessageBox.Show("find such state = "+ans.ToString());
+            return ans;
+        }
+        private void Push_state(MySqlConnection ccc, string treat, string material, string name)
+        {
+            //если нет такого состояния -создаем
+            if (!Is_state_exist(ccc, treat, material ))
+            {
+                //создаем новое состояние
+                ccc.Open();
+                string com = "INSERT INTO test2base.materialstate (id_treatment, name,  id_material) " +
+                    "VALUES ("+treat+", '"+name+"', "+material+") ";
+                using (MySqlCommand comand = new MySqlCommand(com, ccc))
+                {
+                    comand.ExecuteNonQuery();
+                }
+                //создаем связь (состояние материала) - состояние
+                com = "INSERT INTO test2base.materialstate_state (id_materialstate, id_state) " +
+                    "VALUES ((SELECT materialstate.id_materialstate FROM test2base.materialstate WHERE(materialstate.id_treatment = "+treat+") AND (materialstate.id_material = "+material+")), " +
+                    "'4' )";
+                using (MySqlCommand comand = new MySqlCommand(com, ccc))
+                {
+                    comand.ExecuteNonQuery();
+                }
+                ccc.Close();
+            }            
+        }
         private void New_specimen()
         {
             conn_str = Get_conn_string(Properties.Settings.Default.server, Properties.Settings.Default.port,
@@ -1145,7 +1222,8 @@ namespace RSB
                     };
                     //если нет, то добавляем новые
                     specimen_new_accepted = true;
-                    Check_for_new_data(new_spec, conn);                    
+                    string state_name = new_spec.material + " " + new_spec.treatment;
+                    Check_for_new_data(new_spec, conn);                     
                     if (specimen_new_accepted)
                     {
                         if (!(new_spec.priority== "4 High" || new_spec.priority == "5 Now" || new_spec.priority == "3 Normal" || new_spec.priority == "2 Low" || new_spec.priority == "1 One fine day"))
@@ -1170,8 +1248,8 @@ namespace RSB
                         
                         conn.Open();
                         string sqlcom_3 = "INSERT INTO test2base.specimens (id_producer, id_state, date_prep, id_project, id_treatment, " +
-                            "id_treat_type, id_respon, place_foto_bef, place_foto_after, id_material, priority) VALUES (@id_producer,@id_state,@datetime,@id_project,@treatment," +
-                        "@id_treat_type,@id_respon,@foto_before,@foro_after,@id_material,@priority)";
+                            "id_treat_type, id_respon, place_foto_bef, place_foto_after, id_material, priority, comments) VALUES (@id_producer,@id_state,@datetime,@id_project,@treatment," +
+                        "@id_treat_type,@id_respon,@foto_before,@foro_after,@id_material,@priority, @comment)";
                         using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conn))
                         {
                             comand.Parameters.AddWithValue("@id_producer", new_spec.producer);
@@ -1187,6 +1265,7 @@ namespace RSB
                             comand.Parameters.AddWithValue("@id_respon", new_spec.resonse);
                             //comand.Parameters.AddWithValue("@stor_position", new_spec.stor_pos);
                             comand.Parameters.AddWithValue("@priority", new_spec.priority);
+                            comand.Parameters.AddWithValue("@comment", rich_txtbox_comments.Text);
                             //MessageBox.Show(comand.CommandText);
                             comand.ExecuteNonQuery();
                             //проверить выполнен ли запрос
@@ -1229,13 +1308,16 @@ namespace RSB
                         if (id_new != -1)
                         {
                             //записать местоположение в новую базу данных
-                            Simple_SQL_req("INSERT INTO test2base.storage_position (id_storage, position, id_specimen) " +
-                                "VALUES (" + new_spec.storage + ", " + new_spec.stor_pos + ", " + id_new.ToString() + ");");
+                            Ch_or_create_stor_pos(int.Parse(new_spec.storage), int.Parse(new_spec.stor_pos), id_new, false);
+                            //Simple_SQL_req("INSERT INTO test2base.storage_position (id_storage, position, id_specimen) " +
+                            //    "VALUES (" + new_spec.storage + ", " + new_spec.stor_pos + ", " + id_new.ToString() + ");");
                         }
 
                         new_spec.foto_before = Copy_fotos(new_spec.foto_before, dir_foto_new, 1,id_new);
 
                         //MessageBox.Show("Проверка на ошибку, это после копирования фото");
+                        //проверяем и добавляем состояние
+                        Push_state(conn, new_spec.treatment, new_spec.material, state_name);
                         //поменять название папки фото до
                         conn.Open();
                         sqlcom_3 = "UPDATE test2base.specimens SET place_foto_bef =@foto_before WHERE (idspecimens = " + id_new.ToString()+")";
@@ -1267,73 +1349,7 @@ namespace RSB
 
         private void Picbox_big_Click(object sender, EventArgs e)
         {
-            if (picbox_before_big.Image != null)
-            {
-                string temp_path = images_paths[0];
-                images_paths.RemoveAt(0);
-                images_paths.Insert(images_paths.Count, temp_path);
-                picbox_before_big.Image.Dispose();
-                picbox_before_big.Image = Image.FromFile(images_paths[0]);
-                if (images_paths.Count > 1)
-                {
-                    picbox_before_sm1.Image.Dispose();
-                    picbox_before_sm1.Image = Image.FromFile(images_paths[1]);
-                    if (images_paths.Count > 2)
-                    {
-                        picbox_before_sm2.Image.Dispose();
-                        picbox_before_sm2.Image = Image.FromFile(images_paths[2]);
-                        if (images_paths.Count > 3)
-                        {
-                            picbox_before_sm3.Image.Dispose();
-                            picbox_before_sm3.Image = Image.FromFile(images_paths[3]);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                //грузим новые картинки
-                DialogResult result = open_dial_im_before.ShowDialog();
-                bool ttt = true;
-                images_paths.Clear();
-                if (result == DialogResult.OK && ttt)
-                {
-                    int num = 0;
-                    foreach (string image_path in open_dial_im_before.FileNames)
-                    {
-                        //MessageBox.Show(image_path);
-                        string ext_name = Path.GetExtension(image_path);
-                        if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff" 
-                            || ext_name == ".JPG"
-                            || ext_name == ".PNG"
-                            || ext_name == ".JPEG"
-                            || ext_name == ".BMP")
-                        {
-                            Image image_new = Image.FromFile(image_path);
-                            images_paths.Add(image_path);
-                            num++;
-                            switch (num)
-                            {
-                                case 1:
-                                    picbox_before_big.Image = image_new;
-                                    break;
-                                case 2:
-                                    picbox_before_sm1.Image = image_new;
-                                    break;
-                                case 3:
-                                    picbox_before_sm2.Image = image_new;
-                                    break;
-                                case 4:
-                                    picbox_before_sm3.Image = image_new;
-                                    break;
-                            }
-                        }
-                        else MessageBox.Show("No images selected");
-                    }
-                    picbox_before_big.BackgroundImage = null;
-                }
-                else MessageBox.Show("No path or no directory");
-            }
+            
         }
 
         private void Combox_storage_KeyPress(object sender, KeyPressEventArgs e)
@@ -2021,24 +2037,24 @@ namespace RSB
         private void Ch_or_create_stor_pos(int stor, int pos, int ID_spec, bool is_delete)
         {
             //проверяем есть ли запись c таким ИД_хранилища, если есть - получаем
-            int ID_stor_pos_new = Get_stor_pos(stor, pos);
+            //int ID_stor_pos_new = Get_stor_pos(stor, pos);
             string sql_m = "";
             int new_val = 0;
             if (!is_delete) new_val = ID_spec;
             //если 0 - значит создаем запись
             //если нет - апдейтим
-            if (ID_stor_pos_new == 0)
+            if (int.TryParse(SQL_List_querry("SELECT id_storage_position FROM test2base.storage_position " +
+                        "WHERE (id_storage = '" + stor.ToString() + "') AND (position = '" + pos.ToString() + "')")[0], out int ID_stor_pos) && ID_stor_pos!=0)
             {
-                sql_m = "INSERT INTO test2base.storage_position (id_storage, position, id_specimen) " +
-                    "VALUES('" + stor.ToString() + "', '" + pos.ToString() + "', '" + new_val.ToString() + "')";
-            }
+                sql_m = "UPDATE test2base.storage_position SET id_specimen = " + new_val.ToString() + " WHERE (id_storage_position = " + ID_stor_pos.ToString() + ")";                
+            } 
             else
             {
-                sql_m = "UPDATE test2base.storage_position SET id_specimen = '" + new_val.ToString() + "' WHERE (id_storage_position = '" + ID_stor_pos_new.ToString() + "')";
+                sql_m = "INSERT INTO test2base.storage_position (id_storage, position, id_specimen) " +
+                        "VALUES('" + stor.ToString() + "', '" + pos.ToString() + "', '" + new_val.ToString() + "')";
             }
             //выполняем запрос
-            //MessageBox.Show("SQL=" + sql_m);
-            Simple_SQL_req(sql_m);
+            Simple_SQL_req(sql_m);            
         }
         private void Btn_move_new_stor_Click(object sender, EventArgs e)
         {
@@ -2113,7 +2129,7 @@ namespace RSB
                     col_name_2 = "id_research";
                     break;
             }
-            MessageBox.Show("Ищем ид в "+where+" ид для поиска "+index);
+            //MessageBox.Show("Ищем ид в "+where+" ид для поиска "+index);
             if (index!="-1")
             {
                 //запрос на поиск id
@@ -2972,7 +2988,6 @@ namespace RSB
                 try
                 {
                     new_treatment = Check_for_exist(txtbox_treat_inf.Text, conn, "treatment", "id_treatment", "name");
-
                 }
                 catch (Exception ex)
                 {
@@ -3205,25 +3220,36 @@ namespace RSB
 
         private void txtbox_temperature_KeyPress(object sender, KeyPressEventArgs e)
         {
+            /*
             //валидатор на ввод только цифр
             char number = e.KeyChar;
-            if (!decimal.TryParse(txtbox_temperature.Text + number, out _))
+            int n = (int)number;
+            //MessageBox.Show("test= " + n.ToString());
+            if (n != 8 && txtbox_temperature.Text != "")
             {
-                txtbox_temperature.Text = "";
-                MessageBox.Show("вы ввели какую-то фигню, можно вводить только числа вида 1548,003  или 0 или 25");
-                e.Handled = true;
-            }
+                if (!decimal.TryParse(txtbox_temperature.Text + number, out _))
+                {
+                    txtbox_temperature.Text = "";
+                    MessageBox.Show("вы ввели какую-то фигню, можно вводить только числа вида 1548,003  или 0 или 25");
+                    e.Handled = true;
+                }
+            }*/
         }
 
         private void txtbox_las_pow_KeyPress(object sender, KeyPressEventArgs e)
         {
-            char number = e.KeyChar;
-            if (!decimal.TryParse(txtbox_las_pow.Text+number, out _))
-            { 
-                txtbox_las_pow.Text = "";
-                MessageBox.Show("вы ввели какую-то фигню, можно вводить только числа вида 1548,003  или 0 или 25");
-                e.Handled = true;
-            }
+            /*char number = e.KeyChar;
+            int n = (int)number;
+            //MessageBox.Show("test= " + n.ToString());
+            if (n != 8 && txtbox_las_pow.Text!="")
+            {
+                if (!decimal.TryParse(txtbox_las_pow.Text + number, out _))
+                {
+                    txtbox_las_pow.Text = "";
+                    MessageBox.Show("вы ввели какую-то фигню, можно вводить только числа вида 1548,003  или 0 или 25");
+                    e.Handled = true;
+                }
+            }*/
         }
 
         private void combox_treatment_Leave(object sender, EventArgs e)
@@ -3249,11 +3275,12 @@ namespace RSB
             }
         }
         /// <summary>
-        /// простой апрос sql
+        /// простой апрос sql INSERT DELETE UPDATE
         /// </summary>
         /// <param name="sql_req"></param>
-        private void Simple_SQL_req(string sql_req)
+        private bool Simple_SQL_req(string sql_req)
         {
+            bool finished_well = false;
             using (MySqlConnection conn = New_connection(conn_str))
             {
                 conn.Open();
@@ -3272,6 +3299,8 @@ namespace RSB
                 }
                 conn.Close();
             }
+            finished_well = true;
+            return finished_well;
         }
         /// <summary>
         /// добавляет  новые целевые установки в базу по чек-листбоксу
@@ -3445,6 +3474,11 @@ namespace RSB
                 //если нет, то создем новый
                 New_specimen();
                 Refresh_datagrid();
+                //очистить часть полей для заполнения
+                Clear_pics_info(1);
+                Clear_pics_info(2);
+                combox_pos_add.Text = "";
+                combox_setup.SelectedIndex = -1;
             }
         }
         /// <summary>
@@ -3482,6 +3516,248 @@ namespace RSB
             if (id.ToString() != "")
             {
                 Simple_SQL_req("UPDATE test2base.specimens SET comments = '" + rich_txtbox_comments_info.Text + "' WHERE (idspecimens = " + id.ToString() + ");");
+            }
+        }
+        /// <summary>
+        /// меняем или создаем новый состав
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_ch_composotion_Click(object sender, EventArgs e)
+        {            
+            //имщем материал + состав
+            //обновляем состав            
+            if (int.TryParse(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[0].Value.ToString(), out int id_spec))
+            {
+                Simple_SQL_req("UPDATE test2base.materials SET composition = '" + txt_composition.Text + "' " +
+                "WHERE (id_material = (SELECT id_material FROM test2base.specimens WHERE idspecimens = '" + id_spec.ToString() + "'));");
+            }                      
+        }
+        /// <summary>
+        /// проверка не в установке АЗТ ли этот образец 
+        /// str - место хранения + позиция "ПАЗЛ 1"
+        /// true - можно удалять
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        private bool Check_position_noAPT(string str)
+        {
+            //MessageBox.Show("position = "+str);
+            bool ans = false;
+            if (str != "ПАЗЛ 1" &&
+                str != "ПАЗЛ Кассета 1" &&
+                str != "ПАЗЛ Кассета 2" &&
+                str != "ПАЗЛ Кассета 3" &&
+                str != "ЛАЗТ 1" &&
+                str != "ЛАЗТ Загрузка 1" &&
+                str != "АТЛАЗ 1" &&
+                str != "АТЛАЗ Загрузка 1")                
+            {
+                ans = true;
+                if (str.Length >= 13 && str.Substring(0, 13) == "АТЛАЗ Барабан")
+                {
+                    ans = false;
+                }
+            }
+            else
+            {
+                MessageBox.Show("wrong place");
+            }
+            return ans;
+        }
+        /// <summary>
+        /// проверка можно ли удалять образец
+        /// ИД образца, 
+        /// state состояние, 
+        /// level_access уровень доступа, 
+        /// actor залогиневшийся пользователь
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="state_name"></param>
+        /// <param name="level_access"></param>
+        /// <param name="actor"></param>
+        /// <param name="producer"></param>
+        /// <returns></returns>
+        private bool Can_del_specimen(int id, string state_name, int level_access, string actor, string producer)
+        {
+            bool ans = false;
+            //правила удаления
+            //уровень достпа не выше 2
+            //только если этот образец вы создавали 
+            //только в состоянии Ready for APT и Storage 
+            
+            string actor_login = SQL_List_querry("SELECT user_name FROM test2base.producers WHERE (surname = '"+actor+"')")[0];
+            string resp_login = SQL_List_querry("SELECT user_name FROM test2base.producers WHERE (surname = '" + producer + "')")[0];
+            MessageBox.Show("level = " + level_access.ToString() + "\nCheck pos = " + Check_position_noAPT(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[6].Value.ToString()).ToString() +
+            "\nState name = " + state_name +
+            "\nproducer = " + actor_login +
+            "\nrespon = "+ resp_login);
+            //MessageBox.Show("login = "+ Properties.Settings.Default.default_username+
+            //"\nauthor = "+ actor_login);
+            if (level_access<=2 && 
+                ((state_name == "Ready for APT" 
+                && Check_position_noAPT(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[6].Value.ToString())) || state_name == "Storage") 
+                && (Properties.Settings.Default.default_username == actor_login || Properties.Settings.Default.default_username== resp_login))
+            {                
+                ans = true;
+            }
+            return ans;
+        }
+        /// <summary>
+        /// Простой SQL запрос на пполучение списка ответов List (string)
+        /// </summary>
+        /// <param name="sql_request"></param>
+        /// <returns></returns>
+        private List<string> SQL_List_querry(string sql_request)
+        {
+            List<string> ans = new List<string>();
+            try
+            {
+                using (MySqlConnection conn = New_connection(conn_str))
+                {
+                    conn.Open();
+                    using (MySqlCommand comand = new MySqlCommand(sql_request, conn))
+                    {
+                        using (MySqlDataReader reader = comand.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    ans.Add(reader[0].ToString());
+                                }                                
+                            }
+                            reader.Close();
+                        }
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("error in SQL_List_querry with request:\n"+sql_request+"\n" + ex.ToString());
+            }
+            if (ans.Count == 0) ans.Add("");
+            return ans;
+        }
+        /// <summary>
+        /// удаление орбрзца
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_delete_selected_Click(object sender, EventArgs e)
+        {
+            //проверить можно ли удалять(права)
+            if (int.TryParse(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[0].Value.ToString(), out int id) && 
+                Can_del_specimen(id, dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[7].Value.ToString(), 
+                Properties.Settings.Default.user_access_lvl,
+                dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[5].Value.ToString(),
+                txtbox_respon_inf.Text))
+            {
+                //спрашиваем, действительно ли мы хотим удалять образец?
+                DialogResult res = MessageBox.Show("Delete selected specimen?\nAre you SURE?\n no reincarnation","Warning", MessageBoxButtons.YesNo,MessageBoxIcon.Question,MessageBoxDefaultButton.Button2);
+                if (res == DialogResult.Yes)
+                {
+                    //удаляем образец
+                    //удалить из history
+                    if (Simple_SQL_req("DELETE FROM test2base.history WHERE (id_spec = " + id.ToString() + ")"))
+                    {
+                        //удалить из storage-position
+                        if (Simple_SQL_req("UPDATE test2base.storage_position SET id_specimen = 0 WHERE (id_specimen = " + id.ToString() + ")"))
+                        {
+                            //удалить из setup_specimens
+                            if (Simple_SQL_req("DELETE FROM test2base.setup_specimen WHERE (id_specimen = " + id.ToString() + ")"))
+                            {
+                                //удалить из stages_specimens
+                                if (Simple_SQL_req("DELETE FROM test2base.stages_specimens WHERE (id_specimen = " + id.ToString() + ")"))
+                                {
+                                    //удалить из specimens
+                                    Simple_SQL_req("DELETE FROM test2base.specimens WHERE (idspecimens = " + id.ToString() + ")");
+                                    MessageBox.Show("yes we delete specimen");
+                                }
+                            }
+                        }
+                    }
+                }
+                Refresh_datagrid();
+            }   
+            else
+            {
+                MessageBox.Show("deletion not permitted\n" +
+                    "producer = you\n" +
+                    "only Ready for APT or Storage\n" +
+                    "access level <=2");
+            }
+        }
+
+        private void picbox_before_big_DoubleClick(object sender, EventArgs e)
+        {
+            if (picbox_before_big.Image != null)
+            {
+                string temp_path = images_paths[0];
+                images_paths.RemoveAt(0);
+                images_paths.Insert(images_paths.Count, temp_path);
+                picbox_before_big.Image.Dispose();
+                picbox_before_big.Image = Image.FromFile(images_paths[0]);
+                if (images_paths.Count > 1)
+                {
+                    picbox_before_sm1.Image.Dispose();
+                    picbox_before_sm1.Image = Image.FromFile(images_paths[1]);
+                    if (images_paths.Count > 2)
+                    {
+                        picbox_before_sm2.Image.Dispose();
+                        picbox_before_sm2.Image = Image.FromFile(images_paths[2]);
+                        if (images_paths.Count > 3)
+                        {
+                            picbox_before_sm3.Image.Dispose();
+                            picbox_before_sm3.Image = Image.FromFile(images_paths[3]);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //грузим новые картинки
+                DialogResult result = open_dial_im_before.ShowDialog();
+                bool ttt = true;
+                images_paths.Clear();
+                if (result == DialogResult.OK && ttt)
+                {
+                    int num = 0;
+                    foreach (string image_path in open_dial_im_before.FileNames)
+                    {
+                        //MessageBox.Show(image_path);
+                        string ext_name = Path.GetExtension(image_path);
+                        if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff"
+                            || ext_name == ".JPG"
+                            || ext_name == ".PNG"
+                            || ext_name == ".JPEG"
+                            || ext_name == ".BMP")
+                        {
+                            Image image_new = Image.FromFile(image_path);
+                            images_paths.Add(image_path);
+                            num++;
+                            switch (num)
+                            {
+                                case 1:
+                                    picbox_before_big.Image = image_new;
+                                    break;
+                                case 2:
+                                    picbox_before_sm1.Image = image_new;
+                                    break;
+                                case 3:
+                                    picbox_before_sm2.Image = image_new;
+                                    break;
+                                case 4:
+                                    picbox_before_sm3.Image = image_new;
+                                    break;
+                            }
+                        }
+                        else MessageBox.Show("No images selected");
+                    }
+                    picbox_before_big.BackgroundImage = null;
+                }
+                else MessageBox.Show("No path or no directory");
             }
         }
     }

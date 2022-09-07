@@ -442,5 +442,41 @@ namespace RSB.Properties {
                 this["ini_split_inf"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int info_id_project {
+            get {
+                return ((int)(this["info_id_project"]));
+            }
+            set {
+                this["info_id_project"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int project_info_split {
+            get {
+                return ((int)(this["project_info_split"]));
+            }
+            set {
+                this["project_info_split"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int project_split_graphs {
+            get {
+                return ((int)(this["project_split_graphs"]));
+            }
+            set {
+                this["project_split_graphs"] = value;
+            }
+        }
     }
 }

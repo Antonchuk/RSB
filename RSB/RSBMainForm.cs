@@ -20,13 +20,22 @@ namespace RSB
         Form param_form;
         public Form spec_form;
         public Form reserch_form;
+        public Form projects_form;
         private int User_access_lvl=3;
         public RSBMainForm()
         {
             InitializeComponent();
 
         }
-
+        /// <summary>
+        /// новое или разовое соединение с базой данных
+        /// </summary>
+        /// <param name="myhost"></param>
+        /// <param name="myport"></param>
+        /// <param name="mydatabase"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public static MySqlConnection New_connection(string myhost, int myport, string mydatabase, string username, string password)
         {
             // Connection String.
@@ -47,6 +56,10 @@ namespace RSB
             if (reserch_form != null)
             {
                 reserch_form.Dispose();
+            }
+            if (projects_form!=null)
+            {
+                projects_form.Dispose();
             }
             if (btn_research.Enabled)
             {
@@ -231,7 +244,14 @@ namespace RSB
             Properties.Settings.Default.default_username = cbox_username.Text;
             Properties.Settings.Default.default_pass = txtbox_pass.Text;
             Properties.Settings.Default.Save();
-            Show_from(-1, -1, 0);
+            if (Properties.Settings.Default.user_access_lvl <= 3)
+            {
+                Show_from(-1, -1, 0);
+            }
+            else
+            {
+                MessageBox.Show("Закончилась подписка на приложения, просьба внести оплату на следующие 10 тыс. лет.");
+            }
         }
 
 
@@ -282,7 +302,7 @@ namespace RSB
                 if (!dirInfo.Exists)
                 {
                     dirInfo.Create();
-                    MessageBox.Show("создали");
+                    //MessageBox.Show("создали");
                 }                
             }
         }
@@ -309,7 +329,7 @@ namespace RSB
                     frm = reserch_form;
                     break;
                 case 2:
-                    frm = null;
+                    frm = projects_form;
                     break;
                 default:
                     frm = null;
@@ -334,7 +354,8 @@ namespace RSB
                         reserch_form = frm;
                         break;
                     case 2:
-                        frm = null;
+                        frm = new Frm_projects(this);
+                        projects_form = frm;
                         break;
                     default:
                         frm = null;
@@ -352,7 +373,14 @@ namespace RSB
             Properties.Settings.Default.default_username = cbox_username.Text;
             Properties.Settings.Default.default_pass = txtbox_pass.Text;
             Properties.Settings.Default.Save();
-            Show_from(-1,-1, 1);                   
+            if (Properties.Settings.Default.user_access_lvl <= 3)
+            {
+                Show_from(-1, -1, 1);
+            }
+            else
+            {
+                MessageBox.Show("Закончилась подписка на приложения, просьба внести оплату на следующие 10 тыс. лет.");
+            }
         }
 
         private void btn_reports_Click(object sender, EventArgs e)
@@ -361,7 +389,14 @@ namespace RSB
             Properties.Settings.Default.default_username = cbox_username.Text;
             Properties.Settings.Default.default_pass = txtbox_pass.Text;
             Properties.Settings.Default.Save();
-
+            if (Properties.Settings.Default.user_access_lvl <= 3)
+            {
+                Show_from(-1, -1, 2);
+            }
+            else
+            {
+                MessageBox.Show("Закончилась подписка на приложения, просьба внести оплату на следующие 10 тыс. лет.");
+            }
         }
 
         private void howToBaseToolStripMenuItem_Click(object sender, EventArgs e)

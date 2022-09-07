@@ -24,7 +24,10 @@ namespace RSB
         private static List<string> serv_data_filters = new List<string>();
         //private List<string> data_filters;        
         private int show_only_spec;
-
+        /// <summary>
+        /// конструктор формы исследований, указывается родительская форма
+        /// </summary>
+        /// <param name="parent"></param>
         public Researches(RSBMainForm parent)
         {
             InitializeComponent();
@@ -634,7 +637,7 @@ namespace RSB
 
         private void Researches_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Save_settings_res();
+            //Save_settings_res();
             GC.Collect();
         }
 

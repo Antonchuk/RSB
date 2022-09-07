@@ -62,6 +62,8 @@
             this.btn_ch_targer_setups = new System.Windows.Forms.Button();
             this.rich_txtbox_comments_info = new System.Windows.Forms.RichTextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.btn_ch_comments = new System.Windows.Forms.Button();
+            this.btn_ch_composotion = new System.Windows.Forms.Button();
             this.table_layout_foto_inf = new System.Windows.Forms.TableLayoutPanel();
             this.picbox_inf_bef_1 = new System.Windows.Forms.PictureBox();
             this.picbox_inf_bef_2 = new System.Windows.Forms.PictureBox();
@@ -177,6 +179,7 @@
             this.btn_aproove = new System.Windows.Forms.Button();
             this.btn_default_save = new System.Windows.Forms.Button();
             this.btn_foto_clr = new System.Windows.Forms.Button();
+            this.btn_delete_selected = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.picbox_before_big = new System.Windows.Forms.PictureBox();
             this.picbox_before_sm1 = new System.Windows.Forms.PictureBox();
@@ -210,7 +213,6 @@
             this.fontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer_for_refresh = new System.Windows.Forms.Timer(this.components);
             this.folderBrowserDialog_for_json = new System.Windows.Forms.FolderBrowserDialog();
-            this.btn_ch_comments = new System.Windows.Forms.Button();
             this.tabcontrol_add_inf.SuspendLayout();
             this.tab_page_info.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.split_inf)).BeginInit();
@@ -277,7 +279,7 @@
             this.tab_page_info.Padding = new System.Windows.Forms.Padding(3);
             this.tab_page_info.Size = new System.Drawing.Size(564, 1002);
             this.tab_page_info.TabIndex = 0;
-            this.tab_page_info.Text = "Information";
+            this.tab_page_info.Text = "Information/Edit";
             // 
             // split_inf
             // 
@@ -335,6 +337,7 @@
             this.tableLayoutPanel3.Controls.Add(this.rich_txtbox_comments_info, 1, 12);
             this.tableLayoutPanel3.Controls.Add(this.label3, 0, 13);
             this.tableLayoutPanel3.Controls.Add(this.btn_ch_comments, 2, 12);
+            this.tableLayoutPanel3.Controls.Add(this.btn_ch_composotion, 2, 1);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -575,7 +578,7 @@
             this.btn_ch_treatment.Name = "btn_ch_treatment";
             this.btn_ch_treatment.Size = new System.Drawing.Size(150, 30);
             this.btn_ch_treatment.TabIndex = 23;
-            this.btn_ch_treatment.Text = "Ch treat";
+            this.btn_ch_treatment.Text = "Change";
             this.btn_ch_treatment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_ch_treatment.UseVisualStyleBackColor = true;
             this.btn_ch_treatment.Click += new System.EventHandler(this.button1_Click_2);
@@ -594,7 +597,6 @@
             this.txt_composition.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txt_composition.Location = new System.Drawing.Point(127, 39);
             this.txt_composition.Name = "txt_composition";
-            this.txt_composition.ReadOnly = true;
             this.txt_composition.Size = new System.Drawing.Size(290, 30);
             this.txt_composition.TabIndex = 25;
             // 
@@ -649,6 +651,30 @@
             this.label3.TabIndex = 30;
             this.label3.Text = "Target setups";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // btn_ch_comments
+            // 
+            this.btn_ch_comments.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_ch_comments.Location = new System.Drawing.Point(423, 385);
+            this.btn_ch_comments.Name = "btn_ch_comments";
+            this.btn_ch_comments.Size = new System.Drawing.Size(150, 68);
+            this.btn_ch_comments.TabIndex = 31;
+            this.btn_ch_comments.Text = "Change";
+            this.btn_ch_comments.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_ch_comments.UseVisualStyleBackColor = true;
+            this.btn_ch_comments.Click += new System.EventHandler(this.btn_ch_comments_Click);
+            // 
+            // btn_ch_composotion
+            // 
+            this.btn_ch_composotion.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_ch_composotion.Location = new System.Drawing.Point(423, 39);
+            this.btn_ch_composotion.Name = "btn_ch_composotion";
+            this.btn_ch_composotion.Size = new System.Drawing.Size(150, 30);
+            this.btn_ch_composotion.TabIndex = 32;
+            this.btn_ch_composotion.Text = "Change";
+            this.btn_ch_composotion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_ch_composotion.UseVisualStyleBackColor = true;
+            this.btn_ch_composotion.Click += new System.EventHandler(this.btn_ch_composotion_Click);
             // 
             // table_layout_foto_inf
             // 
@@ -801,7 +827,7 @@
             this.tab_page_research.Name = "tab_page_research";
             this.tab_page_research.Size = new System.Drawing.Size(564, 1011);
             this.tab_page_research.TabIndex = 2;
-            this.tab_page_research.Text = "Edit and make research";
+            this.tab_page_research.Text = "Make research/move";
             // 
             // tableLayoutPanel6
             // 
@@ -1677,10 +1703,10 @@
             // 
             this.tab_page_new_edit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.tab_page_new_edit.Controls.Add(this.splitContainer_add_new);
-            this.tab_page_new_edit.Location = new System.Drawing.Point(4, 22);
+            this.tab_page_new_edit.Location = new System.Drawing.Point(4, 31);
             this.tab_page_new_edit.Name = "tab_page_new_edit";
             this.tab_page_new_edit.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_page_new_edit.Size = new System.Drawing.Size(564, 1011);
+            this.tab_page_new_edit.Size = new System.Drawing.Size(564, 1002);
             this.tab_page_new_edit.TabIndex = 1;
             this.tab_page_new_edit.Text = "Add new";
             this.tab_page_new_edit.Enter += new System.EventHandler(this.Tab_page_new_edit_Enter);
@@ -1699,8 +1725,8 @@
             // splitContainer_add_new.Panel2
             // 
             this.splitContainer_add_new.Panel2.Controls.Add(this.tableLayoutPanel1);
-            this.splitContainer_add_new.Size = new System.Drawing.Size(558, 1005);
-            this.splitContainer_add_new.SplitterDistance = 503;
+            this.splitContainer_add_new.Size = new System.Drawing.Size(558, 996);
+            this.splitContainer_add_new.SplitterDistance = 498;
             this.splitContainer_add_new.TabIndex = 3;
             // 
             // tbllay_add_edit
@@ -1736,6 +1762,7 @@
             this.tbllay_add_edit.Controls.Add(this.btn_aproove, 0, 11);
             this.tbllay_add_edit.Controls.Add(this.btn_default_save, 1, 11);
             this.tbllay_add_edit.Controls.Add(this.btn_foto_clr, 3, 11);
+            this.tbllay_add_edit.Controls.Add(this.btn_delete_selected, 2, 11);
             this.tbllay_add_edit.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbllay_add_edit.Location = new System.Drawing.Point(0, 0);
             this.tbllay_add_edit.Name = "tbllay_add_edit";
@@ -1752,7 +1779,7 @@
             this.tbllay_add_edit.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tbllay_add_edit.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tbllay_add_edit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tbllay_add_edit.Size = new System.Drawing.Size(558, 503);
+            this.tbllay_add_edit.Size = new System.Drawing.Size(558, 498);
             this.tbllay_add_edit.TabIndex = 0;
             // 
             // date_time_add_edit
@@ -2009,9 +2036,9 @@
             this.btn_aproove.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btn_aproove.Location = new System.Drawing.Point(3, 463);
             this.btn_aproove.Name = "btn_aproove";
-            this.btn_aproove.Size = new System.Drawing.Size(118, 37);
+            this.btn_aproove.Size = new System.Drawing.Size(118, 32);
             this.btn_aproove.TabIndex = 23;
-            this.btn_aproove.Text = "Aproove";
+            this.btn_aproove.Text = "Add new";
             this.btn_aproove.UseVisualStyleBackColor = true;
             this.btn_aproove.Click += new System.EventHandler(this.btn_aproove_Click);
             // 
@@ -2020,7 +2047,7 @@
             this.btn_default_save.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btn_default_save.Location = new System.Drawing.Point(127, 463);
             this.btn_default_save.Name = "btn_default_save";
-            this.btn_default_save.Size = new System.Drawing.Size(142, 37);
+            this.btn_default_save.Size = new System.Drawing.Size(142, 32);
             this.btn_default_save.TabIndex = 24;
             this.btn_default_save.Text = "Save default";
             this.btn_default_save.UseVisualStyleBackColor = true;
@@ -2031,11 +2058,22 @@
             this.btn_foto_clr.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btn_foto_clr.Location = new System.Drawing.Point(420, 463);
             this.btn_foto_clr.Name = "btn_foto_clr";
-            this.btn_foto_clr.Size = new System.Drawing.Size(135, 37);
+            this.btn_foto_clr.Size = new System.Drawing.Size(135, 32);
             this.btn_foto_clr.TabIndex = 25;
             this.btn_foto_clr.Text = "Clear foto";
             this.btn_foto_clr.UseVisualStyleBackColor = true;
             this.btn_foto_clr.Click += new System.EventHandler(this.btn_foto_clr_Click);
+            // 
+            // btn_delete_selected
+            // 
+            this.btn_delete_selected.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_delete_selected.Location = new System.Drawing.Point(275, 463);
+            this.btn_delete_selected.Name = "btn_delete_selected";
+            this.btn_delete_selected.Size = new System.Drawing.Size(139, 32);
+            this.btn_delete_selected.TabIndex = 26;
+            this.btn_delete_selected.Text = "Delete selected";
+            this.btn_delete_selected.UseVisualStyleBackColor = true;
+            this.btn_delete_selected.Click += new System.EventHandler(this.btn_delete_selected_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -2053,7 +2091,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(558, 498);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(558, 494);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // picbox_before_big
@@ -2064,11 +2102,12 @@
             this.picbox_before_big.Location = new System.Drawing.Point(3, 3);
             this.picbox_before_big.Name = "picbox_before_big";
             this.tableLayoutPanel1.SetRowSpan(this.picbox_before_big, 3);
-            this.picbox_before_big.Size = new System.Drawing.Size(293, 492);
+            this.picbox_before_big.Size = new System.Drawing.Size(293, 488);
             this.picbox_before_big.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbox_before_big.TabIndex = 2;
             this.picbox_before_big.TabStop = false;
             this.picbox_before_big.Click += new System.EventHandler(this.Picbox_big_Click);
+            this.picbox_before_big.DoubleClick += new System.EventHandler(this.picbox_before_big_DoubleClick);
             // 
             // picbox_before_sm1
             // 
@@ -2076,7 +2115,7 @@
             this.picbox_before_sm1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.picbox_before_sm1.Location = new System.Drawing.Point(302, 3);
             this.picbox_before_sm1.Name = "picbox_before_sm1";
-            this.picbox_before_sm1.Size = new System.Drawing.Size(253, 160);
+            this.picbox_before_sm1.Size = new System.Drawing.Size(253, 158);
             this.picbox_before_sm1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbox_before_sm1.TabIndex = 3;
             this.picbox_before_sm1.TabStop = false;
@@ -2085,9 +2124,9 @@
             // 
             this.picbox_before_sm2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.picbox_before_sm2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_before_sm2.Location = new System.Drawing.Point(302, 169);
+            this.picbox_before_sm2.Location = new System.Drawing.Point(302, 167);
             this.picbox_before_sm2.Name = "picbox_before_sm2";
-            this.picbox_before_sm2.Size = new System.Drawing.Size(253, 160);
+            this.picbox_before_sm2.Size = new System.Drawing.Size(253, 158);
             this.picbox_before_sm2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbox_before_sm2.TabIndex = 4;
             this.picbox_before_sm2.TabStop = false;
@@ -2096,7 +2135,7 @@
             // 
             this.picbox_before_sm3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.picbox_before_sm3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_before_sm3.Location = new System.Drawing.Point(302, 335);
+            this.picbox_before_sm3.Location = new System.Drawing.Point(302, 331);
             this.picbox_before_sm3.Name = "picbox_before_sm3";
             this.picbox_before_sm3.Size = new System.Drawing.Size(253, 160);
             this.picbox_before_sm3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -2392,17 +2431,6 @@
             this.timer_for_refresh.Interval = 300000;
             this.timer_for_refresh.Tick += new System.EventHandler(this.Timer_for_refresh_Tick);
             // 
-            // btn_ch_comments
-            // 
-            this.btn_ch_comments.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_ch_comments.Location = new System.Drawing.Point(423, 385);
-            this.btn_ch_comments.Name = "btn_ch_comments";
-            this.btn_ch_comments.Size = new System.Drawing.Size(150, 68);
-            this.btn_ch_comments.TabIndex = 31;
-            this.btn_ch_comments.Text = "Ch comments";
-            this.btn_ch_comments.UseVisualStyleBackColor = true;
-            this.btn_ch_comments.Click += new System.EventHandler(this.btn_ch_comments_Click);
-            // 
             // Form_specimens
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -2662,5 +2690,7 @@
         private System.Windows.Forms.Button btn_foto_clr;
         private System.Windows.Forms.TextBox txtbox_move_from_pos;
         private System.Windows.Forms.Button btn_ch_comments;
+        private System.Windows.Forms.Button btn_ch_composotion;
+        private System.Windows.Forms.Button btn_delete_selected;
     }
 }

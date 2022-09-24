@@ -12,6 +12,10 @@ using System.Diagnostics;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using Excel = Microsoft.Office.Interop.Excel;
+using Telegram.Bot;
+using Telegram.Bot.Args;
+using MihaZupan;
+using Newtonsoft.Json;
 
 namespace RSB
 {
@@ -20,14 +24,28 @@ namespace RSB
         private readonly RSBMainForm Parent_form;
         private static string conn_str;
         private static List<string> images_paths = new List<string>();
-        private static List<string> data_filters = new List<string>();
+        //private static List<string> data_filter = new List<string>();
         private static bool on_load = true;
         private string[] info_files_paths_bef;
         private string[] info_files_paths_aft;
-        private bool specimen_new_accepted = true;
+        private static bool specimen_new_accepted = true;
+        private int refresh_counter = 0;
+        private static bool isrefreshing = true; // просто для исключения ненужных обновлений при нажатии кнопок Select All/Clear All
         //для картинки на кнопке
         private bool pic_change = true; //true - up, false - down
-        private int show_only_spec;
+        private int show_only_spec;                
+        public class Filtres_master
+        {
+            public List<string> common_filters;// = new List<string>();
+            public bool is_special_filter;
+            public string special_filter;
+        }
+        public Filtres_master filt_master = new Filtres_master
+        {
+            common_filters = new List<string>(),
+            special_filter = "",
+            is_special_filter = false
+        };
         class New_specimen_data
         {
             //класс данных для нового образца
@@ -114,40 +132,37 @@ namespace RSB
         }
         private string do_filtres_for_SQL(List<string> filters)
         {
-            //пробуем сделать фильтры на основе SQL запроса
+            //пробуем сделать фильтры на основе SQL запроса            
             string ans = "";
-            if (filters.Count > 0)
+            if (filters != null)
             {
-                //int num = 1;
-                foreach (string str in filters)
+                if (filters.Count > 0)
                 {
-                    ans = ans + " AND (" + str + ")";
+                    //int num = 1;
+                    foreach (string str in filters)
+                    {
+                        ans = ans + " AND (" + str + ")";
+                    }
                 }
             }
             return ans;
         }
         private void Refresh_datagrid()
         {
-            int selected_id = -1;
-            //MessageBox.Show("Число строк = " + dataGrid_specimens.Rows.Count.ToString());
+            int selected_id = Properties.Settings.Default.main_spec_id;
             if ((!on_load) && dataGrid_specimens.Rows.Count>1 && dataGrid_specimens.CurrentRow!=null)
             {
-                //MessageBox.Show("Число строк = "+ dataGrid_specimens.Rows.Count.ToString());
                 if (dataGrid_specimens.CurrentRow.Cells[0].Value!=null)
                 {
                     selected_id = Convert.ToInt32(dataGrid_specimens.CurrentRow.Cells[0].Value);
-                    //MessageBox.Show("Было выбрано" + selected_id.ToString());
+                    Properties.Settings.Default.main_spec_id = selected_id;
+                    Properties.Settings.Default.Save();
                 }
             }
             dataGrid_specimens.Rows.Clear();
             //удалить предыдущие
             conn_str = Get_conn_string(Properties.Settings.Default.server, Properties.Settings.Default.port,
                 Properties.Settings.Default.database, Parent_form.cbox_username.Text, Parent_form.txtbox_pass.Text);
-            //MessageBox.Show(conn_str);
-
-            //может быть удалено?
-            //
-
             using (MySqlConnection conn = New_connection(conn_str))
             {
                 try
@@ -190,24 +205,38 @@ namespace RSB
                     {
                         sort_dec_asc = "";
                     }
-                    string sql_filtres = do_filtres_for_SQL(data_filters);
-                    //DateTime.TryParse(dateTimePicker_start.Text, out DateTime temp_dat_start);
-                    //DateTime.TryParse(dateTimePicker_end.Text, out DateTime temp_dat_end);
-                    string sqlcom = "SELECT specimens.idspecimens, materials.name, type.name, projects.name, specimens.date_prep, producers.surname, storage.name, " +
-                        "state.name, specimens.stor_position, specimens.priority " +
+                    string sql_filtres = "";
+                    if (filt_master.is_special_filter == false)
+                    {
+                        sql_filtres = do_filtres_for_SQL(filt_master.common_filters);
+                        //richTextBox_special_filt.Text = sql_filtres;
+                    }
+                    else
+                    {
+                        sql_filtres = filt_master.special_filter;
+                    }
+                    string sqlcom = "SELECT DISTINCT specimens.idspecimens, materials.name, type.name, projects.name, specimens.date_prep, producers.surname, storage.name, " +
+                        "state.name, storage_position.position, specimens.priority " +
                     "FROM test2base.specimens " +
                     "LEFT OUTER JOIN test2base.materials ON test2base.specimens.id_material = test2base.materials.id_material " +
                     "LEFT OUTER JOIN test2base.type ON specimens.id_treat_type = type.id_type " +
                     "LEFT OUTER JOIN test2base.projects ON specimens.id_project = projects.id_project " +
                     "LEFT OUTER JOIN test2base.producers ON specimens.id_producer = producers.id_producer " +
-                    "LEFT OUTER JOIN test2base.storage ON specimens.id_storage = storage.id_storage " +
-                    "LEFT OUTER JOIN test2base.state ON specimens.id_state = state.id_state " +
-                    //" WHERE (specimens.date_prep >= '" + temp_dat_start.ToString("yyyy-MM-dd HH:mm:ss") + "' " +
-                    //" AND specimens.date_prep <= '" + temp_dat_end.ToString("yyyy-MM-dd HH:mm:ss") + "') " +
-                    " WHERE (specimens.date_prep >= '" + dateTimePicker_start.Value.ToString("yyyy-MM-dd HH:mm:ss") + "' " +
+                    "LEFT OUTER JOIN test2base.storage_position ON specimens.idspecimens = storage_position.id_specimen " +
+                    "LEFT OUTER JOIN test2base.state ON specimens.id_state = state.id_state "+
+                    "LEFT OUTER JOIN test2base.setup_specimen ON specimens.idspecimens = setup_specimen.id_specimen " +
+                    "LEFT OUTER JOIN test2base.storage ON storage_position.id_storage = storage.id_storage";
+                    if (filt_master.is_special_filter == false)
+                    {
+                        sqlcom = sqlcom +
+                            " WHERE (specimens.date_prep >= '" + dateTimePicker_start.Value.ToString("yyyy-MM-dd HH:mm:ss") + "' " +
                     " AND specimens.date_prep <= '" + dateTimePicker_end.Value.ToString("yyyy-MM-dd HH:mm:ss") + "') " +
-                    sql_filtres +
-                    sort_sql + sort_dec_asc;
+                        sql_filtres + sort_sql + sort_dec_asc;
+                    }
+                    else
+                    {
+                        sqlcom += sql_filtres;
+                    }
 
 
                     using (MySqlCommand comand = new MySqlCommand(sqlcom, conn))
@@ -243,7 +272,7 @@ namespace RSB
                                         {
                                             switch (reader[7].ToString())
                                             {
-                                                case "Storage ready for APT":                                                    
+                                                case "Ready for APT":                                                    
                                                     dataGrid_specimens.Rows[ind].DefaultCellStyle.BackColor = Color.LightPink;
                                                     break;
                                                 case "APT done, need TEM":
@@ -262,7 +291,7 @@ namespace RSB
                                 }
                                 reader.Close();
                             }
-                            else MessageBox.Show("nodata in refresh");
+                            //else MessageBox.Show("nodata in refresh");
                         }
                         conn.Close();
 
@@ -285,6 +314,10 @@ namespace RSB
                         if (Convert.ToInt32(dataGrid_specimens.Rows[i].Cells[0].Value)==selected_id)
                         {
                             dataGrid_specimens.Rows[i].Selected = true;
+                            dataGrid_specimens.CurrentCell = dataGrid_specimens.Rows[i].Cells[0];
+                            //dataGrid_specimens.Rows[i].Cells[0].                            
+                            //MessageBox.Show("сохранный номер строки" + selected_id.ToString());
+                            //dataGrid_specimens.SelectedRows.
                         }
                     }
                 }
@@ -292,8 +325,6 @@ namespace RSB
             //пробуем встроить фильтры
             if (!on_load)
             {
-                //MessageBox.Show("Применили фильтры");
-                //Do_filters(data_filters);
                 Deal_with_buttons();
             }
         }
@@ -301,8 +332,6 @@ namespace RSB
         {
             try
             {
-                if (combo != "f_succ")
-                {
                     conect.Open();
                     string sqlcom = "SELECT " + colname + " FROM test2base." + table_name + " ORDER BY " + colname;
                     using (MySqlCommand comand = new MySqlCommand(sqlcom, conect))
@@ -319,6 +348,7 @@ namespace RSB
                                             combox_producer.Items.Add(reader[0].ToString());
                                             break;
                                         case "storage":
+
                                             combox_storage.Items.Add(reader[0].ToString());
                                             combox_move_to.Items.Add(reader[0].ToString());
                                             break;
@@ -349,6 +379,18 @@ namespace RSB
                                         case "setup":
                                             combox_setup.Items.Add(reader[0].ToString());
                                             break;
+                                        case "storage_filter":                                            
+                                            ch_listbox_storage_f.Items.Add(reader[0].ToString(),true);
+                                            break;
+                                        case "type":
+                                            combox_treat_type.Items.Add(reader[0].ToString());
+                                            break;
+                                        case "setup_type":
+                                            ch_listbox_setup_inf.Items.Add(reader[0].ToString(),false);
+                                            break;
+                                        case "setups_add_new":
+                                            ch_listbox_setups_add_new.Items.Add(reader[0].ToString(), false);
+                                            break;
                                     }
                                 }
                                 reader.Close();
@@ -357,7 +399,7 @@ namespace RSB
                         //проверить выполнен ли запрос
                         conect.Close();
                     }
-                }
+                
             }
             catch (Exception ex)
             {
@@ -375,6 +417,7 @@ namespace RSB
             combox_response.Items.Clear();
             combox_researcher.Items.Clear();
             combox_setup.Items.Clear();
+            combox_treat_type.Items.Clear();
             ch_listbox_type.Items.Clear();
             ch_listbox_material.Items.Clear();
             ch_listbox_project.Items.Clear();
@@ -403,7 +446,12 @@ namespace RSB
                 Fill_one_combo("surname", conn, "producers", "researchers");
                 //тип установки
                 Fill_one_combo("name", conn, "setups", "setup");
-
+                //тип изготовления образца
+                Fill_one_combo("name", conn, "type", "type");
+                //установки на которых можно делать исследования
+                Fill_one_combo("Name",conn,"setups","setup_type");
+                //установки на которых можно делать исследования вкладка добавление нового
+                Fill_one_combo("Name", conn, "setups", "setups_add_new");
 
                 //заполняем фильтры
                 //фильтр тип образца
@@ -414,16 +462,18 @@ namespace RSB
                 Fill_one_combo("name", conn, "materials", "f_material");
                 //фильтр проекта
                 Fill_one_combo("name", conn, "projects", "f_project");
-                
+                //фильтр Storage
+                Fill_one_combo("name", conn, "storage", "storage_filter");                
             }
         }
-        private void Fill_info_text_sql(int spec_id, MySqlConnection connect, string table_name, string col_name, string id_join, string id2_join)
+        private string Fill_info_text_sql(int spec_id, MySqlConnection connect, string table_name, string col_name, string id_join, string id2_join)
         {
+            string ans = "";
             try
             {
                 connect.Open();
                 string sqlcom = "SELECT " + table_name + "." + col_name + ", specimens.idspecimens FROM test2base.specimens " +
-                    "LEFT OUTER JOIN test2base." + table_name + " ON specimens." + id2_join + " = " + table_name + "." + id_join +
+                    "INNER JOIN test2base." + table_name + " ON specimens." + id2_join + " = " + table_name + "." + id_join +
                     " WHERE idspecimens = " + spec_id.ToString();
                 //MessageBox.Show(sqlcom);
                 using (MySqlCommand comand = new MySqlCommand(sqlcom, connect))
@@ -434,20 +484,7 @@ namespace RSB
                         {
                             while (reader.Read())
                             {
-                                switch (table_name)
-                                {
-                                    case "treatment":
-                                        txtbox_treat_inf.Text = reader[0].ToString();
-                                        break;
-                                    case "producers":
-                                        // It's a trap!
-                                        //на самом деле это response
-                                        txtbox_respon_inf.Text = reader[0].ToString();
-                                        break;
-                                    case "specimens":
-                                        combox_position.Text = reader[0].ToString();
-                                        break;
-                                }
+                                ans = reader[0].ToString();
                             }
                             reader.Close();
                         }
@@ -461,15 +498,16 @@ namespace RSB
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error,
             MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
+            return ans;
         }
         private void Fill_info_foto(int select_id, MySqlConnection connect, string table_name, string col_name)
         {
             try
             {
                 connect.Open();
-                string sqlcom = "SELECT " + table_name + "." + col_name + ", specimens.idspecimens FROM test2base.specimens" +
+                string sqlcom = "SELECT " + table_name + "." + col_name + " FROM test2base.specimens" +
+                //string sqlcom = "SELECT " + table_name + "." + col_name + ", specimens.idspecimens FROM test2base.specimens" +
                     " WHERE idspecimens = " + select_id.ToString();
-                //MessageBox.Show(sqlcom);
                 using (MySqlCommand comand = new MySqlCommand(sqlcom, connect))
                 {
                     using (MySqlDataReader reader = comand.ExecuteReader())
@@ -497,7 +535,8 @@ namespace RSB
                                             foreach (string path in info_files_paths_bef)
                                             {
                                                 string ext_name = Path.GetExtension(path);
-                                                if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff" || ext_name == ".JPG")
+                                                if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff" 
+                                                    || ext_name == ".JPG" || ext_name == ".JPEG" || ext_name == ".PNG" || ext_name == ".BMP" || ext_name == ".TIFF")
                                                 {
                                                     num++;
                                                     switch (num)
@@ -537,7 +576,8 @@ namespace RSB
                                             foreach (string path in info_files_paths_aft)
                                             {
                                                 string ext_name = Path.GetExtension(path);
-                                                if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff" || ext_name == ".JPG")
+                                                if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff" 
+                                                    || ext_name == ".JPG" || ext_name == ".JPEG" || ext_name == ".PNG" || ext_name == ".BMP" || ext_name == ".TIFF")
                                                 {
                                                     num++;
                                                     switch (num)
@@ -567,7 +607,9 @@ namespace RSB
                                         string posi = reader[0].ToString();
                                         combox_position.Text = posi;
                                         break;
-
+                                    case "comments":
+                                        rich_txtbox_comments_info.Text = reader[0].ToString();
+                                        break;
                                 }
                             }
 
@@ -575,10 +617,12 @@ namespace RSB
                         }
                         else
                         {
-                            MessageBox.Show("должны удалять картинки");
-                            if (picbox_inf_bef_1.Image != null) picbox_inf_bef_1.Image.Dispose();
-                            if (picbox_inf_bef_2.Image != null) picbox_inf_bef_2.Image.Dispose();
-                            if (picbox_inf_bef_3.Image != null) picbox_inf_bef_3.Image.Dispose();
+                            if (col_name == "place_foto_after" || col_name == "place_foto_bef")
+                            {
+                                if (picbox_inf_bef_1.Image != null) picbox_inf_bef_1.Image.Dispose();
+                                if (picbox_inf_bef_2.Image != null) picbox_inf_bef_2.Image.Dispose();
+                                if (picbox_inf_bef_3.Image != null) picbox_inf_bef_3.Image.Dispose();
+                            }
                         }
                     }
                     //проверить выполнен ли запрос
@@ -601,6 +645,10 @@ namespace RSB
                 box.Image = null;
             }
         }
+        /// <summary>
+        /// удаляет картинки  1 - before, 2 - after
+        /// </summary>
+        /// <param name="type"> 1 - before, 2 - after</param>
         private void Clear_pics_info(int type)
         {
             switch (type)
@@ -620,6 +668,53 @@ namespace RSB
             }
             GC.Collect();
         }
+        /// <summary>
+        /// Заполняем лист бокс галочками
+        /// </summary>
+        private void Fill_list_box(int spec_id, MySqlConnection connect, CheckedListBox l_box)
+        {
+            try
+            {
+                if (l_box.Items.Count > 0)
+                {
+                    for (int i = 0; i < l_box.Items.Count; ++i)
+                    {
+                        l_box.SetItemChecked(i, false);
+                    }
+
+                    connect.Open();
+                    string sqlcom = "SELECT Name FROM test2base.setup_specimen " +
+                        "INNER JOIN test2base.setups ON test2base.setup_specimen.id_setup = test2base.setups.id_setups " +
+                        "WHERE id_specimen = " + spec_id.ToString();
+                    using (MySqlCommand comand = new MySqlCommand(sqlcom, connect))
+                    {
+                        using (MySqlDataReader reader = comand.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+
+                                while (reader.Read())
+                                {
+                                    if (l_box.Items.Contains(reader[0].ToString()))
+                                    {
+                                        l_box.SetItemChecked(l_box.Items.IndexOf(reader[0].ToString()), true);
+                                    }
+                                    //MessageBox.Show(spec_id.ToString() + " on setup" + reader[0].ToString());
+                                }
+                                reader.Close();
+                            }
+                        }
+                        connect.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка в блоке заполнения ch-list-box-setups", MessageBoxButtons.OK, MessageBoxIcon.Error,
+            MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                connect.Close();
+            }
+        }
         private void Fill_info_text(int index)
         {
             //простое заполнение из грида
@@ -629,7 +724,27 @@ namespace RSB
             if (dataGrid_specimens.Rows[index].Cells[4].Value != null) txtbox_date_inf.Text = dataGrid_specimens.Rows[index].Cells[4].Value.ToString();
             if (dataGrid_specimens.Rows[index].Cells[3].Value != null) txtbox_project_inf.Text = dataGrid_specimens.Rows[index].Cells[3].Value.ToString();
             if (dataGrid_specimens.Rows[index].Cells[7].Value != null) txtbox_state_inf.Text = dataGrid_specimens.Rows[index].Cells[7].Value.ToString();
-            if (dataGrid_specimens.Rows[index].Cells[6].Value != null) txtbox_storage_inf.Text = dataGrid_specimens.Rows[index].Cells[6].Value.ToString();
+            if (dataGrid_specimens.Rows[index].Cells[6].Value != null)
+            {
+                txtbox_storage_inf.Text = dataGrid_specimens.Rows[index].Cells[6].Value.ToString();
+                switch (dataGrid_specimens.Rows[index].Cells[6].Value.ToString())
+                {
+                    case "ПАЗЛ 1":
+                        combox_setup.SelectedIndex = combox_setup.Items.IndexOf("ПАЗЛ");
+                        break;
+                    case "АТЛАЗ 1":
+                        combox_setup.SelectedIndex = combox_setup.Items.IndexOf("АТЛАЗ");
+                        break;
+                    case "ЛАЗТ 1":
+                        combox_setup.SelectedIndex = combox_setup.Items.IndexOf("ЛАЗТ");
+                        break;
+                    default:
+                        combox_setup.Text = "";
+                        combox_setup.SelectedIndex = -1;
+                        break;
+                }
+                //txtbox_m
+            }
             if (dataGrid_specimens.Rows[index].Cells[6].Value != null)
             {
                 txtbox_move_from.Text = dataGrid_specimens.Rows[index].Cells[6].Value.ToString();
@@ -644,11 +759,19 @@ namespace RSB
                 {
                     //treatment
                     int i = Convert.ToInt32(dataGrid_specimens.Rows[index].Cells[0].Value);
-                    Fill_info_text_sql(i, conn, "treatment", "Name", "id_treatment", "id_treatment");
+                    txtbox_treat_inf.Text = Fill_info_text_sql(i, conn, "treatment", "Name", "id_treatment", "id_treatment");
                     //response
-                    Fill_info_text_sql(i, conn, "producers", "surname", "id_producer", "id_respon");
+                    txtbox_respon_inf.Text = Fill_info_text_sql(i, conn, "producers", "surname", "id_producer", "id_respon");
+                    //fill composition
+                    txt_composition.Text = Fill_info_text_sql(i, conn, "materials", "composition", "id_material", "id_material");
                     //storage position
                     Fill_info_foto(i, conn, "specimens", "stor_position");
+                    //комменты
+                    Fill_info_foto(i, conn, "specimens", "comments");
+                    //установки
+                    Fill_list_box(i, conn, ch_listbox_setup_inf);
+                    //Fill_list_box(i, conn, ch_listbox_setup_inf);
+
                     //foto
                     //удалить картинки "before" и "after"
                     Clear_pics_info(1);
@@ -664,21 +787,18 @@ namespace RSB
         private void Fill_information()
         {
             //заполняем информацию
-            //берем её из дата грида
-            if (dataGrid_specimens.Rows.Count > 0 && dataGrid_specimens.CurrentRow != null)
+            //берем её из дата грида            
+            if (dataGrid_specimens.Rows.Count > 0 && dataGrid_specimens.SelectedRows != null && dataGrid_specimens.CurrentCell!=null)
             {
-                int Sel_index = dataGrid_specimens.CurrentRow.Index;
+                //MessageBox.Show("ОТладка  чило строк="+dataGrid_specimens.Rows.Count.ToString()+
+                    //"\n [0] строка равна = "+dataGrid_specimens.CurrentCell.Value.ToString());
+                int Sel_index = dataGrid_specimens.SelectedRows[0].Index;
                 Fill_info_text(Sel_index);
             }
         }
         private void Form_specimens_Load(object sender, EventArgs e)
         {
             on_load = true;
-            //TypeConverter converter_t = TypeDescriptor.GetConverter(typeof(Font));
-            //this.Font = (Font)converter_t.ConvertFromString(Properties.Settings.Default.font_config);
-            //MessageBox.Show("load: \n " + Properties.Settings.Default.font_config);
-            //MessageBox.Show("размер хххх = "+this.Font.Size.ToString() );
-            //MessageBox.Show("value= " + dateTimePicker_end.Value.ToString() + "\n text=" + dateTimePicker_end.Text);
             show_only_spec = Properties.Settings.Default.show_only_specimens;
             if (combox_showonly.Text != "All") combox_showonly.Text = show_only_spec.ToString();
             btn_up_down.Image = Properties.Resources.down;
@@ -733,10 +853,18 @@ namespace RSB
             combox_sort.SelectedIndex = 3;
             Properties.Settings.Default.main_res_id = -1;
             Properties.Settings.Default.main_spec_id = -1;            
-            dateTimePicker_end.Value = DateTime.Now;
+            dateTimePicker_end.Value = DateTime.Now.AddYears(1);
             DateTime tem_dat;
             tem_dat = dateTimePicker_end.Value;
-            dateTimePicker_start.Value = tem_dat.AddYears(-1);
+            dateTimePicker_start.Value = tem_dat.AddYears(-20);
+            if (Properties.Settings.Default.ini_split_inf!=0) split_inf.SplitterDistance = Properties.Settings.Default.ini_split_inf;
+            if (Properties.Settings.Default.ini_split_add_new != 0) splitContainer_add_new.SplitterDistance = Properties.Settings.Default.ini_split_add_new;
+            //грузим фильтры из json
+            filt_master.common_filters = new List<string>();
+            Load_def_json(@"\Settings\test_json.json");
+            //richTextBox_special_filt.Text = filt_master.special_filter;
+            filt_master.is_special_filter = false;
+            //btn_sql_filter_special.BackColor = Color.Red;
             Refresh_datagrid();
             Fill_information();
             on_load = false;
@@ -746,9 +874,7 @@ namespace RSB
 
         private void Btn_refresh_Click(object sender, EventArgs e)
         {
-            //dataGrid_specimens.Rows.Clear();
             Refresh_datagrid();
-            //Do_filters(data_filters);
         }
 
         private void Tab_page_new_edit_Enter(object sender, EventArgs e)
@@ -760,24 +886,38 @@ namespace RSB
         {
             //проврека на заполненность всех полей на форме ADD_EDIT
             if (combox_treat_type.Text != "" && combox_treatment.Text != "" && combox_storage.Text != "" &&
-                combox_project.Text != "" && combox_producer.Text != "" && combox_material.Text != "" && date_time_add_edit.Text != "" && combox_pos_add.Text != "")
+                combox_project.Text != "" && combox_producer.Text != "" && combox_material.Text != "" && 
+                date_time_add_edit.Text != "" && combox_pos_add.Text != "" && (ch_listbox_setups_add_new.CheckedItems.Count>0))
             {
                 return true;
             }
             else
             {
-                MessageBox.Show("Not all fields are filled!");
+                MessageBox.Show("Not all fields are filled! \n Some of them are empty \n May be Target setups need to be selected");
                 return false;
             }
 
         }
+
+        /// <summary>
+        /// Ищем и если нужно добавляем новую запись
+        /// surname - искомое
+        /// name2 - название поля(столбца) таблицы
+        /// col_name - что ищем (обычно ИД)
+        /// возращает ИД найденной или созданной записи
+        /// </summary>
+        /// <param name="surname"></param>
+        /// <param name="connect"></param>
+        /// <param name="table_name"></param>
+        /// <param name="col_name"></param>
+        /// <param name="name2"></param>
+        /// <returns></returns>
         private string Check_for_exist(string surname, MySqlConnection connect, string table_name, string col_name, string name2)
         {
             bool need_new = false;
             string ans = "";
             connect.Open();
             string sqlcom = "SELECT " + col_name + " FROM test2base." + table_name + " WHERE " + name2 + " = '" + surname + "'";
-            //MessageBox.Show(sqlcom);
             using (MySqlCommand comand = new MySqlCommand(sqlcom, connect))
             {
                 using (MySqlDataReader reader = comand.ExecuteReader())
@@ -793,8 +933,6 @@ namespace RSB
                     }
                     else
                     {
-                        //MessageBox.Show("не такого "+table_name+", сейчас добавим");                        
-                        //add_new producer
                         need_new = true;
                         reader.Close();
                     }
@@ -889,9 +1027,6 @@ namespace RSB
                         //add new treatment
                         Properties.Settings.Default.treatment = surname;
                         Properties.Settings.Default.Save();
-                        //Form add_new_material = new Materials_new();
-                        //add_new_material.ShowDialog();
-                        //add_new_material.Dispose();
                         New_treatment treat_new = new New_treatment
                         {
                             name = Properties.Settings.Default.treatment,
@@ -1009,6 +1144,53 @@ namespace RSB
             }
             return directory_new;
         }
+
+        private bool Is_state_exist(MySqlConnection c,string tr, string mat)
+        {
+            bool ans = false;
+            c.Open();            
+            string com = "SELECT materialstate.Name FROM test2base.materialstate " +
+                "WHERE (id_treatment="+tr+") AND " +
+                "(id_material='"+mat+"')";
+            using (MySqlCommand comand = new MySqlCommand(com, c))
+            {                
+                using (MySqlDataReader reader = comand.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        ans = true;
+                        reader.Close();
+                    }
+                }
+            }
+            c.Close();
+            //MessageBox.Show("find such state = "+ans.ToString());
+            return ans;
+        }
+        private void Push_state(MySqlConnection ccc, string treat, string material, string name)
+        {
+            //если нет такого состояния -создаем
+            if (!Is_state_exist(ccc, treat, material ))
+            {
+                //создаем новое состояние
+                ccc.Open();
+                string com = "INSERT INTO test2base.materialstate (id_treatment, name,  id_material) " +
+                    "VALUES ("+treat+", '"+name+"', "+material+") ";
+                using (MySqlCommand comand = new MySqlCommand(com, ccc))
+                {
+                    comand.ExecuteNonQuery();
+                }
+                //создаем связь (состояние материала) - состояние
+                com = "INSERT INTO test2base.materialstate_state (id_materialstate, id_state) " +
+                    "VALUES ((SELECT materialstate.id_materialstate FROM test2base.materialstate WHERE(materialstate.id_treatment = "+treat+") AND (materialstate.id_material = "+material+")), " +
+                    "'4' )";
+                using (MySqlCommand comand = new MySqlCommand(com, ccc))
+                {
+                    comand.ExecuteNonQuery();
+                }
+                ccc.Close();
+            }            
+        }
         private void New_specimen()
         {
             conn_str = Get_conn_string(Properties.Settings.Default.server, Properties.Settings.Default.port,
@@ -1037,9 +1219,11 @@ namespace RSB
                         foto_before = "",
                         stor_pos = combox_pos_add.Text,
                         priority=combox_priority.Text
-                    };                    
+                    };
                     //если нет, то добавляем новые
-                    Check_for_new_data(new_spec, conn);                    
+                    specimen_new_accepted = true;
+                    string state_name = new_spec.material + " " + new_spec.treatment;
+                    Check_for_new_data(new_spec, conn);                     
                     if (specimen_new_accepted)
                     {
                         if (!(new_spec.priority== "4 High" || new_spec.priority == "5 Now" || new_spec.priority == "3 Normal" || new_spec.priority == "2 Low" || new_spec.priority == "1 One fine day"))
@@ -1063,36 +1247,35 @@ namespace RSB
                         }
                         
                         conn.Open();
-                        string sqlcom_3 = "INSERT INTO test2base.specimens (id_producer, id_state, date_prep, id_project, id_storage, id_treatment, " +
-                            "id_treat_type, id_respon, place_foto_bef, place_foto_after, id_material,stor_position,priority) VALUES (@id_producer,@id_state,@datetime,@id_project,@id_storage,@treatment," +
-                        "@id_treat_type,@id_respon,@foto_before,@foro_after,@id_material,@stor_position,@priority)";
+                        string sqlcom_3 = "INSERT INTO test2base.specimens (id_producer, id_state, date_prep, id_project, id_treatment, " +
+                            "id_treat_type, id_respon, place_foto_bef, place_foto_after, id_material, priority, comments) VALUES (@id_producer,@id_state,@datetime,@id_project,@treatment," +
+                        "@id_treat_type,@id_respon,@foto_before,@foro_after,@id_material,@priority, @comment)";
                         using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conn))
                         {
                             comand.Parameters.AddWithValue("@id_producer", new_spec.producer);
                             comand.Parameters.AddWithValue("@id_state", new_spec.state);
                             comand.Parameters.AddWithValue("@datetime", new_spec.datetime);
                             comand.Parameters.AddWithValue("@id_project", new_spec.project);
-                            comand.Parameters.AddWithValue("@id_storage", new_spec.storage);
+                            //comand.Parameters.AddWithValue("@id_storage", new_spec.storage);
                             comand.Parameters.AddWithValue("@treatment", new_spec.treatment);
                             comand.Parameters.AddWithValue("@id_treat_type", new_spec.type);
                             comand.Parameters.AddWithValue("@foto_before", new_spec.foto_before);
                             comand.Parameters.AddWithValue("@foro_after", new_spec.foto_after);
                             comand.Parameters.AddWithValue("@id_material", new_spec.material);
                             comand.Parameters.AddWithValue("@id_respon", new_spec.resonse);
-                            comand.Parameters.AddWithValue("@stor_position", new_spec.stor_pos);
+                            //comand.Parameters.AddWithValue("@stor_position", new_spec.stor_pos);
                             comand.Parameters.AddWithValue("@priority", new_spec.priority);
+                            comand.Parameters.AddWithValue("@comment", rich_txtbox_comments.Text);
                             //MessageBox.Show(comand.CommandText);
                             comand.ExecuteNonQuery();
                             //проверить выполнен ли запрос
                             conn.Close();
                         }
-
                         //получить новый ID                        
-
                         conn.Open();
                         //MessageBox.Show("Дата для сравнения"+new_spec.datetime);
                         sqlcom_3 = "SELECT idspecimens FROM test2base.specimens WHERE id_producer=@id_producer AND id_state=@id_state AND date_prep=@datetime AND " +
-                            "id_project=@id_project AND id_storage=@id_storage AND id_treatment=@id_treatment AND " +
+                            "id_project=@id_project AND id_treatment=@id_treatment AND " +
                             "id_treat_type=@id_treat_type AND id_respon=@id_respon AND id_material=@id_material";
                         using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conn))
                         {
@@ -1100,7 +1283,7 @@ namespace RSB
                             comand.Parameters.AddWithValue("@id_state", new_spec.state);
                             comand.Parameters.AddWithValue("@datetime", new_spec.datetime);
                             comand.Parameters.AddWithValue("@id_project", new_spec.project);
-                            comand.Parameters.AddWithValue("@id_storage", new_spec.storage);
+                            //comand.Parameters.AddWithValue("@id_storage", new_spec.storage);
                             comand.Parameters.AddWithValue("@id_treatment", new_spec.treatment);
                             comand.Parameters.AddWithValue("@id_treat_type", new_spec.type);
                             comand.Parameters.AddWithValue("@id_material", new_spec.material);
@@ -1122,12 +1305,19 @@ namespace RSB
                         }
                         //MessageBox.Show("найденный индекс ="+indexx.ToString());
                         conn.Close();
-
-                        //MessageBox.Show("Проверка на ошибку, это до копирования фото");
+                        if (id_new != -1)
+                        {
+                            //записать местоположение в новую базу данных
+                            Ch_or_create_stor_pos(int.Parse(new_spec.storage), int.Parse(new_spec.stor_pos), id_new, false);
+                            //Simple_SQL_req("INSERT INTO test2base.storage_position (id_storage, position, id_specimen) " +
+                            //    "VALUES (" + new_spec.storage + ", " + new_spec.stor_pos + ", " + id_new.ToString() + ");");
+                        }
 
                         new_spec.foto_before = Copy_fotos(new_spec.foto_before, dir_foto_new, 1,id_new);
 
                         //MessageBox.Show("Проверка на ошибку, это после копирования фото");
+                        //проверяем и добавляем состояние
+                        Push_state(conn, new_spec.treatment, new_spec.material, state_name);
                         //поменять название папки фото до
                         conn.Open();
                         sqlcom_3 = "UPDATE test2base.specimens SET place_foto_bef =@foto_before WHERE (idspecimens = " + id_new.ToString()+")";
@@ -1136,7 +1326,12 @@ namespace RSB
                             comand.Parameters.AddWithValue("@foto_before", new_spec.foto_before);
                             comand.ExecuteNonQuery();
                         }
+                        //добавить информацию о целевых установках
+                        Ch_list_ad_new(ch_listbox_setups_add_new, id_new);
                         conn.Close();
+                        MessageBox.Show("Если вы дошли до этого сообщения,\n" +
+                            "то образец скорее всего создан.\n" +
+                            "НЕ НАДО наяривать кнопоку для создания образца");
                     }
                     else MessageBox.Show("smth wrong 'specimen_new_accepted'=false");
                 }
@@ -1151,87 +1346,10 @@ namespace RSB
                 Log_action(Properties.Settings.Default.default_username, "new specimen", "universe", combox_storage.Text + " " + combox_pos_add.Text, id_new.ToString());
             }
         }
-        private void Btn_write_to_base_Click(object sender, EventArgs e)
-        {
-            //проверка все ли поля заполнены
-            if (Ch_fields())
-            {
-                //проврека есть ли такая уже запись по дата+изготовитель+материал+проект
-                //если нет, то создем новый
-                New_specimen();
-                Refresh_datagrid();
-            }
-            else
-            {
-                MessageBox.Show("Не все поля заполнены");
-            }
-        }
 
         private void Picbox_big_Click(object sender, EventArgs e)
         {
-            if (picbox_before_big.Image != null)
-            {
-                string temp_path = images_paths[0];
-                images_paths.RemoveAt(0);
-                images_paths.Insert(images_paths.Count, temp_path);
-                picbox_before_big.Image.Dispose();
-                picbox_before_big.Image = Image.FromFile(images_paths[0]);
-                if (images_paths.Count > 1)
-                {
-                    picbox_before_sm1.Image.Dispose();
-                    picbox_before_sm1.Image = Image.FromFile(images_paths[1]);
-                    if (images_paths.Count > 2)
-                    {
-                        picbox_before_sm2.Image.Dispose();
-                        picbox_before_sm2.Image = Image.FromFile(images_paths[2]);
-                        if (images_paths.Count > 3)
-                        {
-                            picbox_before_sm3.Image.Dispose();
-                            picbox_before_sm3.Image = Image.FromFile(images_paths[3]);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                //грузим новые картинки
-                DialogResult result = open_dial_im_before.ShowDialog();
-                bool ttt = true;
-                images_paths.Clear();
-                if (result == DialogResult.OK && ttt)
-                {
-                    int num = 0;
-                    foreach (string image_path in open_dial_im_before.FileNames)
-                    {
-                        //MessageBox.Show(image_path);
-                        string ext_name = Path.GetExtension(image_path);
-                        if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff" || ext_name == ".JPG")
-                        {
-                            Image image_new = Image.FromFile(image_path);
-                            images_paths.Add(image_path);
-                            num++;
-                            switch (num)
-                            {
-                                case 1:
-                                    picbox_before_big.Image = image_new;
-                                    break;
-                                case 2:
-                                    picbox_before_sm1.Image = image_new;
-                                    break;
-                                case 3:
-                                    picbox_before_sm2.Image = image_new;
-                                    break;
-                                case 4:
-                                    picbox_before_sm3.Image = image_new;
-                                    break;
-                            }
-                        }
-                        else MessageBox.Show("No images selected");
-                    }
-                    picbox_before_big.BackgroundImage = null;
-                }
-                else MessageBox.Show("No path or no directory");
-            }
+            
         }
 
         private void Combox_storage_KeyPress(object sender, KeyPressEventArgs e)
@@ -1261,6 +1379,8 @@ namespace RSB
             Properties.Settings.Default.type_prep = combox_treat_type.Text;
             Properties.Settings.Default.respons = combox_response.Text;
             Properties.Settings.Default.font_config = this.Font.ToString();
+            Properties.Settings.Default.ini_split_add_new = splitContainer_add_new.SplitterDistance;
+            Properties.Settings.Default.ini_split_inf = split_inf.SplitterDistance;
             //MessageBox.Show("ssave: \n " + Properties.Settings.Default.font_config);
             if (combox_showonly.Text=="All")
             {
@@ -1274,32 +1394,33 @@ namespace RSB
             {
                 Properties.Settings.Default.res_laser_power = Convert.ToDecimal(txtbox_las_pow.Text);
             }
-            catch (Exception ex)
+            catch (FormatException)
             {
-                MessageBox.Show("error" + ex.ToString());
+                Properties.Settings.Default.res_laser_power = 0;
+                txtbox_las_pow.Text = "0";
+                MessageBox.Show("Вы попытались вписать в поле мощности лазера недопустимый символ. Просьба вписывать только цифры и запятую");
+                
             }
             try
             {
                 Properties.Settings.Default.res_temper = Convert.ToInt32(txtbox_temperature.Text);
             }
-            catch (Exception ex)
+            catch (FormatException)
             {
-                MessageBox.Show("error" + ex.ToString());
+                Properties.Settings.Default.res_temper = 0;
+                txtbox_temperature.Text = "0";
+                MessageBox.Show("Вы попытались вписать в поле температуры недопустимый символ. Просьба вписывать только цифры и запятую");
+
             }
-            //Properties.Settings.Default.user_access_lvl = 1;
             Properties.Settings.Default.Save();
-        }
-        private void Btn_save_def_Click(object sender, EventArgs e)
-        {
-            Save_settings();
         }
 
         private void Form_specimens_FormClosing(object sender, FormClosingEventArgs e)
         {
             Save_settings();
+            //сохранить фильтры в json
+            Save_def_json(@"\Settings\test_json.json");
             e.Cancel = true;
-            //MessageBox.Show("Нельзя просто закрыть окно. \n Надо решить задание. \n Если правильно решишь, то больше будешь играть.");
-            //else e.Cancel = false;
             Hide();
         }
 
@@ -1389,12 +1510,31 @@ namespace RSB
 
         private void Button1_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("сообщите антону, что вы нажали эту кнопку");
             Fill_information();
         }
 
         private void DataGrid_specimens_SelectionChanged(object sender, EventArgs e)
         {
-            Fill_information();
+            //MessageBox.Show("случилось SelectionChanged");
+            if ((!on_load) && dataGrid_specimens.SelectedRows != null)// && dataGrid_specimens.CurrentRow != null
+            {
+                if (dataGrid_specimens.SelectedRows.Count > 0 && dataGrid_specimens.SelectedRows[0].Cells != null)
+                {
+                    on_load = true; //выключаем срабатывание Form_Activated при отладке (реагирует на MessageBox)
+                    //MessageBox.Show("CurrentRow = " + dataGrid_specimens.CurrentRow.Cells[0].Value.ToString());
+                    //MessageBox.Show("SelectedRows = " + dataGrid_specimens.SelectedRows[0].Cells[0].Value.ToString());
+                    //Properties.Settings.Default.main_spec_id = Convert.ToInt32(dataGrid_specimens.CurrentRow.Cells[0].Value);
+                    Properties.Settings.Default.main_spec_id = Convert.ToInt32(dataGrid_specimens.SelectedRows[0].Cells[0].Value);
+                    Properties.Settings.Default.Save();
+                    Fill_information();
+                    on_load = false;
+                }
+            }
+
+            //здесь происходит магия и почему-то херово запоминается ИД или процедура происходит не тогда, когда нужно
+
+            //Fill_information();
 
         }
 
@@ -1529,22 +1669,20 @@ namespace RSB
                                 conn.Close();
                             }
                             Log_action(Properties.Settings.Default.default_username, "research was made", "", "", indexx.ToString());
-                            Refresh_datagrid();
-                            //Do_filters(data_filters);
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error,
                         MessageBoxDefaultButton.Button1);
                         }
-                    }
-                    Refresh_datagrid();
+                    }                    
                 }
             }
             else
             {
                 MessageBox.Show("У вас не достаточно прав доступа к данной функции, обратитесь к администратору");
             }
+            Refresh_datagrid();
         }
 
         private void Txtbox_data_dir_DoubleClick(object sender, EventArgs e)
@@ -1576,76 +1714,138 @@ namespace RSB
             //шоб своих не писали
             combox_researcher.Text = "";
         }
+        /// <summary>
+        /// получаем максимальное значение позиций в хранилище
+        /// </summary>
+        /// <returns></returns>
+        private int Get_max_positions(MySqlConnection conection, string stor_name)
+        {
+            int deflt = 0;
+            //using (MySqlConnection conn = New_connection(conn_str))
+            using (conection)
+            {
+                try
+                {
+                    conection.Open();
+                    string sqlcom_3 = "SELECT capacity FROM test2base.storage WHERE storage.name ='" + stor_name + "'";
+                    //MessageBox.Show("Запрос ="+sqlcom_3);
+                    using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conection))
+                    {
+                        using (MySqlDataReader reader = comand.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {                                    
+                                    deflt = Convert.ToInt32(reader[0]);
+                                    
+                                }
+                                reader.Close();
+                            }
+                        }
+                    }
+                    //изменяем состояние образца                    
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                MessageBoxDefaultButton.Button1);
+                }
+                conection.Close();
 
+            }
+            return deflt;
+        }
+        /// <summary>
+        /// Получить занятые позиции
+        /// </summary>
+        /// <returns></returns>
+        private List<int> Get_ocupied_pos(MySqlConnection conection, string stor_name)
+        {
+            List<int> ans = new List<int>();
+            using (conection)
+            {
+                try
+                {
+                    conection.Open();
+                    string sqlcom_3 = "SELECT position, id_specimen FROM test2base.storage_position " +
+                        "WHERE (id_storage = (SELECT id_storage FROM test2base.storage WHERE (name = '"+stor_name+"')))";
+                    using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conection))
+                    {
+                        using (MySqlDataReader reader = comand.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    //deflt = Convert.ToInt32(reader[0]);
+                                    if (Convert.ToInt32(reader[1])!=0)
+                                    ans.Add(Convert.ToInt32(reader[0]));
+
+                                }
+                                reader.Close();
+                            }
+                        }
+                    }                   
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка в выборе свободных позиций хранилища", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                MessageBoxDefaultButton.Button1);
+                }
+                conection.Close();
+
+            }
+
+            return ans;
+        }
         private void Fill_num_combo(string storage_name, int type_fill)
         {
             //подгрузить другой набор позиций
             if (storage_name != "")
-            {
+            {                
+                //MessageBox.Show("Тип = "+ type_fill.ToString());
+                conn_str = Get_conn_string(Properties.Settings.Default.server, Properties.Settings.Default.port,
+                    Properties.Settings.Default.database, Parent_form.cbox_username.Text, Parent_form.txtbox_pass.Text);
+                //получаем макс значение позиций
+                int max_pos = Get_max_positions(New_connection(conn_str), storage_name);
+                //делаем список позиций
+                List<string> position_list = new List<string>(max_pos);                
+                for (int i = 1; i <=max_pos;i++)
+                {
+                    position_list.Add(i.ToString());
+                }
+                //запрашиваем занятые позиции
+                List<int> occupied = Get_ocupied_pos(New_connection(conn_str), storage_name);
+                //если позиция занята - удаляем из списка
+                foreach (int pos in occupied)
+                {
+                    if (position_list.Contains(pos.ToString()))
+                    {
+                        position_list.Remove(pos.ToString());
+                    }
+                }
+                //выводим список позиций
                 switch (type_fill)
                 {
                     case 1:
                         combox_pos_add.Items.Clear();
+                        combox_pos_add.Items.AddRange(position_list.ToArray());
                         break;
                     case 2:
                         combox_move_pos.Items.Clear();
+                        combox_move_pos.Items.AddRange(position_list.ToArray());
                         break;
                 }
-                //MessageBox.Show("Тип = "+ type_fill.ToString());
-                conn_str = Get_conn_string(Properties.Settings.Default.server, Properties.Settings.Default.port,
-                    Properties.Settings.Default.database, Parent_form.cbox_username.Text, Parent_form.txtbox_pass.Text);
-                using (MySqlConnection conn = New_connection(conn_str))
-                {
-                    try
-                    {
-                        conn.Open();
-                        string sqlcom_3 = "SELECT capacity FROM test2base.storage WHERE storage.name ='" + storage_name + "'";
-                        //MessageBox.Show("Запрос ="+sqlcom_3);
-                        using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conn))
-                        {
-                            using (MySqlDataReader reader = comand.ExecuteReader())
-                            {
-                                if (reader.HasRows)
-                                {
-                                    while (reader.Read())
-                                    {
-                                        //ans = reader[0].ToString();
-                                        int max = Convert.ToInt32(reader[0]);
-                                        //MessageBox.Show("Capacity = "+max.ToString());
-                                        for (int i = 1; i < max; i++)
-                                        {
-                                            switch (type_fill)
-                                            {
-                                                case 1:
-                                                    combox_pos_add.Items.Add(i.ToString());
-                                                    break;
-                                                case 2:
-                                                    combox_move_pos.Items.Add(i.ToString());
-                                                    break;
-                                            }
-                                        }
-                                        //MessageBox.Show("новый ид"+table_name+"=" + ans);
-                                    }
-                                    reader.Close();
-                                }
-                            }
-                        }
-                        //изменяем состояние образца                    
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error,
-                    MessageBoxDefaultButton.Button1);
-                    }
-                    conn.Close();
 
-                }
             }
         }
         private void Combox_storage_SelectedIndexChanged(object sender, EventArgs e)
         {
             //подгрузить другой набор позиций
             Fill_num_combo(combox_storage.Text, 1);
+
+
         }
         private void Ch_btn_state(bool make, bool new_stor, bool add_tem, bool add_foto_after, bool add_foto_before)
         {
@@ -1674,7 +1874,7 @@ namespace RSB
             switch (indexx)
             {
                 //make res - new stor - nedd TEM - TEM after - TEM before
-                case "Storage ready for APT":
+                case "Ready for APT":
                     Ch_btn_state(true, true, false, false, false);
                     break;
                 case "APT done":
@@ -1699,6 +1899,7 @@ namespace RSB
         }
         private void DataGrid_specimens_CurrentCellChanged(object sender, EventArgs e)
         {
+            //MessageBox.Show("Произошло смена CurrentCellChanged");
             Deal_with_buttons();
         }
 
@@ -1733,8 +1934,6 @@ namespace RSB
                 Log_action(Properties.Settings.Default.default_username, "mark need TEM", "", "", indexx.ToString());
             }
             Refresh_datagrid();
-            //Deal_with_buttons();
-            //Do_filters(data_filters);
         }
 
 
@@ -1790,54 +1989,116 @@ namespace RSB
             }
             return ans;
         }
-        private void Btn_move_new_stor_Click(object sender, EventArgs e)
+        /// <summary>
+        /// есть ли запись с по этому хранилищу и с этой позицией, возращается ИД записи или 0
+        /// </summary>
+        /// <returns></returns>
+        private int Get_stor_pos(int ID_stor, int stor_pos)
         {
-            if ((combox_move_to.Text != "ПАЗЛ") ^ (combox_move_to.Text == "ПАЗЛ" && Properties.Settings.Default.user_access_lvl <= 2))
-            {
-                //перемещение образца
-                int to_ind = Get_stor_index(combox_move_to.Text);
-                int to_ind_pos;
-                int indexx = -1;
-                if (combox_move_pos.Text != "")
-                {
-                    to_ind_pos = Convert.ToInt32(combox_move_pos.Text);
-                }
-                else to_ind_pos = -100;
-                conn_str = Get_conn_string(Properties.Settings.Default.server, Properties.Settings.Default.port,
+            int ans = 0;
+            conn_str = Get_conn_string(Properties.Settings.Default.server, Properties.Settings.Default.port,
                     Properties.Settings.Default.database, Parent_form.cbox_username.Text, Parent_form.txtbox_pass.Text);
-                using (MySqlConnection conn = New_connection(conn_str))
+            using (MySqlConnection conn = New_connection(conn_str))
+            {
+                try
                 {
-                    try
+                    conn.Open();
+                    //indexx = Convert.ToInt32(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[0].Value);
+                    string sqlcom_3 = "SELECT id_storage_position FROM test2base.storage_position " +
+                        "WHERE (id_storage = "+ ID_stor.ToString()+ ") AND (position = "+stor_pos.ToString() +")";
+                    using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conn))
                     {
-                        if (to_ind != 0 && dataGrid_specimens.CurrentRow != null && to_ind_pos != -100)
+                        using (MySqlDataReader reader = comand.ExecuteReader())
                         {
-                            conn.Open();
-                            indexx = Convert.ToInt32(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[0].Value);
-                            string sqlcom_3 = "UPDATE test2base.specimens SET specimens.id_storage=" + to_ind.ToString() + ", specimens.stor_position=" + to_ind_pos.ToString() + " WHERE specimens.idspecimens =" + indexx.ToString();
-                            using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conn))
+                            if (reader.HasRows)
                             {
-                                comand.ExecuteNonQuery();
+                                while (reader.Read())
+                                {
+                                    ans = Convert.ToInt32(reader[0]);
+                                }
+                                reader.Close();
                             }
-                            conn.Close();
-                            combox_pos_add.Text = "";
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error,
-                        MessageBoxDefaultButton.Button1);
-                    }
+                    conn.Close();                    
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка в модуле определения есть ли запись с образцом в storage_position", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+                }
+            }
+
+            return ans;
+        }
+        /// <summary>
+        /// изменяет или создает запись с указанным ид образца, 
+        /// </summary>
+        private void Ch_or_create_stor_pos(int stor, int pos, int ID_spec, bool is_delete)
+        {
+            //проверяем есть ли запись c таким ИД_хранилища, если есть - получаем
+            //int ID_stor_pos_new = Get_stor_pos(stor, pos);
+            string sql_m = "";
+            int new_val = 0;
+            if (!is_delete) new_val = ID_spec;
+            //если 0 - значит создаем запись
+            //если нет - апдейтим
+            if (int.TryParse(SQL_List_querry("SELECT id_storage_position FROM test2base.storage_position " +
+                        "WHERE (id_storage = '" + stor.ToString() + "') AND (position = '" + pos.ToString() + "')")[0], out int ID_stor_pos) && ID_stor_pos!=0)
+            {
+                sql_m = "UPDATE test2base.storage_position SET id_specimen = " + new_val.ToString() + " WHERE (id_storage_position = " + ID_stor_pos.ToString() + ")";                
+            } 
+            else
+            {
+                sql_m = "INSERT INTO test2base.storage_position (id_storage, position, id_specimen) " +
+                        "VALUES('" + stor.ToString() + "', '" + pos.ToString() + "', '" + new_val.ToString() + "')";
+            }
+            //выполняем запрос
+            Simple_SQL_req(sql_m);            
+        }
+        private void Btn_move_new_stor_Click(object sender, EventArgs e)
+        {
+            //изменить проверку
+            if (Properties.Settings.Default.user_access_lvl <= 3
+                && combox_move_pos.Text!=""
+                && combox_move_to.Text!=""
+                && txtbox_move_from.Text!=""
+                && txtbox_move_from.Text.Length>3)
+            {
+                //получаем ид образца, позицию
+                int stor_new_id = Get_stor_index(combox_move_to.Text);                
+                int indexx = Convert.ToInt32(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[0].Value);
+                int pos_new = Convert.ToInt32(combox_move_pos.Text);
+                //MessageBox.Show(txtbox_move_from.Text.Substring(0, txtbox_move_from.Text.Length - txtbox_move_from.Text.IndexOf(' ')+1));
+                //MessageBox.Show("-"+txtbox_move_from.Text.Substring(txtbox_move_from.Text.LastIndexOf(' ')+1)+"-");
+                int pos_old = Convert.ToInt32(txtbox_move_from.Text.Substring(txtbox_move_from.Text.LastIndexOf(' ') + 1));
+                string pos_o = txtbox_move_from.Text.Substring(txtbox_move_from.Text.LastIndexOf(' ') + 1);
+                int stor_old_id = Get_stor_index(txtbox_move_from.Text.Substring(0, txtbox_move_from.Text.IndexOf(pos_o)-1));
+                                
+                //удаляем запись о старом месте
+                Ch_or_create_stor_pos(stor_old_id, pos_old, indexx, true);
+                //делаем новую запись о новом положении
+                //если не нужно удалять образец
+                if (combox_move_to.Text != "Deleted")
+                {
+                    Ch_or_create_stor_pos(stor_new_id, pos_new, indexx, false);
+                }
+                else MessageBox.Show("Образец к вам больше не вернется!");
+
                 if (indexx != -1)
                 {
                     Log_action(Properties.Settings.Default.default_username, "change position", txtbox_move_from.Text, combox_move_to.Text + " " + combox_move_pos.Text, indexx.ToString());
                 }
                 Refresh_datagrid();
-                //Do_filters(data_filters);
+                combox_move_pos.Text = "";
+                combox_move_to.Text = "";
             }
             else
             {
-                MessageBox.Show("У вас не достаточно прав доступа для перемещения образца в установку, обратитесь к администратору");
+                MessageBox.Show("У вас не достаточно прав доступа для перемещения образца, обратитесь к администратору\n" +
+                    "или вы пытаетесь переместить удаленный уже образец");
+                combox_move_pos.Text = "";
+                combox_move_to.Text = "";
             }
         }
 
@@ -1848,7 +2109,7 @@ namespace RSB
             {
                 combox_move_pos.Text = "";
                 combox_move_pos.SelectedIndex = -1;
-                MessageBox.Show("Wrong position!");
+                MessageBox.Show("Wrong position!\nPosotion duplicate.");
             }
         }
         private int Get_id_research(string where, string index)
@@ -1868,7 +2129,7 @@ namespace RSB
                     col_name_2 = "id_research";
                     break;
             }
-            MessageBox.Show("Ищем ид в "+where+" ид для поиска "+index);
+            //MessageBox.Show("Ищем ид в "+where+" ид для поиска "+index);
             if (index!="-1")
             {
                 //запрос на поиск id
@@ -1918,7 +2179,7 @@ namespace RSB
                 //MessageBox.Show("показываем форму исследовнаий, выбранный индекс = "+index);
                 Properties.Settings.Default.Save();
                 int id_res = Get_id_research("researches", index);
-                Parent_form.Show_researches_from(id_res);
+                Parent_form.Show_from(id_res, Convert.ToInt32(index),1);
             }
         }
         private void Select_index()
@@ -1935,6 +2196,7 @@ namespace RSB
             if (index != -1)
             {
                 dataGrid_specimens.Rows[index].Selected = true;
+                dataGrid_specimens.CurrentCell = dataGrid_specimens.Rows[index].Cells[0];
             }
         }
 
@@ -2213,17 +2475,6 @@ namespace RSB
                 MessageBox.Show("У вас не достаточно прав доступа к данной функции, обратитесь к администратору");
             }
         }
-
-        private void Btn_clear_foto_Click(object sender, EventArgs e)
-        {            
-            Clear_one_picbox(picbox_before_big);
-            Clear_one_picbox(picbox_before_sm1);
-            Clear_one_picbox(picbox_before_sm2);
-            Clear_one_picbox(picbox_before_sm3);
-            GC.Collect();
-            //обнулить путь картинок
-            images_paths.Clear();
-        }
         private void Do_filters(List<string> filters)
         {
             if (filters.Count > 0)
@@ -2258,7 +2509,7 @@ namespace RSB
                 }
             }
         }
-        private void Checked(ItemCheckEventArgs e, CheckedListBox obje)
+        private void Checked(ItemCheckEventArgs e, CheckedListBox obje, bool dorefresh)
         {
             if (!on_load)
             {
@@ -2277,106 +2528,133 @@ namespace RSB
                     case "ch_listbox_material":
                         str_f = "materials.name <> '";
                         break;
+                    case "ch_listbox_storage_f":
+                        str_f = "storage.name <> '";
+                        break;
                 }
                 if (e.NewValue == CheckState.Checked)
                 {
                     //удаляем из фильтров
                     //data_filters.Remove(obje.Items[e.Index].ToString());
-                    data_filters.Remove(str_f + obje.Items[e.Index].ToString() + "'");
+                    filt_master.common_filters.Remove(str_f + obje.Items[e.Index].ToString() + "'");
                 }
                 else
                 {
                     //добавляем к фильтрам
                     //data_filters.Add(obje.Items[e.Index].ToString());
-                    data_filters.Add(str_f +obje.Items[e.Index].ToString() + "'");
+                    filt_master.common_filters.Add(str_f +obje.Items[e.Index].ToString() + "'");
                 }
                 //Do_filters(data_filters);
-                Refresh_datagrid();
+                if (dorefresh) Refresh_datagrid();
             }
         }
 
         private void Ch_listbox_state_f_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Checked(e,ch_listbox_state_f);
+            Checked(e,ch_listbox_state_f, isrefreshing);
         }
 
         private void Ch_listbox_type_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Checked(e,ch_listbox_type);
+            Checked(e,ch_listbox_type, isrefreshing);
         }
 
         private void Ch_listbox_material_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Checked(e, ch_listbox_material);
+            Checked(e, ch_listbox_material, isrefreshing);
         }
 
         private void Ch_listbox_project_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Checked(e, ch_listbox_project);
+            Checked(e, ch_listbox_project, isrefreshing);
         }
 
         private void Btn_cl_type_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_type.Items.Count; i++)
             {
                 ch_listbox_type.SetItemChecked(i, false);
             }
+            isrefreshing = true;
+            Refresh_datagrid();
         }
 
         private void Btn_cl_proj_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_project.Items.Count; i++)
             {
                 ch_listbox_project.SetItemChecked(i, false);
             }
+            isrefreshing = true;
+            Refresh_datagrid();
         }
 
         private void Btn_cl_state_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_state_f.Items.Count; i++)
             {
                 ch_listbox_state_f.SetItemChecked(i, false);
             }
+            isrefreshing = true;
+            Refresh_datagrid();
         }
 
         private void Btn_cl_mat_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_material.Items.Count; i++)
             {
                 ch_listbox_material.SetItemChecked(i, false);
             }
+            isrefreshing = true;
+            Refresh_datagrid();
         }
 
         private void Btn_sel_type_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_type.Items.Count; i++)
             {
                 ch_listbox_type.SetItemChecked(i, true);
             }
+            isrefreshing = true;
+            Refresh_datagrid();
         }
 
         private void Btn_sel_proj_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_project.Items.Count; i++)
             {
                 ch_listbox_project.SetItemChecked(i, true);
             }
+            isrefreshing = true;
+            Refresh_datagrid();
         }
 
         private void Btn_sel_state_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_state_f.Items.Count; i++)
             {
                 ch_listbox_state_f.SetItemChecked(i, true);
             }
+            isrefreshing = true;
+            Refresh_datagrid();
         }
 
         private void Btn_sel_mat_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_material.Items.Count; i++)
             {
                 ch_listbox_material.SetItemChecked(i, true);
             }
+            isrefreshing = true;
+            Refresh_datagrid();
         }
 
 
@@ -2458,8 +2736,6 @@ namespace RSB
                 Log_action(Properties.Settings.Default.default_username, "add foto after", "", "", indexx.ToString());
             }
             Refresh_datagrid();
-            //Do_filters(data_filters);
-            //Deal_with_buttons();
         }
 
         private void Btn_add_TEM_before_Click(object sender, EventArgs e)
@@ -2495,8 +2771,6 @@ namespace RSB
                         }
                     }
                     Refresh_datagrid();
-                    //Do_filters(data_filters);
-                    //Deal_with_buttons();
                 }
             }
         }
@@ -2508,11 +2782,13 @@ namespace RSB
                 //MessageBox.Show("нужно показать образец");
                 if (Get_index_datagrid(Properties.Settings.Default.main_spec_id.ToString(), 0) != -1)
                 {
-                    dataGrid_specimens.Rows[Get_index_datagrid(Properties.Settings.Default.main_spec_id.ToString(), 0)].Selected = true;
+                    int sel_ind = Get_index_datagrid(Properties.Settings.Default.main_spec_id.ToString(), 0);
+                    dataGrid_specimens.Rows[sel_ind].Selected = true;
+                    //dataGrid_specimens.CurrentCell = dataGrid_specimens.Rows[sel_ind].Cells[0];
+                    dataGrid_specimens.CurrentCell = dataGrid_specimens.Rows[sel_ind].Cells[0];
                 }
-                //зачем?
-                Properties.Settings.Default.main_spec_id = -1;
-                Properties.Settings.Default.Save();
+                //Properties.Settings.Default.main_spec_id = -1;
+                //Properties.Settings.Default.Save();
             }
         }
         private void Log_action(string user, string action_type, string val_old, string val_new, string id_spec)
@@ -2668,7 +2944,17 @@ namespace RSB
         private void Timer_for_refresh_Tick(object sender, EventArgs e)
         {
             //просто таймер для обновления системы раз в Х секунд
-            Refresh_datagrid();
+            refresh_counter = refresh_counter+1;
+            //закрываем базу после 3 по 5 минут простоя
+            //MessageBox.Show("tick "+refresh_counter.ToString());
+            if (refresh_counter == 4)
+            {
+                Parent_form.Close_all();
+            }
+            else
+            {
+                Refresh_datagrid();
+            }
         }
 
 
@@ -2676,12 +2962,14 @@ namespace RSB
         {
             timer_for_refresh.Stop();
             timer_for_refresh.Start();
+            refresh_counter = 0;
         }
 
         private void dataGrid_specimens_MouseMove(object sender, MouseEventArgs e)
         {
             timer_for_refresh.Stop();
             timer_for_refresh.Start();
+            refresh_counter = 0;
         }
 
         private void combox_setup_KeyUp(object sender, KeyEventArgs e)
@@ -2700,7 +2988,6 @@ namespace RSB
                 try
                 {
                     new_treatment = Check_for_exist(txtbox_treat_inf.Text, conn, "treatment", "id_treatment", "name");
-
                 }
                 catch (Exception ex)
                 {
@@ -2736,6 +3023,742 @@ namespace RSB
             //MessageBox.Show("кто-то пытается удалить важнейшую информацию");
             Properties.Settings.Default.old_treatment = txtbox_treat_inf.Text;
             Properties.Settings.Default.Save();
+        }
+
+        private void btn_test_telegrambot_Click(object sender, EventArgs e)
+        {
+            //тестируем телеграм бот
+            //1662678916:AAH63Zoolu7RgaZr_Cw9dtH6X3PIyQ5iQmk
+            var proxy = new HttpToSocks5Proxy(new[] {
+                new ProxyInfo("207.97.174.134", 1080),
+                new ProxyInfo("23.106.35.130",1637),
+                new ProxyInfo("135.181.203.208",80)
+            });
+            proxy.ResolveHostnamesLocally = true;
+            var botClient = new TelegramBotClient("1662678916:AAH63Zoolu7RgaZr_Cw9dtH6X3PIyQ5iQmk", proxy);
+            var me = botClient.GetMeAsync().Result;
+            MessageBox.Show("My first bot is "+me.FirstName);
+            //botClient.OnMessage += Bot_OnMessage;
+            //botClient.StartReceiving();            
+
+        }
+
+        private void btn_test_Click(object sender, EventArgs e)
+        {
+            //кнопка для разных тестов
+            
+        }
+
+        private void btn_clr_storage_Click(object sender, EventArgs e)
+        {
+            //очистка фильтра storage
+            isrefreshing = false;
+            for (int i = 0; i < ch_listbox_storage_f.Items.Count; i++)
+            {
+                ch_listbox_storage_f.SetItemChecked(i, false);
+            }
+            isrefreshing = true;
+            Refresh_datagrid();
+        }
+
+        private void btn_sel_storage_Click(object sender, EventArgs e)
+        {
+            //выбор всех фильтров по Storage
+            isrefreshing = false;
+            for (int i = 0; i < ch_listbox_storage_f.Items.Count; i++)
+            {
+                ch_listbox_storage_f.SetItemChecked(i, true);
+            }
+            isrefreshing = true;
+            Refresh_datagrid();
+        }
+
+        private void ch_listbox_storage_f_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            Checked(e, ch_listbox_storage_f, isrefreshing);
+        }
+        private void Fill_chbox(CheckedListBox ch_box, string ch_box_filter)
+        {
+            //ставим галку у найденного элемента ListCheckBox
+            for (int i = 0; i < ch_box.Items.Count; i++)
+            {                                
+                if (ch_box.Items[i].ToString() == ch_box_filter)
+                {
+                    ch_box.SetItemChecked(i, false);
+                }
+            }
+        }
+        private void Fill_chbox_true(CheckedListBox ch_box)
+        {
+            //просто ставим у ListCheckedBox все галочки
+            for (int i = 0; i < ch_box.Items.Count; i++)
+            {
+                ch_box.SetItemChecked(i, true);
+            }
+        }
+        private bool Reverse_ch_boxes_filtres()
+        {
+            bool ans = false;
+            //процедура проставляет галочик в чек-боксах в соответствии с фильтрами
+            if (filt_master.common_filters!=null)
+            if (filt_master.common_filters.Count>0)
+            {
+                //в фильтрах что-то есть, проверяем каждый чек-бокс     
+                //ставим везде галочки
+                Fill_chbox_true(ch_listbox_type);
+                Fill_chbox_true(ch_listbox_state_f);
+                Fill_chbox_true(ch_listbox_project);
+                Fill_chbox_true(ch_listbox_storage_f);
+                Fill_chbox_true(ch_listbox_material);
+                foreach (string filt in filt_master.common_filters)
+                {
+                    string ch_box_name = filt.Substring(0, filt.IndexOf("<")-1);
+                    string ch_box_filter = filt.Substring(filt.IndexOf("'")+1, filt.Length-filt.IndexOf("'")-2);                    
+                    switch (ch_box_name)
+                    {
+                        case "type.name":
+                            Fill_chbox(ch_listbox_type, ch_box_filter);
+                            break;
+                        case "projects.name":
+                            Fill_chbox(ch_listbox_project, ch_box_filter);
+                            break;
+                        case "state.name":
+                            Fill_chbox(ch_listbox_state_f, ch_box_filter);
+                            break;
+                        case "materials.name":
+                            Fill_chbox(ch_listbox_material, ch_box_filter);
+                            break;
+                        case "storage.name":
+                            Fill_chbox(ch_listbox_storage_f, ch_box_filter);
+                            break;
+                    }    
+                }
+            }
+            return ans;
+        }
+        private void Load_def_json(string name)
+        {
+            //процедура грузит из json фильтры с обновлением
+            try
+            {
+                string json_path = Directory.GetCurrentDirectory() + name;
+                if (File.Exists(json_path))
+                {
+                    //filt_master = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(json_path));
+                    filt_master = JsonConvert.DeserializeObject<Filtres_master>(File.ReadAllText(json_path));
+                    /*if (filt_master.is_special_filter == true)
+                    {
+                        btn_sql_filter_special.BackColor = Color.Green;
+                        richTextBox_special_filt.Text = filt_master.special_filter;
+                    }
+                    else btn_sql_filter_special.BackColor = Color.Red;*/
+                    isrefreshing = false;
+                    on_load = true;
+                    Reverse_ch_boxes_filtres();
+                    isrefreshing = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка при загрузке дефотных фильтров", MessageBoxButtons.OK, MessageBoxIcon.Error,
+            MessageBoxDefaultButton.Button1);
+            }
+        }
+        private void Save_def_json (string name)
+        {
+            string json_path = Directory.GetCurrentDirectory() + name;
+            //DirectoryInfo dirinfo = new DirectoryInfo(json_path + @"\Settings");            
+            //попытаться сохранить фильтры в json
+            using (StreamWriter file = File.CreateText(json_path))
+            {
+                JsonSerializer seriz = new JsonSerializer();
+                //seriz.Serialize(file, data_filters);
+                seriz.Serialize(file, filt_master);
+            }
+        }
+
+        private void Form_specimens_Deactivate(object sender, EventArgs e)
+        {
+            Save_settings();
+            //сохранить фильтры в json
+            Save_def_json(@"\Settings\test_json.json");
+        }
+
+        private void button1_Click_3(object sender, EventArgs e)
+        {
+            /*
+            //кнопка выполнения специального запроса фильтрования
+            if (filt_master.is_special_filter == false)
+            {
+                btn_sql_filter_special.BackColor = Color.Green;
+                filt_master.is_special_filter = true;
+                filt_master.special_filter = richTextBox_special_filt.Text;
+            }
+            else
+            {
+                btn_sql_filter_special.BackColor = Color.Red;
+                filt_master.is_special_filter = false;
+            }
+            Refresh_datagrid();*/
+        }
+
+        private void dataGrid_specimens_RowValidated(object sender, DataGridViewCellEventArgs e)
+        {
+            //MessageBox.Show("Случилось RowValidated");
+        }
+
+        private void dataGrid_specimens_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            //MessageBox.Show("Случилось RowEnter");
+        }
+
+        private void txtbox_temperature_KeyUp(object sender, KeyEventArgs e)
+        {
+            //валидатор на ввод только цифр
+            
+        }
+
+        private void txtbox_temperature_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            /*
+            //валидатор на ввод только цифр
+            char number = e.KeyChar;
+            int n = (int)number;
+            //MessageBox.Show("test= " + n.ToString());
+            if (n != 8 && txtbox_temperature.Text != "")
+            {
+                if (!decimal.TryParse(txtbox_temperature.Text + number, out _))
+                {
+                    txtbox_temperature.Text = "";
+                    MessageBox.Show("вы ввели какую-то фигню, можно вводить только числа вида 1548,003  или 0 или 25");
+                    e.Handled = true;
+                }
+            }*/
+        }
+
+        private void txtbox_las_pow_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            /*char number = e.KeyChar;
+            int n = (int)number;
+            //MessageBox.Show("test= " + n.ToString());
+            if (n != 8 && txtbox_las_pow.Text!="")
+            {
+                if (!decimal.TryParse(txtbox_las_pow.Text + number, out _))
+                {
+                    txtbox_las_pow.Text = "";
+                    MessageBox.Show("вы ввели какую-то фигню, можно вводить только числа вида 1548,003  или 0 или 25");
+                    e.Handled = true;
+                }
+            }*/
+        }
+
+        private void combox_treatment_Leave(object sender, EventArgs e)
+        {
+            //тест валидатора, который заменяет все запятые и точки на нижнее подчеркивание
+            combox_treatment.Text = combox_treatment.Text.Replace('.', '_');
+            combox_treatment.Text = combox_treatment.Text.Replace(',', '_');
+            combox_treatment.Text = combox_treatment.Text.Replace('/', '_');
+            combox_treatment.Text = combox_treatment.Text.Replace('%', '_');
+            combox_treatment.Text = combox_treatment.Text.Replace('!', '_');
+            combox_treatment.Text = combox_treatment.Text.Replace('@', '_');
+            //combox_treatment.Text = combox_treatment.Text.Replace(',', '_');
+
+        }
+
+        private void txtbox_data_dir_Leave(object sender, EventArgs e)
+        {
+            //тест валидатор на существование пути
+            if (!Directory.GetParent(txtbox_data_dir.Text).Exists)
+            {
+                txtbox_data_dir.Text = "";
+                MessageBox.Show("Компьютер считает, что вашей диретокрии не существует, просьба ввести правильную");
+            }
+        }
+        /// <summary>
+        /// простой апрос sql INSERT DELETE UPDATE
+        /// </summary>
+        /// <param name="sql_req"></param>
+        private bool Simple_SQL_req(string sql_req)
+        {
+            bool finished_well = false;
+            using (MySqlConnection conn = New_connection(conn_str))
+            {
+                conn.Open();
+                //string sqlcom_3 = sql_req;
+                using (MySqlCommand comand = new MySqlCommand(sql_req, conn))
+                {
+                    try
+                    {
+                        comand.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message + " :\n "+sql_req, "Ошибка в Simple_SQL_req в запросе", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+                    }
+                }
+                conn.Close();
+            }
+            finished_well = true;
+            return finished_well;
+        }
+        /// <summary>
+        /// добавляет  новые целевые установки в базу по чек-листбоксу
+        /// </summary>
+        /// <param name="l_box"></param>
+        private void Ch_list_ad_new(CheckedListBox l_box, int id)
+        {
+            //получаем список чекнутых установок
+            List<string> setup_list = new List<string>();
+            foreach (object item in l_box.CheckedItems)
+            {
+                setup_list.Add(item.ToString());
+            }
+            //MessageBox.Show("is checked "+ setup_list.);            
+            //если не пустая строка - добавляем установки, предварительно удалив последний символ
+            if (setup_list.Count > 0)
+            {
+                for (int ind = 0; ind < setup_list.Count; ind++)
+                {
+                    Simple_SQL_req("INSERT INTO test2base.setup_specimen (`id_setup`, `id_specimen`) " +
+                        "VALUES ((SELECT id_setups FROM test2base.setups WHERE (Name = '" + setup_list[ind].ToString() + "')), '" + id.ToString() + "');");
+                }
+            }
+            //пишем в историю
+            Log_action(Properties.Settings.Default.default_username, "change target setups", "unknown", String.Join(", ", setup_list), id.ToString());
+        }
+        /// <summary>
+        /// изменение целевых установок
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_Click_4(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[0].Value);
+            //удаляем все целевые установки
+            Simple_SQL_req("DELETE FROM test2base.setup_specimen WHERE (id_specimen = " + id.ToString() + ");");
+            //добавляем новые целевые установки
+            Ch_list_ad_new(ch_listbox_setup_inf, id);
+        }
+        /// <summary>
+        /// Фильтруем табличку по образца для установки с ид
+        /// is_in - если true - внутри установок
+        /// false - очередь+ внутри установок
+        /// </summary>
+        /// <param name="id">1 - ПАЗЛ, 2 - ЛАЗТ, 3 - АТЛАЗ</param>
+        /// <param name="is_in"></param>
+        private void Setup_filter(int id, bool is_in)
+        {
+            //фильтры если is-In - только то, что в установке
+            filt_master.is_special_filter = true;
+            if (is_in)
+            {                                
+                switch (id)
+                {
+                    case 1:
+                        filt_master.special_filter = " WHERE ((storage.name = 'ПАЗЛ') OR (storage.name = 'ПАЗЛ Кассета')) ORDER BY idspecimens DESC";
+                        break;
+                    case 2:
+                        filt_master.special_filter = " WHERE ((storage.name = 'ЛАЗТ') OR (storage.name = 'ЛАЗТ Загрузка') " +
+                            "OR (storage.name = 'ЛАЗТ Барабан')) ORDER BY idspecimens DESC";
+                        break;
+                    case 3:
+                        filt_master.special_filter = " WHERE ((storage.name = 'АТЛАЗ') OR (storage.name = 'АТЛАЗ Загрузка') " +
+                            "OR (storage.name = 'АТЛАЗ Барабан'))  ORDER BY idspecimens DESC";
+                        break;
+                }
+            }            
+            else
+            {
+                filt_master.special_filter = " WHERE (id_setup = " + id.ToString() + ") " +
+                "AND (state.name = 'Ready for APT')";
+            }
+            Refresh_datagrid();
+        }
+        /// <summary>
+        /// включено отображение очереди АТЛАЗ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radio_btn_ATLAS.Checked)
+            {                
+                Setup_filter(3,false);                
+            }
+        }
+        /// <summary>
+        /// ОТключено отображение очереди
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void radio_btn_none_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radio_btn_none.Checked)
+            {
+                filt_master.is_special_filter = false;
+                Refresh_datagrid();
+            }
+        }
+        /// <summary>
+        /// включено отображение очереди ЛАЗТ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void radio_btn_LAZT_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radio_btn_LAZT.Checked)
+            {
+                Setup_filter(2,false);
+            }
+        }
+        /// <summary>
+        /// включено отображение очереди ПАЗЛ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void radio_btn_APPLE_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radio_btn_APPLE.Checked)
+            {
+                Setup_filter(1,false);
+            }
+        }
+        /// <summary>
+        /// включено отображение внутри ПАЗЛ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void radio_btn_inAPPLE_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radio_btn_inAPPLE.Checked)
+            {
+                Setup_filter(1,true);                
+            }
+        }
+        /// <summary>
+        /// включено отображение внутри АТЛАЗ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void radio_btn_inATLAS_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radio_btn_inATLAS.Checked)
+            {
+                Setup_filter(3,true);
+            }
+        }
+        /// <summary>
+        /// включено отображение внутри ЛАЗТ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void radio_btn_inLAZT_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radio_btn_inLAZT.Checked)
+            {
+                Setup_filter(2,true);
+            }
+        }
+        /// <summary>
+        /// создаем новый образец
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_aproove_Click(object sender, EventArgs e)
+        {
+            //проверка все ли поля заполнены
+            if (Ch_fields())
+            {
+                //проврека есть ли такая уже запись по дата+изготовитель+материал+проект
+                //если нет, то создем новый
+                New_specimen();
+                Refresh_datagrid();
+                //очистить часть полей для заполнения
+                Clear_pics_info(1);
+                Clear_pics_info(2);
+                combox_pos_add.Text = "";
+                combox_setup.SelectedIndex = -1;
+            }
+        }
+        /// <summary>
+        /// сохраняем дефолтные настройки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_default_save_Click(object sender, EventArgs e)
+        {
+            Save_settings();
+        }
+        /// <summary>
+        /// Очистка фото
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_foto_clr_Click(object sender, EventArgs e)
+        {
+            Clear_one_picbox(picbox_before_big);
+            Clear_one_picbox(picbox_before_sm1);
+            Clear_one_picbox(picbox_before_sm2);
+            Clear_one_picbox(picbox_before_sm3);
+            GC.Collect();
+            //обнулить путь картинок
+            images_paths.Clear();
+        }
+        /// <summary>
+        /// Изменить комментарии
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_ch_comments_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[0].Value);
+            if (id.ToString() != "")
+            {
+                Simple_SQL_req("UPDATE test2base.specimens SET comments = '" + rich_txtbox_comments_info.Text + "' WHERE (idspecimens = " + id.ToString() + ");");
+            }
+        }
+        /// <summary>
+        /// меняем или создаем новый состав
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_ch_composotion_Click(object sender, EventArgs e)
+        {            
+            //имщем материал + состав
+            //обновляем состав            
+            if (int.TryParse(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[0].Value.ToString(), out int id_spec))
+            {
+                Simple_SQL_req("UPDATE test2base.materials SET composition = '" + txt_composition.Text + "' " +
+                "WHERE (id_material = (SELECT id_material FROM test2base.specimens WHERE idspecimens = '" + id_spec.ToString() + "'));");
+            }                      
+        }
+        /// <summary>
+        /// проверка не в установке АЗТ ли этот образец 
+        /// str - место хранения + позиция "ПАЗЛ 1"
+        /// true - можно удалять
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        private bool Check_position_noAPT(string str)
+        {
+            //MessageBox.Show("position = "+str);
+            bool ans = false;
+            if (str != "ПАЗЛ 1" &&
+                str != "ПАЗЛ Кассета 1" &&
+                str != "ПАЗЛ Кассета 2" &&
+                str != "ПАЗЛ Кассета 3" &&
+                str != "ЛАЗТ 1" &&
+                str != "ЛАЗТ Загрузка 1" &&
+                str != "АТЛАЗ 1" &&
+                str != "АТЛАЗ Загрузка 1")                
+            {
+                ans = true;
+                if (str.Length >= 13 && str.Substring(0, 13) == "АТЛАЗ Барабан")
+                {
+                    ans = false;
+                }
+            }
+            else
+            {
+                MessageBox.Show("wrong place");
+            }
+            return ans;
+        }
+        /// <summary>
+        /// проверка можно ли удалять образец
+        /// ИД образца, 
+        /// state состояние, 
+        /// level_access уровень доступа, 
+        /// actor залогиневшийся пользователь
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="state_name"></param>
+        /// <param name="level_access"></param>
+        /// <param name="actor"></param>
+        /// <param name="producer"></param>
+        /// <returns></returns>
+        private bool Can_del_specimen(int id, string state_name, int level_access, string actor, string producer)
+        {
+            bool ans = false;
+            //правила удаления
+            //уровень достпа не выше 2
+            //только если этот образец вы создавали 
+            //только в состоянии Ready for APT и Storage 
+            
+            string actor_login = SQL_List_querry("SELECT user_name FROM test2base.producers WHERE (surname = '"+actor+"')")[0];
+            string resp_login = SQL_List_querry("SELECT user_name FROM test2base.producers WHERE (surname = '" + producer + "')")[0];
+            MessageBox.Show("level = " + level_access.ToString() + "\nCheck pos = " + Check_position_noAPT(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[6].Value.ToString()).ToString() +
+            "\nState name = " + state_name +
+            "\nproducer = " + actor_login +
+            "\nrespon = "+ resp_login);
+            //MessageBox.Show("login = "+ Properties.Settings.Default.default_username+
+            //"\nauthor = "+ actor_login);
+            if (level_access<=2 && 
+                ((state_name == "Ready for APT" 
+                && Check_position_noAPT(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[6].Value.ToString())) || state_name == "Storage") 
+                && (Properties.Settings.Default.default_username == actor_login || Properties.Settings.Default.default_username== resp_login))
+            {                
+                ans = true;
+            }
+            return ans;
+        }
+        /// <summary>
+        /// Простой SQL запрос на пполучение списка ответов List (string)
+        /// </summary>
+        /// <param name="sql_request"></param>
+        /// <returns></returns>
+        private List<string> SQL_List_querry(string sql_request)
+        {
+            List<string> ans = new List<string>();
+            try
+            {
+                using (MySqlConnection conn = New_connection(conn_str))
+                {
+                    conn.Open();
+                    using (MySqlCommand comand = new MySqlCommand(sql_request, conn))
+                    {
+                        using (MySqlDataReader reader = comand.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    ans.Add(reader[0].ToString());
+                                }                                
+                            }
+                            reader.Close();
+                        }
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("error in SQL_List_querry with request:\n"+sql_request+"\n" + ex.ToString());
+            }
+            if (ans.Count == 0) ans.Add("");
+            return ans;
+        }
+        /// <summary>
+        /// удаление орбрзца
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_delete_selected_Click(object sender, EventArgs e)
+        {
+            //проверить можно ли удалять(права)
+            if (int.TryParse(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[0].Value.ToString(), out int id) && 
+                Can_del_specimen(id, dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[7].Value.ToString(), 
+                Properties.Settings.Default.user_access_lvl,
+                dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[5].Value.ToString(),
+                txtbox_respon_inf.Text))
+            {
+                //спрашиваем, действительно ли мы хотим удалять образец?
+                DialogResult res = MessageBox.Show("Delete selected specimen?\nAre you SURE?\n no reincarnation","Warning", MessageBoxButtons.YesNo,MessageBoxIcon.Question,MessageBoxDefaultButton.Button2);
+                if (res == DialogResult.Yes)
+                {
+                    //удаляем образец
+                    //удалить из history
+                    if (Simple_SQL_req("DELETE FROM test2base.history WHERE (id_spec = " + id.ToString() + ")"))
+                    {
+                        //удалить из storage-position
+                        if (Simple_SQL_req("UPDATE test2base.storage_position SET id_specimen = 0 WHERE (id_specimen = " + id.ToString() + ")"))
+                        {
+                            //удалить из setup_specimens
+                            if (Simple_SQL_req("DELETE FROM test2base.setup_specimen WHERE (id_specimen = " + id.ToString() + ")"))
+                            {
+                                //удалить из stages_specimens
+                                if (Simple_SQL_req("DELETE FROM test2base.stages_specimens WHERE (id_specimen = " + id.ToString() + ")"))
+                                {
+                                    //удалить из specimens
+                                    Simple_SQL_req("DELETE FROM test2base.specimens WHERE (idspecimens = " + id.ToString() + ")");
+                                    MessageBox.Show("yes we delete specimen");
+                                }
+                            }
+                        }
+                    }
+                }
+                Refresh_datagrid();
+            }   
+            else
+            {
+                MessageBox.Show("deletion not permitted\n" +
+                    "producer = you\n" +
+                    "only Ready for APT or Storage\n" +
+                    "access level <=2");
+            }
+        }
+
+        private void picbox_before_big_DoubleClick(object sender, EventArgs e)
+        {
+            if (picbox_before_big.Image != null)
+            {
+                string temp_path = images_paths[0];
+                images_paths.RemoveAt(0);
+                images_paths.Insert(images_paths.Count, temp_path);
+                picbox_before_big.Image.Dispose();
+                picbox_before_big.Image = Image.FromFile(images_paths[0]);
+                if (images_paths.Count > 1)
+                {
+                    picbox_before_sm1.Image.Dispose();
+                    picbox_before_sm1.Image = Image.FromFile(images_paths[1]);
+                    if (images_paths.Count > 2)
+                    {
+                        picbox_before_sm2.Image.Dispose();
+                        picbox_before_sm2.Image = Image.FromFile(images_paths[2]);
+                        if (images_paths.Count > 3)
+                        {
+                            picbox_before_sm3.Image.Dispose();
+                            picbox_before_sm3.Image = Image.FromFile(images_paths[3]);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //грузим новые картинки
+                DialogResult result = open_dial_im_before.ShowDialog();
+                bool ttt = true;
+                images_paths.Clear();
+                if (result == DialogResult.OK && ttt)
+                {
+                    int num = 0;
+                    foreach (string image_path in open_dial_im_before.FileNames)
+                    {
+                        //MessageBox.Show(image_path);
+                        string ext_name = Path.GetExtension(image_path);
+                        if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff"
+                            || ext_name == ".JPG"
+                            || ext_name == ".PNG"
+                            || ext_name == ".JPEG"
+                            || ext_name == ".BMP")
+                        {
+                            Image image_new = Image.FromFile(image_path);
+                            images_paths.Add(image_path);
+                            num++;
+                            switch (num)
+                            {
+                                case 1:
+                                    picbox_before_big.Image = image_new;
+                                    break;
+                                case 2:
+                                    picbox_before_sm1.Image = image_new;
+                                    break;
+                                case 3:
+                                    picbox_before_sm2.Image = image_new;
+                                    break;
+                                case 4:
+                                    picbox_before_sm3.Image = image_new;
+                                    break;
+                            }
+                        }
+                        else MessageBox.Show("No images selected");
+                    }
+                    picbox_before_big.BackgroundImage = null;
+                }
+                else MessageBox.Show("No path or no directory");
+            }
         }
     }
 }

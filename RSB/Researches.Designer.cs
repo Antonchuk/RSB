@@ -568,9 +568,9 @@
             // 
             this.tab_support.BackColor = System.Drawing.Color.PaleGreen;
             this.tab_support.Controls.Add(this.tableLayout_support);
-            this.tab_support.Location = new System.Drawing.Point(4, 31);
+            this.tab_support.Location = new System.Drawing.Point(4, 22);
             this.tab_support.Name = "tab_support";
-            this.tab_support.Size = new System.Drawing.Size(573, 542);
+            this.tab_support.Size = new System.Drawing.Size(573, 551);
             this.tab_support.TabIndex = 3;
             this.tab_support.Text = "Support";
             // 
@@ -603,7 +603,7 @@
             this.tableLayout_support.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayout_support.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayout_support.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayout_support.Size = new System.Drawing.Size(573, 542);
+            this.tableLayout_support.Size = new System.Drawing.Size(573, 551);
             this.tableLayout_support.TabIndex = 0;
             // 
             // dateTimePicker1
@@ -621,7 +621,7 @@
             this.Btn_make_serv_comm.Name = "Btn_make_serv_comm";
             this.Btn_make_serv_comm.Size = new System.Drawing.Size(177, 30);
             this.Btn_make_serv_comm.TabIndex = 2;
-            this.Btn_make_serv_comm.Text = "Service";
+            this.Btn_make_serv_comm.Text = "Service/Journal";
             this.Btn_make_serv_comm.UseVisualStyleBackColor = true;
             this.Btn_make_serv_comm.Click += new System.EventHandler(this.Btn_make_serv_comm_Click);
             // 

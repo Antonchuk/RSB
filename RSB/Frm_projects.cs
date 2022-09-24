@@ -166,39 +166,46 @@ namespace RSB
             //получаем род дриеторию
             foreach (string one_path in paths)
             {
-                if (one_path != "")
+                try
                 {
-                    //проверить, это путь к файли или директории
-                    FileInfo[] files;
-                    FileInfo fi = new FileInfo(one_path);
-                    if (fi.Exists)
+                    if (one_path != "")
                     {
-                        DirectoryInfo par_dir = Directory.GetParent(one_path);
-                        files = par_dir.GetFiles();
-                    }
-                    else
-                    {
-                        DirectoryInfo par_dir = new DirectoryInfo(one_path);
-                        files = par_dir.GetFiles();
-                    }
-                    //список файлов
-                    
-                    foreach (FileInfo inf in files)
-                    {
-                        //MessageBox.Show("extention "+inf.Extension);
-                        if ((inf.Extension == ".csv") || (inf.Extension == ".CSV"))
+                        //проверить, это путь к файли или директории
+                        FileInfo[] files;
+                        FileInfo fi = new FileInfo(one_path);
+                        if (fi.Exists)
                         {
-                            //несколько расчетов байт на 1 атом для csv: 51.85, 51.39, 52.19, 50.63
-                            //в среднем возьмем 51.5
-                            ans = ans + (inf.Length) / 51.2;
+                            DirectoryInfo par_dir = Directory.GetParent(one_path);
+                            files = par_dir.GetFiles();
                         }
-                        else if (inf.Extension == ".ieco" || inf.Extension == ".IECO")
+                        else
                         {
-                            //на 1 атом в средне 24,008-24,0008 байт
-                            //в среднем возьмем 24,004
-                            ans = ans + (inf.Length) / 24.004;
+                            DirectoryInfo par_dir = new DirectoryInfo(one_path);
+                            files = par_dir.GetFiles();
+                        }
+                        //список файлов
+
+                        foreach (FileInfo inf in files)
+                        {
+                            //MessageBox.Show("extention "+inf.Extension);
+                            if ((inf.Extension == ".csv") || (inf.Extension == ".CSV"))
+                            {
+                                //несколько расчетов байт на 1 атом для csv: 51.85, 51.39, 52.19, 50.63
+                                //в среднем возьмем 51.5
+                                ans = ans + (inf.Length) / 51.2;
+                            }
+                            else if (inf.Extension == ".ieco" || inf.Extension == ".IECO")
+                            {
+                                //на 1 атом в средне 24,008-24,0008 байт
+                                //в среднем возьмем 24,004
+                                ans = ans + (inf.Length) / 24.004;
+                            }
                         }
                     }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error in calc atoms count\n"+ex.ToString());
                 }
             }
             return ans;
@@ -369,8 +376,7 @@ namespace RSB
             //добавляем столбец с количеством исследований
             //
             ds.Tables.Add(Add_colomns(ds.Tables[0]));
-            return ds.Tables[1];
-            
+            return ds.Tables[1];            
         }
         private void Fill_ch_box(CheckedListBox box)
         {
@@ -627,6 +633,12 @@ namespace RSB
             }
             //раскраска
             Fill_color_DG();
+            //апдейт инфорации об образцах на следующей вкладке
+            Specs_update("", "", id_project);
+        }
+        private void Specs_update(string treatment, string material, int project_id)
+        {
+
         }
         private double[] Get_massive(int col, double Y)
         {
@@ -1137,6 +1149,18 @@ namespace RSB
 
             string res = new DateTime(Convert.ToInt64(pt.X)).ToString();
             return res;
+        }
+
+        private void txtbox_new_stage_Click(object sender, EventArgs e)
+        {
+            txtbox_new_stage.ForeColor = Color.Black;
+            txtbox_new_stage.Text = "";
+        }
+
+        private void txtbox_new_stage_Leave(object sender, EventArgs e)
+        {
+            txtbox_new_stage.ForeColor = Color.LightGray;
+            txtbox_new_stage.Text = "name of new stage";
         }
     }
 }

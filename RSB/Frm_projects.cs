@@ -1162,5 +1162,74 @@ namespace RSB
             txtbox_new_stage.ForeColor = Color.LightGray;
             txtbox_new_stage.Text = "name of new stage";
         }
+        /// <summary>
+        /// проверка полей для создания проекта
+        /// </summary>
+        /// <returns></returns>
+        private bool Check_fields_project()
+        {
+            bool ans=false;
+            if (txtbox_pr_new_name.Text!=""
+                && combox_pr_new_resp.Text!=""
+                && dateTimePicker_pr_new_start.Value< dateTimePicker_pr_new_end.Value)
+            {
+                ans = true;
+            }
+
+            return ans;
+        }
+        /// <summary>
+        /// проверка, есть ли уже такой проект
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private bool Check_new_pr_name(string name)
+        {
+            bool ans = false;
+            if (SQL_str_request("SELECT name FROM test2base.projects WHERE (projects.name = '" + name + "')").Count == 0)
+            {
+                ans = true;
+            }            
+            return ans;
+        }
+        /// <summary>
+        /// создание новго проекта
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_create_new_project_Click(object sender, EventArgs e)
+        {
+            //проверка доступа
+            //проверка полей
+            //есть ли уже с таким названием
+            if (Properties.Settings.Default.user_access_lvl==1 
+                && Check_fields_project()
+                && Check_new_pr_name(txtbox_pr_new_name.Text))
+            {
+                //создаем
+                MessageBox.Show("create");
+                int priority = 0;
+                if (int.TryParse(txtbox_priority_add.Text, out int prior)) priority = prior;
+                SQL_com("INSERT INTO test2base.projects (name, id_respons, priority, contract, start_date, end_date, stage_count, specs_per_state) " +
+                    "VALUES ('"+ txtbox_pr_new_name.Text + "', " +
+                    "(SELECT id_producer FROM test2base.producers WHERE (surname = '" + combox_pr_new_resp .Text + "')), " +
+                    "'"+ priority.ToString() + "', " +
+                    "'"+ txtbox_pr_new_contract.Text + "', " +
+                    " '"+ dateTimePicker_pr_new_start.Value.ToString("yyyy-MM-dd HH:mm:ss") + "', " +
+                    " '" + dateTimePicker_pr_new_end.Value.ToString("yyyy-MM-dd HH:mm:ss") + "', " +
+                    " '1', '" + txtbox_stages_num_add.Text + "');");
+            }
+            else
+            {
+                MessageBox.Show("Увага, забаронена*!\nAccess level = 1\nNew name of Project\nStart_date<=End_date\n* - Это белорусский");                
+            }
+
+        }
+
+        private void combox_pr_new_resp_KeyUp(object sender, KeyEventArgs e)
+        {
+            //анти сови-продюсер
+            combox_pr_new_resp.Text = "";
+        }
     }
 }

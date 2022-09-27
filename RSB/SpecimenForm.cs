@@ -536,7 +536,8 @@ namespace RSB
                                             {
                                                 string ext_name = Path.GetExtension(path);
                                                 if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff" 
-                                                    || ext_name == ".JPG" || ext_name == ".JPEG" || ext_name == ".PNG" || ext_name == ".BMP" || ext_name == ".TIFF")
+                                                    || ext_name == ".JPG" || ext_name == ".JPEG" || ext_name == ".PNG" || ext_name == ".BMP" || ext_name == ".TIFF"
+                                                    || ext_name == ".TIF" || ext_name == ".tif")
                                                 {
                                                     num++;
                                                     switch (num)
@@ -577,7 +578,8 @@ namespace RSB
                                             {
                                                 string ext_name = Path.GetExtension(path);
                                                 if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff" 
-                                                    || ext_name == ".JPG" || ext_name == ".JPEG" || ext_name == ".PNG" || ext_name == ".BMP" || ext_name == ".TIFF")
+                                                    || ext_name == ".JPG" || ext_name == ".JPEG" || ext_name == ".PNG" || ext_name == ".BMP" || ext_name == ".TIFF"
+                                                    || ext_name == ".TIF" || ext_name == ".tif")
                                                 {
                                                     num++;
                                                     switch (num)
@@ -3732,7 +3734,10 @@ namespace RSB
                             || ext_name == ".JPG"
                             || ext_name == ".PNG"
                             || ext_name == ".JPEG"
-                            || ext_name == ".BMP")
+                            || ext_name == ".BMP"
+                            || ext_name == ".TIF"
+                            || ext_name == ".TIFF"
+                            || ext_name == ".tif")
                         {
                             Image image_new = Image.FromFile(image_path);
                             images_paths.Add(image_path);

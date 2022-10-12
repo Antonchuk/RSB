@@ -1846,7 +1846,7 @@ namespace RSB
         {
             //подгрузить другой набор позиций
             Fill_num_combo(combox_storage.Text, 1);
-
+            combox_pos_add.Text = "";
 
         }
         private void Ch_btn_state(bool make, bool new_stor, bool add_tem, bool add_foto_after, bool add_foto_before)

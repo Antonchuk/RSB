@@ -256,7 +256,7 @@ namespace RSB
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 443F));
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_start_date, 1, 4);
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_info_stages_num, 1, 3);
             this.tableLayoutPanel_project_info.Controls.Add(this.lbl_info_end_date, 0, 5);
@@ -492,7 +492,7 @@ namespace RSB
             this.combox_pr_new_resp.Location = new System.Drawing.Point(773, 84);
             this.combox_pr_new_resp.Margin = new System.Windows.Forms.Padding(1);
             this.combox_pr_new_resp.Name = "combox_pr_new_resp";
-            this.combox_pr_new_resp.Size = new System.Drawing.Size(346, 30);
+            this.combox_pr_new_resp.Size = new System.Drawing.Size(441, 30);
             this.combox_pr_new_resp.TabIndex = 9;
             this.combox_pr_new_resp.KeyUp += new System.Windows.Forms.KeyEventHandler(this.combox_pr_new_resp_KeyUp);
             // 
@@ -502,7 +502,7 @@ namespace RSB
             this.txtbox_pr_new_contract.Location = new System.Drawing.Point(773, 43);
             this.txtbox_pr_new_contract.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_pr_new_contract.Name = "txtbox_pr_new_contract";
-            this.txtbox_pr_new_contract.Size = new System.Drawing.Size(346, 30);
+            this.txtbox_pr_new_contract.Size = new System.Drawing.Size(441, 30);
             this.txtbox_pr_new_contract.TabIndex = 8;
             // 
             // txtbox_pr_new_name
@@ -511,7 +511,7 @@ namespace RSB
             this.txtbox_pr_new_name.Location = new System.Drawing.Point(773, 2);
             this.txtbox_pr_new_name.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_pr_new_name.Name = "txtbox_pr_new_name";
-            this.txtbox_pr_new_name.Size = new System.Drawing.Size(346, 30);
+            this.txtbox_pr_new_name.Size = new System.Drawing.Size(441, 30);
             this.txtbox_pr_new_name.TabIndex = 7;
             // 
             // lbl_pr_new_name
@@ -718,7 +718,7 @@ namespace RSB
             this.txtbox_stages_num_add.Location = new System.Drawing.Point(773, 125);
             this.txtbox_stages_num_add.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_stages_num_add.Name = "txtbox_stages_num_add";
-            this.txtbox_stages_num_add.Size = new System.Drawing.Size(346, 30);
+            this.txtbox_stages_num_add.Size = new System.Drawing.Size(441, 30);
             this.txtbox_stages_num_add.TabIndex = 32;
             // 
             // lbl_priority_add
@@ -738,7 +738,7 @@ namespace RSB
             this.txtbox_priority_add.Location = new System.Drawing.Point(773, 371);
             this.txtbox_priority_add.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_priority_add.Name = "txtbox_priority_add";
-            this.txtbox_priority_add.Size = new System.Drawing.Size(346, 30);
+            this.txtbox_priority_add.Size = new System.Drawing.Size(441, 30);
             this.txtbox_priority_add.TabIndex = 35;
             // 
             // lbl_specs_state_add
@@ -758,7 +758,7 @@ namespace RSB
             this.txtbox_specs_state_add.Location = new System.Drawing.Point(773, 412);
             this.txtbox_specs_state_add.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_specs_state_add.Name = "txtbox_specs_state_add";
-            this.txtbox_specs_state_add.Size = new System.Drawing.Size(346, 30);
+            this.txtbox_specs_state_add.Size = new System.Drawing.Size(441, 30);
             this.txtbox_specs_state_add.TabIndex = 36;
             // 
             // btn_create_new_project

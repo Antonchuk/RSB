@@ -1508,7 +1508,7 @@
             this.btn_test_telegrambot.TabIndex = 21;
             this.btn_test_telegrambot.Text = "Test bot";
             this.btn_test_telegrambot.UseVisualStyleBackColor = true;
-            this.btn_test_telegrambot.Click += new System.EventHandler(this.btn_test_telegrambot_Click);
+            //this.btn_test_telegrambot.Click += new System.EventHandler(this.btn_test_telegrambot_Click);
             // 
             // btn_test
             // 

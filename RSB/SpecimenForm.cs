@@ -3037,9 +3037,9 @@ namespace RSB
                 new ProxyInfo("135.181.203.208",80)
             });
             proxy.ResolveHostnamesLocally = true;
-            var botClient = new TelegramBotClient("1662678916:AAH63Zoolu7RgaZr_Cw9dtH6X3PIyQ5iQmk", proxy);
-            var me = botClient.GetMeAsync().Result;
-            MessageBox.Show("My first bot is "+me.FirstName);
+            //var botClient = new TelegramBotClient("", proxy);
+            //var me = botClient.GetMeAsync().Result;
+            //MessageBox.Show("My first bot is "+me.FirstName);
             //botClient.OnMessage += Bot_OnMessage;
             //botClient.StartReceiving();            
 

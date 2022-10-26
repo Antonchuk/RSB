@@ -9,7 +9,7 @@ Database client for APT samples, studies, sample repositories, and installations
 - [Project team](#project-team)
 
 ## Technology
-- [c#](https://learn.microsoft.com/ru-ru/dotnet/csharp/)
+- [C#](https://learn.microsoft.com/ru-ru/dotnet/csharp/)
 - [MySQL](https://www.mysql.com/)
 - [.NET Framework](https://dotnet.microsoft.com/en-us/download/dotnet-framework)
 

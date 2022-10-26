@@ -123,6 +123,26 @@
             <param name="sql_reqest"></param>
             <returns></returns>
         </member>
+        <member name="M:RSB.Frm_projects.Check_fields_project">
+            <summary>
+            проверка полей для создания проекта
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RSB.Frm_projects.Check_new_pr_name(System.String)">
+            <summary>
+            проверка, есть ли уже такой проект
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RSB.Frm_projects.btn_create_new_project_Click(System.Object,System.EventArgs)">
+            <summary>
+            создание новго проекта
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
         <member name="F:RSB.Frm_projects.components">
             <summary>
             Required designer variable.

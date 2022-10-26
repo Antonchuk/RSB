@@ -315,9 +315,9 @@ namespace RSB
             var treat = new DataColumn("Treatment");
             n_dt.Columns.Add(state);
             n_dt.Columns.Add(treat);
-            DataColumn n_column = new DataColumn("Specimens count");
+            DataColumn n_column = new DataColumn("Specimens count", Type.GetType("System.Int32"));
             n_dt.Columns.Add(n_column);
-            DataColumn n_suc = new DataColumn("Success count");
+            DataColumn n_suc = new DataColumn("Success count", Type.GetType("System.Int32"));
             n_dt.Columns.Add(n_suc);
             DataColumn at_col = new DataColumn("Atoms count");                        
             n_dt.Columns.Add(at_col);            
@@ -350,7 +350,7 @@ namespace RSB
             //пишем всё это в таблицу
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                n_dt.Rows.Add(new object[] {dt.Rows[i].ItemArray[0], dt.Rows[i].ItemArray[1], col[i], suc[i], atoms_col[i].ToString("### ### ###"), status[i], specs_queue[i].ToString("###")});
+                n_dt.Rows.Add(new object[] {dt.Rows[i].ItemArray[0], dt.Rows[i].ItemArray[1], Convert.ToInt32(col[i]), Convert.ToInt32(suc[i]), atoms_col[i].ToString("### ### ###"), status[i], specs_queue[i].ToString("###")});
             }
             return n_dt;
         }
@@ -1161,6 +1161,122 @@ namespace RSB
         {
             txtbox_new_stage.ForeColor = Color.LightGray;
             txtbox_new_stage.Text = "name of new stage";
+        }
+        /// <summary>
+        /// проверка полей для создания проекта
+        /// </summary>
+        /// <returns></returns>
+        private bool Check_fields_project()
+        {
+            bool ans=false;
+            if (txtbox_pr_new_name.Text!=""
+                && combox_pr_new_resp.Text!=""
+                && dateTimePicker_pr_new_start.Value< dateTimePicker_pr_new_end.Value)
+            {
+                ans = true;
+            }
+
+            return ans;
+        }
+        /// <summary>
+        /// проверка, есть ли уже такой проект
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private bool Check_new_pr_name(string name)
+        {
+            bool ans = false;
+            if (SQL_str_request("SELECT name FROM test2base.projects WHERE (projects.name = '" + name + "')").Count == 0)
+            {
+                ans = true;
+            }            
+            return ans;
+        }
+        /// <summary>
+        /// создание новго проекта
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_create_new_project_Click(object sender, EventArgs e)
+        {
+            //проверка доступа
+            //проверка полей
+            //есть ли уже с таким названием
+            if (Properties.Settings.Default.user_access_lvl==1 
+                && Check_fields_project()
+                && Check_new_pr_name(txtbox_pr_new_name.Text))
+            {
+                //создаем
+                MessageBox.Show("create");
+                int priority = 0;
+                if (int.TryParse(txtbox_priority_add.Text, out int prior)) priority = prior;
+                SQL_com("INSERT INTO test2base.projects (name, id_respons, priority, contract, start_date, end_date, stage_count, specs_per_state) " +
+                    "VALUES ('"+ txtbox_pr_new_name.Text + "', " +
+                    "(SELECT id_producer FROM test2base.producers WHERE (surname = '" + combox_pr_new_resp .Text + "')), " +
+                    "'"+ priority.ToString() + "', " +
+                    "'"+ txtbox_pr_new_contract.Text + "', " +
+                    " '"+ dateTimePicker_pr_new_start.Value.ToString("yyyy-MM-dd HH:mm:ss") + "', " +
+                    " '" + dateTimePicker_pr_new_end.Value.ToString("yyyy-MM-dd HH:mm:ss") + "', " +
+                    " '1', '" + txtbox_stages_num_add.Text + "');");
+            }
+            else
+            {
+                MessageBox.Show("Увага, забаронена*!\nAccess level = 1\nNew name of Project\nStart_date<=End_date\n* - Это белорусский");                
+            }
+
+        }
+
+        private void combox_pr_new_resp_KeyUp(object sender, KeyEventArgs e)
+        {
+            //анти сови-продюсер
+            combox_pr_new_resp.Text = "";
+        }
+        private DataTable Fill_dt_specs(string Mat_sel, string Treat_sel)
+        {
+            DataTable _ans = new DataTable();
+            //dt_specs.Columns.Add()
+            //номер исследования, оценка после обработки, объем (лучше в атомах, но нужно в нм), Число кластеров, Плотность объектов, Тип кластеров, Статус обработки
+            _ans.Columns.Add("IDres", Type.GetType("System.Int32"));
+            _ans.Columns.Add("Grade", Type.GetType("System.String"));
+            _ans.Columns.Add("Volume nm^3", Type.GetType("System.Double"));
+            _ans.Columns.Add("Feature count", Type.GetType("System.Int32"));
+            _ans.Columns.Add("Feature density nm^-3", Type.GetType("System.Double"));
+            _ans.Columns.Add("Feature type-composition", Type.GetType("System.String"));
+            _ans.Columns.Add("Datamining status", Type.GetType("System.String"));
+            List<string> _idres = SQL_str_request("SELECT id_research FROM test2base.researches " +
+                "LEFT OUTER JOIN test2base.specimens ON researches.id_specimen = specimens.idspecimens " +
+                "LEFT OUTER JOIN test2base.materials ON test2base.specimens.id_material = test2base.materials.id_material " +
+                "LEFT OUTER JOIN test2base.treatment ON specimens.id_treatment = treatment.id_treatment " +
+                "WHERE (specimens.id_project =  " + id_project.ToString() + ") " +
+                    "AND (materials.name = '" + Mat_sel + "') " +
+                    "AND (treatment.name = '" + Treat_sel + "')") ;
+            //
+
+            //заполняем
+            for (int i =0; i< _idres.Count; i++)
+            {
+                _ans.Rows.Add(new object[] {Convert.ToInt32(_idres[i]), "Goodly", 555e-10, 888, 666e-5, "Nb-Nb-Nd", "Done next week" });
+            }
+            return _ans;
+        }
+        private void tabcontrol_projects_main_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //MessageBox.Show(tabcontrol_projects_main.SelectedTab.Text);
+            //если это вкладка Specimens, то обновляем данные по образцам
+            if (tabcontrol_projects_main.SelectedTab.Text == "Specimens" && dataGridView1_APT_data.Rows.Count > 0 && dataGridView1_APT_data.SelectedRows.Count>0)
+            {
+                //в Лабел выводим название состояния
+                string material = dataGridView1_APT_data.Rows[dataGridView1_APT_data.SelectedRows[0].Index].Cells[0].Value.ToString();
+                string treatment = dataGridView1_APT_data.Rows[dataGridView1_APT_data.SelectedRows[0].Index].Cells[1].Value.ToString();
+                lbl_State_caption.Text = material + treatment ;
+                DataTable dt_specs = Fill_dt_specs(material,treatment);
+                dataGridView_specimens.DataSource = dt_specs;
+            }
+            else
+            {
+                lbl_State_caption.Text = "";
+                dataGridView_specimens.DataSource = null;
+            }
         }
     }
 }

@@ -31,6 +31,7 @@ namespace RSB
         {
             this.components = new System.ComponentModel.Container();
             this.splitcontainer_projects_main = new System.Windows.Forms.SplitContainer();
+            this.lbl_State_caption = new System.Windows.Forms.Label();
             this.btn_temp = new System.Windows.Forms.Button();
             this.combox_projects = new System.Windows.Forms.ComboBox();
             this.btn_refresh_datagrid = new System.Windows.Forms.Button();
@@ -72,6 +73,15 @@ namespace RSB
             this.lbl_priority = new System.Windows.Forms.Label();
             this.btn_new_stage_del = new System.Windows.Forms.Button();
             this.btn_ch_dates = new System.Windows.Forms.Button();
+            this.lbl_contract_add = new System.Windows.Forms.Label();
+            this.lbl_resp_add = new System.Windows.Forms.Label();
+            this.lbl_stage_number_add = new System.Windows.Forms.Label();
+            this.txtbox_stages_num_add = new System.Windows.Forms.TextBox();
+            this.lbl_priority_add = new System.Windows.Forms.Label();
+            this.txtbox_priority_add = new System.Windows.Forms.TextBox();
+            this.lbl_specs_state_add = new System.Windows.Forms.Label();
+            this.txtbox_specs_state_add = new System.Windows.Forms.TextBox();
+            this.btn_create_new_project = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.prog_bar_remain = new System.Windows.Forms.ProgressBar();
             this.lbl_progressbar_left = new System.Windows.Forms.Label();
@@ -86,24 +96,17 @@ namespace RSB
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.ch_listbox_project_stage = new System.Windows.Forms.CheckedListBox();
             this.lbl_stages_list = new System.Windows.Forms.Label();
-            this.lbl_sel_state_stage = new System.Windows.Forms.Label();
-            this.txtbox_sel_state_stage = new System.Windows.Forms.TextBox();
             this.combox_stages = new System.Windows.Forms.ComboBox();
-            this.btn_ch_stage = new System.Windows.Forms.Button();
             this.lbl_ch_stage_new = new System.Windows.Forms.Label();
+            this.txtbox_sel_state_stage = new System.Windows.Forms.TextBox();
+            this.lbl_sel_state_stage = new System.Windows.Forms.Label();
+            this.lbl_ch_state_caption = new System.Windows.Forms.Label();
+            this.btn_ch_stage = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.lbl_contract_add = new System.Windows.Forms.Label();
-            this.lbl_resp_add = new System.Windows.Forms.Label();
-            this.lbl_stage_number_add = new System.Windows.Forms.Label();
-            this.txtbox_stages_num_add = new System.Windows.Forms.TextBox();
-            this.lbl_priority_add = new System.Windows.Forms.Label();
-            this.lbl_specs_state_add = new System.Windows.Forms.Label();
-            this.txtbox_priority_add = new System.Windows.Forms.TextBox();
-            this.txtbox_specs_state_add = new System.Windows.Forms.TextBox();
-            this.btn_create_new_project = new System.Windows.Forms.Button();
+            this.SplitContainer_Specs = new System.Windows.Forms.SplitContainer();
             this.dataGridView_specimens = new System.Windows.Forms.DataGridView();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.splitcontainer_projects_main)).BeginInit();
             this.splitcontainer_projects_main.Panel1.SuspendLayout();
             this.splitcontainer_projects_main.Panel2.SuspendLayout();
@@ -129,6 +132,9 @@ namespace RSB
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1_APT_data)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SplitContainer_Specs)).BeginInit();
+            this.SplitContainer_Specs.Panel1.SuspendLayout();
+            this.SplitContainer_Specs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_specimens)).BeginInit();
             this.SuspendLayout();
             // 
@@ -143,6 +149,7 @@ namespace RSB
             // 
             // splitcontainer_projects_main.Panel1
             // 
+            this.splitcontainer_projects_main.Panel1.Controls.Add(this.lbl_State_caption);
             this.splitcontainer_projects_main.Panel1.Controls.Add(this.btn_temp);
             this.splitcontainer_projects_main.Panel1.Controls.Add(this.combox_projects);
             this.splitcontainer_projects_main.Panel1.Controls.Add(this.btn_refresh_datagrid);
@@ -155,6 +162,15 @@ namespace RSB
             this.splitcontainer_projects_main.SplitterDistance = 122;
             this.splitcontainer_projects_main.SplitterWidth = 7;
             this.splitcontainer_projects_main.TabIndex = 0;
+            // 
+            // lbl_State_caption
+            // 
+            this.lbl_State_caption.AutoSize = true;
+            this.lbl_State_caption.Location = new System.Drawing.Point(11, 69);
+            this.lbl_State_caption.Name = "lbl_State_caption";
+            this.lbl_State_caption.Size = new System.Drawing.Size(114, 22);
+            this.lbl_State_caption.TabIndex = 3;
+            this.lbl_State_caption.Text = "big badabum";
             // 
             // btn_temp
             // 
@@ -200,6 +216,7 @@ namespace RSB
             this.tabcontrol_projects_main.SelectedIndex = 0;
             this.tabcontrol_projects_main.Size = new System.Drawing.Size(1516, 813);
             this.tabcontrol_projects_main.TabIndex = 0;
+            this.tabcontrol_projects_main.SelectedIndexChanged += new System.EventHandler(this.tabcontrol_projects_main_SelectedIndexChanged);
             // 
             // tabPage1
             // 
@@ -227,7 +244,7 @@ namespace RSB
             // 
             this.splitContainer_information.Panel2.Controls.Add(this.tableLayoutPanel2);
             this.splitContainer_information.Size = new System.Drawing.Size(1498, 768);
-            this.splitContainer_information.SplitterDistance = 1102;
+            this.splitContainer_information.SplitterDistance = 1121;
             this.splitContainer_information.TabIndex = 2;
             // 
             // splitContainer_infor_2
@@ -244,7 +261,7 @@ namespace RSB
             // splitContainer_infor_2.Panel2
             // 
             this.splitContainer_infor_2.Panel2.Controls.Add(this.tableLayoutPanel3);
-            this.splitContainer_infor_2.Size = new System.Drawing.Size(1102, 768);
+            this.splitContainer_infor_2.Size = new System.Drawing.Size(1121, 768);
             this.splitContainer_infor_2.SplitterDistance = 658;
             this.splitContainer_infor_2.TabIndex = 1;
             // 
@@ -256,7 +273,7 @@ namespace RSB
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 446F));
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_start_date, 1, 4);
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_info_stages_num, 1, 3);
             this.tableLayoutPanel_project_info.Controls.Add(this.lbl_info_end_date, 0, 5);
@@ -316,7 +333,7 @@ namespace RSB
             this.tableLayoutPanel_project_info.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel_project_info.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel_project_info.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel_project_info.Size = new System.Drawing.Size(1102, 658);
+            this.tableLayoutPanel_project_info.Size = new System.Drawing.Size(1121, 658);
             this.tableLayoutPanel_project_info.TabIndex = 0;
             this.tableLayoutPanel_project_info.CellPaint += new System.Windows.Forms.TableLayoutCellPaintEventHandler(this.tableLayoutPanel_project_info_CellPaint);
             this.tableLayoutPanel_project_info.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel_project_info_Paint);
@@ -487,13 +504,14 @@ namespace RSB
             // 
             // combox_pr_new_resp
             // 
-            this.combox_pr_new_resp.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.combox_pr_new_resp.Dock = System.Windows.Forms.DockStyle.Top;
             this.combox_pr_new_resp.FormattingEnabled = true;
             this.combox_pr_new_resp.Location = new System.Drawing.Point(773, 84);
             this.combox_pr_new_resp.Margin = new System.Windows.Forms.Padding(1);
             this.combox_pr_new_resp.Name = "combox_pr_new_resp";
-            this.combox_pr_new_resp.Size = new System.Drawing.Size(327, 30);
+            this.combox_pr_new_resp.Size = new System.Drawing.Size(444, 30);
             this.combox_pr_new_resp.TabIndex = 9;
+            this.combox_pr_new_resp.KeyUp += new System.Windows.Forms.KeyEventHandler(this.combox_pr_new_resp_KeyUp);
             // 
             // txtbox_pr_new_contract
             // 
@@ -501,7 +519,7 @@ namespace RSB
             this.txtbox_pr_new_contract.Location = new System.Drawing.Point(773, 43);
             this.txtbox_pr_new_contract.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_pr_new_contract.Name = "txtbox_pr_new_contract";
-            this.txtbox_pr_new_contract.Size = new System.Drawing.Size(327, 30);
+            this.txtbox_pr_new_contract.Size = new System.Drawing.Size(444, 30);
             this.txtbox_pr_new_contract.TabIndex = 8;
             // 
             // txtbox_pr_new_name
@@ -510,7 +528,7 @@ namespace RSB
             this.txtbox_pr_new_name.Location = new System.Drawing.Point(773, 2);
             this.txtbox_pr_new_name.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_pr_new_name.Name = "txtbox_pr_new_name";
-            this.txtbox_pr_new_name.Size = new System.Drawing.Size(327, 30);
+            this.txtbox_pr_new_name.Size = new System.Drawing.Size(444, 30);
             this.txtbox_pr_new_name.TabIndex = 7;
             // 
             // lbl_pr_new_name
@@ -678,6 +696,99 @@ namespace RSB
             this.btn_ch_dates.UseVisualStyleBackColor = false;
             this.btn_ch_dates.Click += new System.EventHandler(this.btn_ch_dates_Click);
             // 
+            // lbl_contract_add
+            // 
+            this.lbl_contract_add.AutoSize = true;
+            this.lbl_contract_add.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_contract_add.Location = new System.Drawing.Point(539, 42);
+            this.lbl_contract_add.Name = "lbl_contract_add";
+            this.lbl_contract_add.Size = new System.Drawing.Size(229, 40);
+            this.lbl_contract_add.TabIndex = 29;
+            this.lbl_contract_add.Text = "Contract";
+            this.lbl_contract_add.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lbl_resp_add
+            // 
+            this.lbl_resp_add.AutoSize = true;
+            this.lbl_resp_add.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_resp_add.Location = new System.Drawing.Point(539, 83);
+            this.lbl_resp_add.Name = "lbl_resp_add";
+            this.lbl_resp_add.Size = new System.Drawing.Size(229, 40);
+            this.lbl_resp_add.TabIndex = 30;
+            this.lbl_resp_add.Text = "Responsible";
+            this.lbl_resp_add.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lbl_stage_number_add
+            // 
+            this.lbl_stage_number_add.AutoSize = true;
+            this.lbl_stage_number_add.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_stage_number_add.Location = new System.Drawing.Point(539, 124);
+            this.lbl_stage_number_add.Name = "lbl_stage_number_add";
+            this.lbl_stage_number_add.Size = new System.Drawing.Size(229, 40);
+            this.lbl_stage_number_add.TabIndex = 31;
+            this.lbl_stage_number_add.Text = "Stages number";
+            this.lbl_stage_number_add.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtbox_stages_num_add
+            // 
+            this.txtbox_stages_num_add.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtbox_stages_num_add.Location = new System.Drawing.Point(773, 125);
+            this.txtbox_stages_num_add.Margin = new System.Windows.Forms.Padding(1);
+            this.txtbox_stages_num_add.Name = "txtbox_stages_num_add";
+            this.txtbox_stages_num_add.Size = new System.Drawing.Size(444, 30);
+            this.txtbox_stages_num_add.TabIndex = 32;
+            // 
+            // lbl_priority_add
+            // 
+            this.lbl_priority_add.AutoSize = true;
+            this.lbl_priority_add.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_priority_add.Location = new System.Drawing.Point(539, 370);
+            this.lbl_priority_add.Name = "lbl_priority_add";
+            this.lbl_priority_add.Size = new System.Drawing.Size(229, 40);
+            this.lbl_priority_add.TabIndex = 33;
+            this.lbl_priority_add.Text = "Prioprity";
+            this.lbl_priority_add.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtbox_priority_add
+            // 
+            this.txtbox_priority_add.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtbox_priority_add.Location = new System.Drawing.Point(773, 371);
+            this.txtbox_priority_add.Margin = new System.Windows.Forms.Padding(1);
+            this.txtbox_priority_add.Name = "txtbox_priority_add";
+            this.txtbox_priority_add.Size = new System.Drawing.Size(444, 30);
+            this.txtbox_priority_add.TabIndex = 35;
+            // 
+            // lbl_specs_state_add
+            // 
+            this.lbl_specs_state_add.AutoSize = true;
+            this.lbl_specs_state_add.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_specs_state_add.Location = new System.Drawing.Point(539, 411);
+            this.lbl_specs_state_add.Name = "lbl_specs_state_add";
+            this.lbl_specs_state_add.Size = new System.Drawing.Size(229, 40);
+            this.lbl_specs_state_add.TabIndex = 34;
+            this.lbl_specs_state_add.Text = "Specs/state";
+            this.lbl_specs_state_add.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtbox_specs_state_add
+            // 
+            this.txtbox_specs_state_add.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtbox_specs_state_add.Location = new System.Drawing.Point(773, 412);
+            this.txtbox_specs_state_add.Margin = new System.Windows.Forms.Padding(1);
+            this.txtbox_specs_state_add.Name = "txtbox_specs_state_add";
+            this.txtbox_specs_state_add.Size = new System.Drawing.Size(444, 30);
+            this.txtbox_specs_state_add.TabIndex = 36;
+            // 
+            // btn_create_new_project
+            // 
+            this.btn_create_new_project.BackColor = System.Drawing.Color.LightPink;
+            this.btn_create_new_project.Location = new System.Drawing.Point(775, 455);
+            this.btn_create_new_project.Name = "btn_create_new_project";
+            this.btn_create_new_project.Size = new System.Drawing.Size(200, 57);
+            this.btn_create_new_project.TabIndex = 37;
+            this.btn_create_new_project.Text = "Create new project";
+            this.btn_create_new_project.UseVisualStyleBackColor = false;
+            this.btn_create_new_project.Click += new System.EventHandler(this.btn_create_new_project_Click);
+            // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 2;
@@ -692,7 +803,7 @@ namespace RSB
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(1102, 106);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1121, 106);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
             // prog_bar_remain
@@ -701,7 +812,7 @@ namespace RSB
             this.prog_bar_remain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.prog_bar_remain.Location = new System.Drawing.Point(3, 3);
             this.prog_bar_remain.Name = "prog_bar_remain";
-            this.prog_bar_remain.Size = new System.Drawing.Size(1096, 47);
+            this.prog_bar_remain.Size = new System.Drawing.Size(1115, 47);
             this.prog_bar_remain.TabIndex = 0;
             // 
             // lbl_progressbar_left
@@ -710,7 +821,7 @@ namespace RSB
             this.lbl_progressbar_left.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbl_progressbar_left.Location = new System.Drawing.Point(3, 53);
             this.lbl_progressbar_left.Name = "lbl_progressbar_left";
-            this.lbl_progressbar_left.Size = new System.Drawing.Size(545, 53);
+            this.lbl_progressbar_left.Size = new System.Drawing.Size(554, 53);
             this.lbl_progressbar_left.TabIndex = 1;
             this.lbl_progressbar_left.Text = "Now";
             this.lbl_progressbar_left.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -719,9 +830,9 @@ namespace RSB
             // 
             this.lbl_progressbar_end.AutoSize = true;
             this.lbl_progressbar_end.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_progressbar_end.Location = new System.Drawing.Point(554, 53);
+            this.lbl_progressbar_end.Location = new System.Drawing.Point(563, 53);
             this.lbl_progressbar_end.Name = "lbl_progressbar_end";
-            this.lbl_progressbar_end.Size = new System.Drawing.Size(545, 53);
+            this.lbl_progressbar_end.Size = new System.Drawing.Size(555, 53);
             this.lbl_progressbar_end.TabIndex = 2;
             this.lbl_progressbar_end.Text = "End of project";
             this.lbl_progressbar_end.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -740,7 +851,7 @@ namespace RSB
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(392, 768);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(373, 768);
             this.tableLayoutPanel2.TabIndex = 2;
             // 
             // zg_spec_count
@@ -755,7 +866,7 @@ namespace RSB
             this.zg_spec_count.ScrollMinX = 0D;
             this.zg_spec_count.ScrollMinY = 0D;
             this.zg_spec_count.ScrollMinY2 = 0D;
-            this.zg_spec_count.Size = new System.Drawing.Size(190, 378);
+            this.zg_spec_count.Size = new System.Drawing.Size(180, 378);
             this.zg_spec_count.TabIndex = 1;
             this.zg_spec_count.UseExtendedPrintDialog = true;
             // 
@@ -773,14 +884,14 @@ namespace RSB
             this.zed_state_succ.ScrollMinX = 0D;
             this.zed_state_succ.ScrollMinY = 0D;
             this.zed_state_succ.ScrollMinY2 = 0D;
-            this.zed_state_succ.Size = new System.Drawing.Size(382, 374);
+            this.zed_state_succ.Size = new System.Drawing.Size(363, 374);
             this.zed_state_succ.TabIndex = 2;
             this.zed_state_succ.UseExtendedPrintDialog = true;
             // 
             // zg_gantt
             // 
             this.zg_gantt.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.zg_gantt.Location = new System.Drawing.Point(201, 5);
+            this.zg_gantt.Location = new System.Drawing.Point(191, 5);
             this.zg_gantt.Margin = new System.Windows.Forms.Padding(5);
             this.zg_gantt.Name = "zg_gantt";
             this.zg_gantt.ScrollGrace = 0D;
@@ -790,7 +901,7 @@ namespace RSB
             this.zg_gantt.ScrollMinX = 0D;
             this.zg_gantt.ScrollMinY = 0D;
             this.zg_gantt.ScrollMinY2 = 0D;
-            this.zg_gantt.Size = new System.Drawing.Size(186, 374);
+            this.zg_gantt.Size = new System.Drawing.Size(177, 374);
             this.zg_gantt.TabIndex = 3;
             this.zg_gantt.UseExtendedPrintDialog = true;
             this.zg_gantt.PointValueEvent += new ZedGraph.ZedGraphControl.PointValueHandler(this.zg_gantt_PointValueEvent);
@@ -846,24 +957,27 @@ namespace RSB
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 102F));
             this.tableLayoutPanel1.Controls.Add(this.ch_listbox_project_stage, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.lbl_stages_list, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.lbl_sel_state_stage, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.txtbox_sel_state_stage, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.combox_stages, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.btn_ch_stage, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.lbl_ch_stage_new, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.combox_stages, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.lbl_ch_stage_new, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.txtbox_sel_state_stage, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.lbl_sel_state_stage, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.lbl_ch_state_caption, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.btn_ch_stage, 2, 3);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(18, 22);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowCount = 5;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 114F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 81F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 17F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(359, 457);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 39F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 59F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(384, 457);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // ch_listbox_project_stage
@@ -873,7 +987,7 @@ namespace RSB
             this.ch_listbox_project_stage.FormattingEnabled = true;
             this.ch_listbox_project_stage.Location = new System.Drawing.Point(3, 3);
             this.ch_listbox_project_stage.Name = "ch_listbox_project_stage";
-            this.ch_listbox_project_stage.Size = new System.Drawing.Size(173, 108);
+            this.ch_listbox_project_stage.Size = new System.Drawing.Size(135, 108);
             this.ch_listbox_project_stage.TabIndex = 0;
             this.ch_listbox_project_stage.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ch_listbox_project_stage_ItemCheck);
             // 
@@ -881,65 +995,77 @@ namespace RSB
             // 
             this.lbl_stages_list.AutoSize = true;
             this.lbl_stages_list.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_stages_list.Location = new System.Drawing.Point(182, 0);
+            this.lbl_stages_list.Location = new System.Drawing.Point(144, 0);
             this.lbl_stages_list.Name = "lbl_stages_list";
-            this.lbl_stages_list.Size = new System.Drawing.Size(174, 114);
+            this.lbl_stages_list.Size = new System.Drawing.Size(135, 114);
             this.lbl_stages_list.TabIndex = 1;
             this.lbl_stages_list.Text = "Stages List";
             this.lbl_stages_list.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lbl_sel_state_stage
-            // 
-            this.lbl_sel_state_stage.AutoSize = true;
-            this.lbl_sel_state_stage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_sel_state_stage.Location = new System.Drawing.Point(182, 114);
-            this.lbl_sel_state_stage.Name = "lbl_sel_state_stage";
-            this.lbl_sel_state_stage.Size = new System.Drawing.Size(174, 36);
-            this.lbl_sel_state_stage.TabIndex = 2;
-            this.lbl_sel_state_stage.Text = "Selected stage";
-            this.lbl_sel_state_stage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtbox_sel_state_stage
-            // 
-            this.txtbox_sel_state_stage.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txtbox_sel_state_stage.Location = new System.Drawing.Point(3, 117);
-            this.txtbox_sel_state_stage.Name = "txtbox_sel_state_stage";
-            this.txtbox_sel_state_stage.Size = new System.Drawing.Size(173, 30);
-            this.txtbox_sel_state_stage.TabIndex = 3;
             // 
             // combox_stages
             // 
             this.combox_stages.Dock = System.Windows.Forms.DockStyle.Top;
             this.combox_stages.FormattingEnabled = true;
-            this.combox_stages.Location = new System.Drawing.Point(3, 153);
+            this.combox_stages.Location = new System.Drawing.Point(3, 192);
             this.combox_stages.Name = "combox_stages";
-            this.combox_stages.Size = new System.Drawing.Size(173, 30);
+            this.combox_stages.Size = new System.Drawing.Size(135, 30);
             this.combox_stages.TabIndex = 4;
-            // 
-            // btn_ch_stage
-            // 
-            this.btn_ch_stage.Location = new System.Drawing.Point(3, 234);
-            this.btn_ch_stage.Name = "btn_ch_stage";
-            this.btn_ch_stage.Size = new System.Drawing.Size(121, 102);
-            this.btn_ch_stage.TabIndex = 4;
-            this.btn_ch_stage.Text = "Change stage";
-            this.btn_ch_stage.UseVisualStyleBackColor = true;
-            this.btn_ch_stage.Click += new System.EventHandler(this.btn_ch_stage_Click);
             // 
             // lbl_ch_stage_new
             // 
             this.lbl_ch_stage_new.AutoSize = true;
             this.lbl_ch_stage_new.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_ch_stage_new.Location = new System.Drawing.Point(182, 150);
+            this.lbl_ch_stage_new.Location = new System.Drawing.Point(144, 189);
             this.lbl_ch_stage_new.Name = "lbl_ch_stage_new";
-            this.lbl_ch_stage_new.Size = new System.Drawing.Size(174, 81);
+            this.lbl_ch_stage_new.Size = new System.Drawing.Size(135, 59);
             this.lbl_ch_stage_new.TabIndex = 5;
             this.lbl_ch_stage_new.Text = "New Stage";
             this.lbl_ch_stage_new.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // txtbox_sel_state_stage
+            // 
+            this.txtbox_sel_state_stage.Dock = System.Windows.Forms.DockStyle.Top;
+            this.txtbox_sel_state_stage.Location = new System.Drawing.Point(3, 153);
+            this.txtbox_sel_state_stage.Name = "txtbox_sel_state_stage";
+            this.txtbox_sel_state_stage.Size = new System.Drawing.Size(135, 30);
+            this.txtbox_sel_state_stage.TabIndex = 3;
+            // 
+            // lbl_sel_state_stage
+            // 
+            this.lbl_sel_state_stage.AutoSize = true;
+            this.lbl_sel_state_stage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_sel_state_stage.Location = new System.Drawing.Point(144, 150);
+            this.lbl_sel_state_stage.Name = "lbl_sel_state_stage";
+            this.lbl_sel_state_stage.Size = new System.Drawing.Size(135, 39);
+            this.lbl_sel_state_stage.TabIndex = 2;
+            this.lbl_sel_state_stage.Text = "Selected stage";
+            this.lbl_sel_state_stage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lbl_ch_state_caption
+            // 
+            this.lbl_ch_state_caption.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.lbl_ch_state_caption, 3);
+            this.lbl_ch_state_caption.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_ch_state_caption.Location = new System.Drawing.Point(3, 114);
+            this.lbl_ch_state_caption.Name = "lbl_ch_state_caption";
+            this.lbl_ch_state_caption.Size = new System.Drawing.Size(378, 36);
+            this.lbl_ch_state_caption.TabIndex = 6;
+            this.lbl_ch_state_caption.Text = "Change stage for sekected APT state";
+            this.lbl_ch_state_caption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btn_ch_stage
+            // 
+            this.btn_ch_stage.Location = new System.Drawing.Point(285, 192);
+            this.btn_ch_stage.Name = "btn_ch_stage";
+            this.btn_ch_stage.Size = new System.Drawing.Size(96, 53);
+            this.btn_ch_stage.TabIndex = 4;
+            this.btn_ch_stage.Text = "Change stage";
+            this.btn_ch_stage.UseVisualStyleBackColor = true;
+            this.btn_ch_stage.Click += new System.EventHandler(this.btn_ch_stage_Click);
+            // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.dataGridView_specimens);
+            this.tabPage2.Controls.Add(this.SplitContainer_Specs);
             this.tabPage2.Location = new System.Drawing.Point(4, 31);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(5);
             this.tabPage2.Name = "tabPage2";
@@ -949,124 +1075,55 @@ namespace RSB
             this.tabPage2.Text = "Specimens";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // tabPage4
+            // SplitContainer_Specs
             // 
-            this.tabPage4.Location = new System.Drawing.Point(4, 31);
-            this.tabPage4.Margin = new System.Windows.Forms.Padding(5);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(1508, 778);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "TEM";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.SplitContainer_Specs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.SplitContainer_Specs.Cursor = System.Windows.Forms.Cursors.Default;
+            this.SplitContainer_Specs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SplitContainer_Specs.Location = new System.Drawing.Point(5, 5);
+            this.SplitContainer_Specs.Name = "SplitContainer_Specs";
+            // 
+            // SplitContainer_Specs.Panel1
+            // 
+            this.SplitContainer_Specs.Panel1.Controls.Add(this.dataGridView_specimens);
+            this.SplitContainer_Specs.Size = new System.Drawing.Size(1498, 768);
+            this.SplitContainer_Specs.SplitterDistance = 971;
+            this.SplitContainer_Specs.TabIndex = 1;
+            // 
+            // dataGridView_specimens
+            // 
+            this.dataGridView_specimens.AllowUserToAddRows = false;
+            this.dataGridView_specimens.AllowUserToDeleteRows = false;
+            this.dataGridView_specimens.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            this.dataGridView_specimens.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_specimens.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView_specimens.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView_specimens.Margin = new System.Windows.Forms.Padding(0);
+            this.dataGridView_specimens.MultiSelect = false;
+            this.dataGridView_specimens.Name = "dataGridView_specimens";
+            this.dataGridView_specimens.ReadOnly = true;
+            this.dataGridView_specimens.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView_specimens.Size = new System.Drawing.Size(969, 766);
+            this.dataGridView_specimens.TabIndex = 0;
             // 
             // tabPage5
             // 
-            this.tabPage5.Location = new System.Drawing.Point(4, 31);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(1508, 778);
+            this.tabPage5.Size = new System.Drawing.Size(1508, 787);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Analysis";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
-            // lbl_contract_add
+            // tabPage4
             // 
-            this.lbl_contract_add.AutoSize = true;
-            this.lbl_contract_add.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_contract_add.Location = new System.Drawing.Point(539, 42);
-            this.lbl_contract_add.Name = "lbl_contract_add";
-            this.lbl_contract_add.Size = new System.Drawing.Size(229, 40);
-            this.lbl_contract_add.TabIndex = 29;
-            this.lbl_contract_add.Text = "Contract";
-            this.lbl_contract_add.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lbl_resp_add
-            // 
-            this.lbl_resp_add.AutoSize = true;
-            this.lbl_resp_add.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_resp_add.Location = new System.Drawing.Point(539, 83);
-            this.lbl_resp_add.Name = "lbl_resp_add";
-            this.lbl_resp_add.Size = new System.Drawing.Size(229, 40);
-            this.lbl_resp_add.TabIndex = 30;
-            this.lbl_resp_add.Text = "Responsible";
-            this.lbl_resp_add.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lbl_stage_number_add
-            // 
-            this.lbl_stage_number_add.AutoSize = true;
-            this.lbl_stage_number_add.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_stage_number_add.Location = new System.Drawing.Point(539, 124);
-            this.lbl_stage_number_add.Name = "lbl_stage_number_add";
-            this.lbl_stage_number_add.Size = new System.Drawing.Size(229, 40);
-            this.lbl_stage_number_add.TabIndex = 31;
-            this.lbl_stage_number_add.Text = "Stages number";
-            this.lbl_stage_number_add.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtbox_stages_num_add
-            // 
-            this.txtbox_stages_num_add.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtbox_stages_num_add.Location = new System.Drawing.Point(773, 125);
-            this.txtbox_stages_num_add.Margin = new System.Windows.Forms.Padding(1);
-            this.txtbox_stages_num_add.Name = "txtbox_stages_num_add";
-            this.txtbox_stages_num_add.Size = new System.Drawing.Size(327, 30);
-            this.txtbox_stages_num_add.TabIndex = 32;
-            // 
-            // lbl_priority_add
-            // 
-            this.lbl_priority_add.AutoSize = true;
-            this.lbl_priority_add.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_priority_add.Location = new System.Drawing.Point(539, 370);
-            this.lbl_priority_add.Name = "lbl_priority_add";
-            this.lbl_priority_add.Size = new System.Drawing.Size(229, 40);
-            this.lbl_priority_add.TabIndex = 33;
-            this.lbl_priority_add.Text = "Prioprity";
-            this.lbl_priority_add.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lbl_specs_state_add
-            // 
-            this.lbl_specs_state_add.AutoSize = true;
-            this.lbl_specs_state_add.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_specs_state_add.Location = new System.Drawing.Point(539, 411);
-            this.lbl_specs_state_add.Name = "lbl_specs_state_add";
-            this.lbl_specs_state_add.Size = new System.Drawing.Size(229, 40);
-            this.lbl_specs_state_add.TabIndex = 34;
-            this.lbl_specs_state_add.Text = "Specs/state";
-            this.lbl_specs_state_add.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtbox_priority_add
-            // 
-            this.txtbox_priority_add.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtbox_priority_add.Location = new System.Drawing.Point(773, 371);
-            this.txtbox_priority_add.Margin = new System.Windows.Forms.Padding(1);
-            this.txtbox_priority_add.Name = "txtbox_priority_add";
-            this.txtbox_priority_add.Size = new System.Drawing.Size(327, 30);
-            this.txtbox_priority_add.TabIndex = 35;
-            // 
-            // txtbox_specs_state_add
-            // 
-            this.txtbox_specs_state_add.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtbox_specs_state_add.Location = new System.Drawing.Point(773, 412);
-            this.txtbox_specs_state_add.Margin = new System.Windows.Forms.Padding(1);
-            this.txtbox_specs_state_add.Name = "txtbox_specs_state_add";
-            this.txtbox_specs_state_add.Size = new System.Drawing.Size(327, 30);
-            this.txtbox_specs_state_add.TabIndex = 36;
-            // 
-            // btn_create_new_project
-            // 
-            this.btn_create_new_project.BackColor = System.Drawing.Color.LightPink;
-            this.btn_create_new_project.Location = new System.Drawing.Point(775, 455);
-            this.btn_create_new_project.Name = "btn_create_new_project";
-            this.btn_create_new_project.Size = new System.Drawing.Size(200, 57);
-            this.btn_create_new_project.TabIndex = 37;
-            this.btn_create_new_project.Text = "Create new project";
-            this.btn_create_new_project.UseVisualStyleBackColor = false;
-            // 
-            // dataGridView_specimens
-            // 
-            this.dataGridView_specimens.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_specimens.Location = new System.Drawing.Point(8, 8);
-            this.dataGridView_specimens.Name = "dataGridView_specimens";
-            this.dataGridView_specimens.Size = new System.Drawing.Size(1081, 468);
-            this.dataGridView_specimens.TabIndex = 0;
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Margin = new System.Windows.Forms.Padding(5);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(1508, 787);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "TEM";
+            this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // Frm_projects
             // 
@@ -1082,6 +1139,7 @@ namespace RSB
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_projects_FormClosing);
             this.Load += new System.EventHandler(this.Frm_projects_Load);
             this.splitcontainer_projects_main.Panel1.ResumeLayout(false);
+            this.splitcontainer_projects_main.Panel1.PerformLayout();
             this.splitcontainer_projects_main.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitcontainer_projects_main)).EndInit();
             this.splitcontainer_projects_main.ResumeLayout(false);
@@ -1109,6 +1167,9 @@ namespace RSB
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.SplitContainer_Specs.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.SplitContainer_Specs)).EndInit();
+            this.SplitContainer_Specs.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_specimens)).EndInit();
             this.ResumeLayout(false);
 
@@ -1190,5 +1251,8 @@ namespace RSB
         private System.Windows.Forms.TextBox txtbox_specs_state_add;
         private System.Windows.Forms.Button btn_create_new_project;
         private System.Windows.Forms.DataGridView dataGridView_specimens;
+        private System.Windows.Forms.Label lbl_ch_state_caption;
+        private System.Windows.Forms.SplitContainer SplitContainer_Specs;
+        private System.Windows.Forms.Label lbl_State_caption;
     }
 }

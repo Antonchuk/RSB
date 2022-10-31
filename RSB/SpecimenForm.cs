@@ -3044,11 +3044,129 @@ namespace RSB
             //botClient.StartReceiving();            
 
         }
+        /// <summary>
+        /// читаем файл как бинарник
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        private byte[] GetBinaryFile(string filename)
+        {
+            byte[] ans;
+            using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
+            {
+                ans = new byte[fs.Length];
+                fs.Read(ans, 0, (int)fs.Length);
+                MessageBox.Show("array length = " +fs.Length.ToString());
+            }
+            
+            return ans;
+        }
+        /// <summary>
+        /// запись данных в БД с параметризованным полем файл @file, data - byte[]
+        /// </summary>
+        /// <param name="sqlreq"></param>
+        /// <param name="data"></param>
+        private void File_to_DB_test(string sqlreq, byte[] data)
+        {
+            using (MySqlConnection conn = New_connection(conn_str))
+            {
+                conn.Open();                
+                using (MySqlCommand comand = new MySqlCommand(sqlreq, conn))
+                {
+                    comand.Parameters.AddWithValue("@file", data);                    
+                    _ = comand.ExecuteNonQuery();
+                }
+                conn.Close();
+            }
+        }
+        private byte[] ReadDataFromDB(string sqlreq)
+        {
+            //List<byte> list_data = new List<byte>();
+            byte[] ans = new byte[] { };
+            try
+            {
+                using (MySqlConnection conn = New_connection(conn_str))
+                {
+                    conn.Open();
+                    using (MySqlCommand comand = new MySqlCommand(sqlreq, conn))
+                    {
+                        using (MySqlDataReader reader = comand.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    //list_data.Add(reader[0].);
+                                    //MessageBox.Show(reader[0].GetType().Name);
+                                    ans = (byte[]) reader[0];
+                                }
+                            }
+                            reader.Close();
+                        }
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("error in ReadDataFromDB:\n" + sqlreq + "\n" + ex.ToString());
+            }
 
+            if (ans.Length == 0) ans = new byte[] { 0 };
+            return ans;
+        }
+        private void Save_file_From_DB(byte[] data)
+        {
+            try
+            {
+                using (FileStream fs = new FileStream(@"C:\Users\antch\Documents\test_pic.bmp", FileMode.CreateNew))
+                {
+                    fs.Write(data, 0, data.Length);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "error in Save_file_From_DB", MessageBoxButtons.OK, MessageBoxIcon.Error,
+            MessageBoxDefaultButton.Button1);
+            }
+        }
         private void btn_test_Click(object sender, EventArgs e)
         {
             //кнопка для разных тестов
-            
+            //загрузим файл
+            open_dial_im_before.Title = "load file";
+            DialogResult result = open_dial_im_before.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                string path = open_dial_im_before.FileName;
+                MessageBox.Show("Диретокрия + файл" + path);
+                //FileInfo fileInf = new FileInfo(path);
+                //path = fileInf.DirectoryName;
+                //MessageBox.Show("Диретокрия" + path);
+                //конвертнем в бинарник
+                try
+                {
+                    //конвертнем в бинарник
+                    byte[] file = GetBinaryFile(path);
+                    string data = Encoding.Default.GetString(file);
+                    //запихнем в базу
+                    File_to_DB_test("INSERT INTO test2base.dataminig " +
+                        "(name, id_specimen, grade, volume, feature_count, feature_density, feature_type, status, id_miner, project_file) " +
+                        "VALUES ('test', '1', 'bad', '10', '0', '1e-5', '1', '1', '1', @file );", file);
+                    //прочитаем из базы
+                    byte[] read_data= ReadDataFromDB("SELECT project_file FROM test2base.dataminig WHERE (name = 'test')");
+                    //сохраним в директорию
+                    if (read_data.Length>1)
+                    {
+                        Save_file_From_DB(read_data);
+                    }                   
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString(), "error in btn_test_Click", MessageBoxButtons.OK, MessageBoxIcon.Error,
+            MessageBoxDefaultButton.Button1);
+                }
+            }
         }
 
         private void btn_clr_storage_Click(object sender, EventArgs e)
@@ -3480,6 +3598,7 @@ namespace RSB
                 Clear_pics_info(1);
                 Clear_pics_info(2);
                 combox_pos_add.Text = "";
+                combox_pos_add.Items.Clear();
                 combox_setup.SelectedIndex = -1;
             }
         }

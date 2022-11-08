@@ -102,6 +102,7 @@ namespace RSB
             this.lbl_sel_state_stage = new System.Windows.Forms.Label();
             this.lbl_ch_state_caption = new System.Windows.Forms.Label();
             this.btn_ch_stage = new System.Windows.Forms.Button();
+            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.SplitContainer_Specs = new System.Windows.Forms.SplitContainer();
             this.dataGridView_specimens = new System.Windows.Forms.DataGridView();
@@ -273,7 +274,7 @@ namespace RSB
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 447F));
+            this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 443F));
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_start_date, 1, 4);
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_info_stages_num, 1, 3);
             this.tableLayoutPanel_project_info.Controls.Add(this.lbl_info_end_date, 0, 5);
@@ -509,7 +510,7 @@ namespace RSB
             this.combox_pr_new_resp.Location = new System.Drawing.Point(773, 84);
             this.combox_pr_new_resp.Margin = new System.Windows.Forms.Padding(1);
             this.combox_pr_new_resp.Name = "combox_pr_new_resp";
-            this.combox_pr_new_resp.Size = new System.Drawing.Size(445, 30);
+            this.combox_pr_new_resp.Size = new System.Drawing.Size(441, 30);
             this.combox_pr_new_resp.TabIndex = 9;
             this.combox_pr_new_resp.KeyUp += new System.Windows.Forms.KeyEventHandler(this.combox_pr_new_resp_KeyUp);
             // 
@@ -519,7 +520,7 @@ namespace RSB
             this.txtbox_pr_new_contract.Location = new System.Drawing.Point(773, 43);
             this.txtbox_pr_new_contract.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_pr_new_contract.Name = "txtbox_pr_new_contract";
-            this.txtbox_pr_new_contract.Size = new System.Drawing.Size(445, 30);
+            this.txtbox_pr_new_contract.Size = new System.Drawing.Size(441, 30);
             this.txtbox_pr_new_contract.TabIndex = 8;
             // 
             // txtbox_pr_new_name
@@ -528,7 +529,7 @@ namespace RSB
             this.txtbox_pr_new_name.Location = new System.Drawing.Point(773, 2);
             this.txtbox_pr_new_name.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_pr_new_name.Name = "txtbox_pr_new_name";
-            this.txtbox_pr_new_name.Size = new System.Drawing.Size(445, 30);
+            this.txtbox_pr_new_name.Size = new System.Drawing.Size(441, 30);
             this.txtbox_pr_new_name.TabIndex = 7;
             // 
             // lbl_pr_new_name
@@ -731,11 +732,11 @@ namespace RSB
             // 
             // txtbox_stages_num_add
             // 
-            this.txtbox_stages_num_add.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtbox_stages_num_add.Dock = System.Windows.Forms.DockStyle.Top;
             this.txtbox_stages_num_add.Location = new System.Drawing.Point(773, 125);
             this.txtbox_stages_num_add.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_stages_num_add.Name = "txtbox_stages_num_add";
-            this.txtbox_stages_num_add.Size = new System.Drawing.Size(445, 30);
+            this.txtbox_stages_num_add.Size = new System.Drawing.Size(441, 30);
             this.txtbox_stages_num_add.TabIndex = 32;
             // 
             // lbl_priority_add
@@ -755,7 +756,7 @@ namespace RSB
             this.txtbox_priority_add.Location = new System.Drawing.Point(773, 371);
             this.txtbox_priority_add.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_priority_add.Name = "txtbox_priority_add";
-            this.txtbox_priority_add.Size = new System.Drawing.Size(445, 30);
+            this.txtbox_priority_add.Size = new System.Drawing.Size(441, 30);
             this.txtbox_priority_add.TabIndex = 35;
             // 
             // lbl_specs_state_add
@@ -775,7 +776,7 @@ namespace RSB
             this.txtbox_specs_state_add.Location = new System.Drawing.Point(773, 412);
             this.txtbox_specs_state_add.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_specs_state_add.Name = "txtbox_specs_state_add";
-            this.txtbox_specs_state_add.Size = new System.Drawing.Size(445, 30);
+            this.txtbox_specs_state_add.Size = new System.Drawing.Size(441, 30);
             this.txtbox_specs_state_add.TabIndex = 36;
             // 
             // btn_create_new_project
@@ -909,10 +910,10 @@ namespace RSB
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.splitContainer_APT_table);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Location = new System.Drawing.Point(4, 31);
             this.tabPage3.Margin = new System.Windows.Forms.Padding(5);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1508, 787);
+            this.tabPage3.Size = new System.Drawing.Size(1508, 778);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "APT states";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -931,7 +932,7 @@ namespace RSB
             // splitContainer_APT_table.Panel2
             // 
             this.splitContainer_APT_table.Panel2.Controls.Add(this.tableLayoutPanel1);
-            this.splitContainer_APT_table.Size = new System.Drawing.Size(1508, 787);
+            this.splitContainer_APT_table.Size = new System.Drawing.Size(1508, 778);
             this.splitContainer_APT_table.SplitterDistance = 1094;
             this.splitContainer_APT_table.TabIndex = 1;
             // 
@@ -947,7 +948,7 @@ namespace RSB
             this.dataGridView1_APT_data.Name = "dataGridView1_APT_data";
             this.dataGridView1_APT_data.ReadOnly = true;
             this.dataGridView1_APT_data.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1_APT_data.Size = new System.Drawing.Size(1092, 785);
+            this.dataGridView1_APT_data.Size = new System.Drawing.Size(1092, 776);
             this.dataGridView1_APT_data.TabIndex = 0;
             this.dataGridView1_APT_data.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_APT_data_CellContentClick);
             this.dataGridView1_APT_data.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_APT_data_CellDoubleClick);
@@ -969,6 +970,7 @@ namespace RSB
             this.tableLayoutPanel1.Controls.Add(this.lbl_sel_state_stage, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.lbl_ch_state_caption, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.btn_ch_stage, 2, 3);
+            this.tableLayoutPanel1.Controls.Add(this.checkedListBox1, 1, 4);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(18, 22);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 5;
@@ -1062,6 +1064,18 @@ namespace RSB
             this.btn_ch_stage.Text = "Change stage";
             this.btn_ch_stage.UseVisualStyleBackColor = true;
             this.btn_ch_stage.Click += new System.EventHandler(this.btn_ch_stage_Click);
+            // 
+            // checkedListBox1
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.checkedListBox1, 2);
+            this.checkedListBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkedListBox1.FormattingEnabled = true;
+            this.checkedListBox1.Items.AddRange(new object[] {
+            "Show only prooved states"});
+            this.checkedListBox1.Location = new System.Drawing.Point(144, 251);
+            this.checkedListBox1.Name = "checkedListBox1";
+            this.checkedListBox1.Size = new System.Drawing.Size(237, 179);
+            this.checkedListBox1.TabIndex = 7;
             // 
             // tabPage2
             // 
@@ -1254,5 +1268,6 @@ namespace RSB
         private System.Windows.Forms.Label lbl_ch_state_caption;
         private System.Windows.Forms.SplitContainer SplitContainer_Specs;
         private System.Windows.Forms.Label lbl_State_caption;
+        private System.Windows.Forms.CheckedListBox checkedListBox1;
     }
 }

@@ -175,14 +175,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RSB.exe" size="514048">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RSB.exe" size="517632">
       <assemblyIdentity name="RSB" version="1.0.1.54" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>HuWd2poVA5FzGwTnll+xGkFSJqgjwr0vNXqEYnJT1ro=</dsig:DigestValue>
+        <dsig:DigestValue>OhpjbzVBEzEO2tkpf6BXSwTbygptSRjKWw2kU8S4vHk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

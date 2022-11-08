@@ -85,6 +85,13 @@
             <param name="dt"></param>
             <returns></returns>
         </member>
+        <member name="M:RSB.Frm_projects.GetTableFromSQL(System.String)">
+            <summary>
+            получение таблицы по запросу select_table типа SELECT
+            </summary>
+            <param name="select_table"></param>
+            <returns></returns>
+        </member>
         <member name="M:RSB.Frm_projects.Save_settings_projects">
             <summary>
             сохраняем все настройки
@@ -96,6 +103,7 @@
             </summary>
             <param name="sql_req"></param>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:RSB.Frm_projects.Filt_tostring(System.Collections.Generic.List{System.String})" -->
         <member name="M:RSB.Frm_projects.Count_specs(System.Int32)">
             <summary>
             считает количество образцов, 2 - всего, 3 - успешных
@@ -324,6 +332,20 @@
             изменяет или создает запись с указанным ид образца, 
             </summary>
         </member>
+        <member name="M:RSB.Form_specimens.GetBinaryFile(System.String)">
+            <summary>
+            читаем файл как бинарник
+            </summary>
+            <param name="filename"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RSB.Form_specimens.File_to_DB_test(System.String,System.Byte[])">
+            <summary>
+            запись данных в БД с параметризованным полем файл @file, data - byte[]
+            </summary>
+            <param name="sqlreq"></param>
+            <param name="data"></param>
+        </member>
         <member name="M:RSB.Form_specimens.Simple_SQL_req(System.String)">
             <summary>
             простой апрос sql INSERT DELETE UPDATE
@@ -449,7 +471,7 @@
             <summary>
             проверка можно ли удалять образец
             ИД образца, 
-            state состояние, 
+            state состояние Ready for APT или Storage\n, 
             level_access уровень доступа, 
             actor залогиневшийся пользователь
             </summary>
@@ -473,6 +495,14 @@
             </summary>
             <param name="sender"></param>
             <param name="e"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.Check_access_project(System.String,System.String)">
+            <summary>
+            проверяем - если логин=ответсвенному за проект
+            </summary>
+            <param name="response"></param>
+            <param name="login"></param>
+            <returns></returns>
         </member>
         <member name="F:RSB.Form_specimens.components">
             <summary>

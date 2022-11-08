@@ -354,27 +354,38 @@ namespace RSB
             }
             return n_dt;
         }
-        private DataTable GetAPTdata(string selectcommand)
+        /// <summary>
+        /// получение таблицы по запросу select_table типа SELECT
+        /// </summary>
+        /// <param name="select_table"></param>
+        /// <returns></returns>
+        private DataTable GetTableFromSQL(string select_table)
         {
-            DataSet ds = new DataSet();
+            DataTable dt = new DataTable();
             using (MySqlConnection cc = new MySqlConnection(conn_str))
             {
                 try
                 {
                     cc.Open();
-                    MySqlDataAdapter adapter = new MySqlDataAdapter(selectcommand, New_connection(conn_str));
-                    
-                    adapter.Fill(ds);                    
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(select_table, New_connection(conn_str));
+
+                    adapter.Fill(dt);
                     cc.Close();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("error in datagrid APT update\n"+ex.ToString());
-                    
+                    MessageBox.Show("error in GetTableFromSQL\n" + ex.ToString());
+
                 }
             }
-            //добавляем столбец с количеством исследований
-            //
+            return dt;
+        }
+        private DataTable GetAPTdata(string selectcommand)
+        {
+            DataSet ds = new DataSet();
+            //получаем талблицу с сырыми данными
+            ds.Tables.Add(GetTableFromSQL(selectcommand));
+            //добавляем столбец с количеством исследований и прочей статистикой
             ds.Tables.Add(Add_colomns(ds.Tables[0]));
             return ds.Tables[1];            
         }
@@ -402,6 +413,10 @@ namespace RSB
             on_load = true;
             //splitters
             splitContainer_information.SplitterDistance = Properties.Settings.Default.project_info_split;
+            if (splitContainer_information.SplitterDistance<=splitContainer_information.Width/2)
+            {
+                splitContainer_information.SplitterDistance = splitContainer_information.Width / 2;
+            }
             splitContainer_infor_2.SplitterDistance = Properties.Settings.Default.project_split_graphs;
             lbl_progressbar_left.Text = "Now\n(remain specimens)";
             lbl_progressbar_end.Text = "End of project\n(remain days in project)";
@@ -575,6 +590,11 @@ namespace RSB
             //MessageBox.Show("Filters=\n"+ Filt_tostring(filters_APT));
             Refresh_DG();
         }
+        /// <summary>
+        /// фильтры добавляются в строчку вида _AND (stages.name <> '+string+')_
+        /// </summary>
+        /// <param name="filt"></param>
+        /// <returns></returns>
         private string Filt_tostring(List<string> filt)
         {
             string ans = "";
@@ -634,7 +654,7 @@ namespace RSB
             //раскраска
             Fill_color_DG();
             //апдейт инфорации об образцах на следующей вкладке
-            Specs_update("", "", id_project);
+            //Specs_update("", "", id_project);
         }
         private void Specs_update(string treatment, string material, int project_id)
         {
@@ -1223,7 +1243,10 @@ namespace RSB
             {
                 MessageBox.Show("Увага, забаронена*!\nAccess level = 1\nNew name of Project\nStart_date<=End_date\n* - Это белорусский");                
             }
-
+            //обновить всё
+            Refresh_DG();
+            //обновить список проектов
+            Fill_combo(combox_projects, "SELECT Projects.name FROM projects");
         }
 
         private void combox_pr_new_resp_KeyUp(object sender, KeyEventArgs e)
@@ -1236,32 +1259,28 @@ namespace RSB
             DataTable _ans = new DataTable();
             //dt_specs.Columns.Add()
             //номер исследования, оценка после обработки, объем (лучше в атомах, но нужно в нм), Число кластеров, Плотность объектов, Тип кластеров, Статус обработки
-            _ans.Columns.Add("IDres", Type.GetType("System.Int32"));
+            /*_ans.Columns.Add("IDres", Type.GetType("System.Int32"));
             _ans.Columns.Add("Grade", Type.GetType("System.String"));
             _ans.Columns.Add("Volume nm^3", Type.GetType("System.Double"));
             _ans.Columns.Add("Feature count", Type.GetType("System.Int32"));
             _ans.Columns.Add("Feature density nm^-3", Type.GetType("System.Double"));
             _ans.Columns.Add("Feature type-composition", Type.GetType("System.String"));
-            _ans.Columns.Add("Datamining status", Type.GetType("System.String"));
-            List<string> _idres = SQL_str_request("SELECT id_research FROM test2base.researches " +
+            //_ans.Columns.Add("Datamining status", Type.GetType("System.String"));
+*/
+            _ans = GetTableFromSQL("SELECT researches.id_research, dataminig.id_grade, dataminig.volume, dataminig.feature_count, dataminig.feature_density, dataminig.feature_type " +
+                "FROM test2base.dataminig " +
+                "LEFT OUTER JOIN test2base.researches ON dataminig.id_research = researches.id_research " +
+                "LEFT OUTER JOIN test2base.state ON state.id_state = dataminig.id_status " +
                 "LEFT OUTER JOIN test2base.specimens ON researches.id_specimen = specimens.idspecimens " +
                 "LEFT OUTER JOIN test2base.materials ON test2base.specimens.id_material = test2base.materials.id_material " +
                 "LEFT OUTER JOIN test2base.treatment ON specimens.id_treatment = treatment.id_treatment " +
-                "WHERE (specimens.id_project =  " + id_project.ToString() + ") " +
-                    "AND (materials.name = '" + Mat_sel + "') " +
-                    "AND (treatment.name = '" + Treat_sel + "')") ;
-            //
-
-            //заполняем
-            for (int i =0; i< _idres.Count; i++)
-            {
-                _ans.Rows.Add(new object[] {Convert.ToInt32(_idres[i]), "Goodly", 555e-10, 888, 666e-5, "Nb-Nb-Nd", "Done next week" });
-            }
+                "WHERE (state.name = 'State finished') AND (specimens.id_project =  " + id_project.ToString() + ") " +
+                "AND (materials.name = '" + Mat_sel + "') " +
+                "AND (treatment.name = '" + Treat_sel + "');");
             return _ans;
         }
         private void tabcontrol_projects_main_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //MessageBox.Show(tabcontrol_projects_main.SelectedTab.Text);
             //если это вкладка Specimens, то обновляем данные по образцам
             if (tabcontrol_projects_main.SelectedTab.Text == "Specimens" && dataGridView1_APT_data.Rows.Count > 0 && dataGridView1_APT_data.SelectedRows.Count>0)
             {

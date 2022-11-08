@@ -97,7 +97,6 @@ C:\Users\antch\source\repos\Antonchuk\RSB\RSB\bin\Release\sv\ZedGraph.resources.
 C:\Users\antch\source\repos\Antonchuk\RSB\RSB\bin\Release\tr\ZedGraph.resources.dll
 C:\Users\antch\source\repos\Antonchuk\RSB\RSB\bin\Release\zh-cn\ZedGraph.resources.dll
 C:\Users\antch\source\repos\Antonchuk\RSB\RSB\bin\Release\zh-tw\ZedGraph.resources.dll
-C:\Users\antch\source\repos\Antonchuk\RSB\RSB\obj\Release\RSB.csproj.AssemblyReference.cache
 C:\Users\antch\source\repos\Antonchuk\RSB\RSB\obj\Release\RSB.Frm_projects.resources
 C:\Users\antch\source\repos\Antonchuk\RSB\RSB\obj\Release\RSB.Materials_new.resources
 C:\Users\antch\source\repos\Antonchuk\RSB\RSB\obj\Release\RSB.New_producer_add.resources

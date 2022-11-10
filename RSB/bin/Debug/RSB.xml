@@ -34,7 +34,7 @@
         </member>
         <member name="M:RSB.Frm_projects.SQL_str_request(System.String)">
             <summary>
-            простой запрос на ответ 1 текстового поля
+            простой запрос, на ответ List_string_
             </summary>
             <param name="request"></param>
             <returns></returns>
@@ -90,6 +90,14 @@
             получение таблицы по запросу select_table типа SELECT
             </summary>
             <param name="select_table"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RSB.Frm_projects.Check_access_project(System.String,System.String)">
+            <summary>
+            проверяем - если логин=ответсвенному за проект
+            </summary>
+            <param name="response"></param>
+            <param name="login"></param>
             <returns></returns>
         </member>
         <member name="M:RSB.Frm_projects.Save_settings_projects">

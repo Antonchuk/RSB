@@ -20,6 +20,7 @@ namespace RSB
     public partial class Frm_projects : Form
     {
         private readonly RSBMainForm Parent_form;
+        //private readonly Form_specimens _spec_form;
         private static string conn_str="";
         private bool on_load = false;
         private static int id_project = -1;
@@ -66,7 +67,7 @@ namespace RSB
             return conn;
         }
         /// <summary>
-        /// простой запрос на ответ 1 текстового поля
+        /// простой запрос, на ответ List_string_
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -101,6 +102,7 @@ namespace RSB
                     }
                 }
             }
+            if (ans.Count == 0) ans.Add("");
             return ans;
         }
         /// <summary>
@@ -131,6 +133,7 @@ namespace RSB
             txtbox_start_date.Text = SQL_str_request("SELECT start_date FROM test2base.projects WHERE (id_project = " + id_project.ToString() + ");")[0];
             txtbox_priority.Text = SQL_str_request("SELECT priority FROM test2base.projects WHERE (id_project = " + id_project.ToString() + ");")[0];
             txtbox_spec_per_state.Text = SQL_str_request("SELECT specs_per_state FROM test2base.projects WHERE (id_project = " + id_project.ToString() + ");")[0];
+            richtxtbox_contacts_info.Text = SQL_str_request("SELECT contacts FROM test2base.projects WHERE (id_project = " + id_project.ToString() + ")")[0];
             string end_date = SQL_str_request("SELECT end_date FROM test2base.projects WHERE (id_project = " + id_project.ToString() + ");")[0];
             if (end_date!=null && end_date != "")
             {
@@ -418,36 +421,42 @@ namespace RSB
                 splitContainer_information.SplitterDistance = splitContainer_information.Width / 2;
             }
             splitContainer_infor_2.SplitterDistance = Properties.Settings.Default.project_split_graphs;
+            if (splitContainer_infor_2.SplitterDistance<=splitContainer_infor_2.Height/5*4)
+            {
+                splitContainer_infor_2.SplitterDistance = splitContainer_infor_2.Height*4 / 5;
+            }            
             lbl_progressbar_left.Text = "Now\n(remain specimens)";
             lbl_progressbar_end.Text = "End of project\n(remain days in project)";
             //грузим дефотные настройки в вкладку info
             Refresh_project_maintab();            
             //списоки в combox            
-            Fill_combo(combox_projects, "SELECT Projects.name FROM projects");
-            Fill_combo(combox_pr_new_resp, "SELECT producers.surname FROM test2base.producers");
-
-            //lbl_cr_new_stage.Text = "Create new stage\n ('start date' and 'end date' would be taken from fields above )";
-
+            Fill_combo(combox_projects, "SELECT Projects.name FROM projects ORDER BY name ASC");
+            Fill_combo(combox_pr_new_resp, "SELECT producers.surname FROM test2base.producers ORDER BY surname ASC");
             //грузим данные АЗТ о проекте
-            /*dataGridView1_APT_data.DataSource = GetAPTdata("SELECT distinct materials.name, treatment.name " +
-                "FROM test2base.specimens " +
-                "LEFT OUTER JOIN test2base.materials ON specimens.id_material = materials.id_material " +
-                "LEFT OUTER JOIN test2base.treatment ON specimens.id_treatment = treatment.id_treatment " +
-                "WHERE(id_project = "+id_project.ToString()+") " +
-                "ORDER BY materials.name;");
-            Fill_color_DG();*/
             Refresh_DG();
             //диаграммы
             ZedGraph.GraphPane pane_specs_count = zg_spec_count.GraphPane;
             pane_specs_count.Title.Text = "test";
             pane_specs_count.CurveList.Clear();
-            //pane_specs_count.BarSettings.Base = ZedGraph.BarBase.X;
-            //pane_specs_count.BarSettings.Type = ZedGraph.BarType.Stack;
-            //pane_specs_count.XAxis.Type=ZedGraph.AxisType.
-            //pane_specs_count.XAxis.Scale.Min = 
             Refresh_diagrams();
-
             on_load = false;
+        }
+        /// <summary>
+        /// проверяем - если логин=ответсвенному за проект
+        /// </summary>
+        /// <param name="response"></param>
+        /// <param name="login"></param>
+        /// <returns></returns>
+        private bool Check_access_project(string response, string login)
+        {
+            //true - если можно
+            bool ans = false;
+            string resp_login = SQL_str_request("SELECT surname FROM test2base.producers WHERE (user_name = '" + login + "')")[0];
+            if (resp_login == response)
+            {
+                ans = true;
+            }
+            return ans;
         }
         /// <summary>
         /// сохраняем все настройки
@@ -533,15 +542,18 @@ namespace RSB
                     "WHERE (specimens.id_project = " + id_project.ToString() + ") " +
                     "AND (materials.name = '" + dataGridView1_APT_data.SelectedRows[0].Cells[0].Value.ToString() + "')  " +
                     "AND (treatment.name = '" + dataGridView1_APT_data.SelectedRows[0].Cells[1].Value.ToString() + "');");
+                //MessageBox.Show("ID 1 spec = "+id_specs[0]);
                 //получить новый этап (комбобокс) его ИД
-                string new_stage_id = SQL_str_request("SELECT id_stage FROM test2base.stages WHERE (stages.name = '"+ combox_stages.Text + "')")[0] ;                
+                string new_stage_id = SQL_str_request("SELECT id_stage FROM test2base.stages WHERE (stages.name = '"+ combox_stages.Text + "')")[0] ;
+                //MessageBox.Show("new stage ID = " + new_stage_id);
                 //для каждого образца проверяем есть уже запись
                 foreach (string id in id_specs)
                 {
                     List<string> specs_with_stages = new List<string>();
                     specs_with_stages.Clear();
                     specs_with_stages = SQL_str_request("SELECT * FROM test2base.stages_specimens WHERE (id_specimen = " + id + ")");
-                    if (specs_with_stages.Count==0)
+                    //MessageBox.Show("specs with new stage = " + specs_with_stages.Count.ToString());
+                    if (specs_with_stages.Count==0 || specs_with_stages[0]=="")
                     {
                         //нет записи об образцах - делаем новую
                         SQL_com("INSERT INTO test2base.stages_specimens (`id_stage`, `id_specimen`) VALUES ('"+ new_stage_id + "', '"+ id  +"')");
@@ -567,17 +579,11 @@ namespace RSB
                 if (e.NewValue == CheckState.Checked)
                 {
                     //удаляем из фильтров                    
-                    //filt_master.common_filters.Remove(str_f + obje.Items[e.Index].ToString() + "'");
-                    //MessageBox.Show("Добавлен этап "+ obje.Items[e.Index].ToString());
-                    //filters_APT.Add(name +obje.Items[e.Index].ToString()+ "') ");
                     filters_APT.Remove(name + obje.Items[e.Index].ToString() + "') ");
                 }
                 else
                 {
                     //добавляем к фильтрам                   
-                    //filt_master.common_filters.Add(str_f + obje.Items[e.Index].ToString() + "'");
-                    //MessageBox.Show("Удален этап " + obje.Items[e.Index].ToString());
-                    //filters_APT.Remove(name + obje.Items[e.Index].ToString() + "') ");
                     filters_APT.Add(name + obje.Items[e.Index].ToString() + "') ");
                 }
             }
@@ -800,17 +806,20 @@ namespace RSB
             // Y_max|X-title_text|Y-min
             // end_date|null|start date
             List<string> stages = SQL_str_request("SELECT stages.name FROM test2base.stages WHERE (id_project = '" + id_project.ToString() + "')");
-            List<double> start_dates = new List<double> ();
-            List<double> end_dates = new List<double>();
-            for (int i=0;i<stages.Count; i++)
+            if (stages[0] != "")
             {
-                start_dates.Add(Get_stages_end_or_start("SELECT stages.start_date FROM test2base.stages " +
-                    "WHERE (id_project = '" + id_project.ToString() + "') AND (name = '" + stages[i] + "')"));
-                end_dates.Add(Get_stages_end_or_start("SELECT stages.end_date FROM test2base.stages " +
-                    "WHERE (id_project = '" + id_project.ToString() + "') AND (name = '" + stages[i] + "')"));
-            }
+                List<double> start_dates = new List<double>();
+                List<double> end_dates = new List<double>();
+                for (int i = 0; i < stages.Count; i++)
+                {
+                    start_dates.Add(Get_stages_end_or_start("SELECT stages.start_date FROM test2base.stages " +
+                        "WHERE (id_project = '" + id_project.ToString() + "') AND (name = '" + stages[i] + "')"));
+                    end_dates.Add(Get_stages_end_or_start("SELECT stages.end_date FROM test2base.stages " +
+                        "WHERE (id_project = '" + id_project.ToString() + "') AND (name = '" + stages[i] + "')"));
+                }
 
-            pane.AddHiLowBar("", end_dates.ToArray(), null, start_dates.ToArray(), Color.Blue);
+                pane.AddHiLowBar("", end_dates.ToArray(), null, start_dates.ToArray(), Color.Blue);
+            }
         }
         private void Draw_GANT_chart(ZedGraph.ZedGraphControl zg, string title,string X_title, string Y_title, string[] X_labels, int font)
         {
@@ -893,6 +902,8 @@ namespace RSB
             Refresh_DG();
             //рефреш диаграмм
             Refresh_diagrams();
+            //комбобокс проектов
+            Fill_combo(combox_projects, "SELECT Projects.name FROM projects ORDER BY name ASC");
         }
         private void btn_refresh_all_Click(object sender, EventArgs e)
         {
@@ -904,7 +915,7 @@ namespace RSB
             selected_id = 0;
             filters_APT.Clear();
             List<string> new_pr_id = SQL_str_request("SELECT id_project FROM test2base.projects WHERE (name = '"+combox_projects.Text+"')");
-            if (new_pr_id.Count > 0)
+            if (new_pr_id.Count > 0 && new_pr_id[0]!="")
             {
                 Properties.Settings.Default.info_id_project = Convert.ToInt32(new_pr_id[0]);
                 Properties.Settings.Default.Save();                
@@ -1179,8 +1190,11 @@ namespace RSB
 
         private void txtbox_new_stage_Leave(object sender, EventArgs e)
         {
-            txtbox_new_stage.ForeColor = Color.LightGray;
-            txtbox_new_stage.Text = "name of new stage";
+            if (txtbox_new_stage.Text == "")
+            {
+                txtbox_new_stage.ForeColor = Color.LightGray;
+                txtbox_new_stage.Text = "name of new stage";
+            }
         }
         /// <summary>
         /// проверка полей для создания проекта
@@ -1227,17 +1241,25 @@ namespace RSB
                 && Check_new_pr_name(txtbox_pr_new_name.Text))
             {
                 //создаем
-                MessageBox.Show("create");
+                //MessageBox.Show("create");
                 int priority = 0;
                 if (int.TryParse(txtbox_priority_add.Text, out int prior)) priority = prior;
-                SQL_com("INSERT INTO test2base.projects (name, id_respons, priority, contract, start_date, end_date, stage_count, specs_per_state) " +
-                    "VALUES ('"+ txtbox_pr_new_name.Text + "', " +
-                    "(SELECT id_producer FROM test2base.producers WHERE (surname = '" + combox_pr_new_resp .Text + "')), " +
-                    "'"+ priority.ToString() + "', " +
-                    "'"+ txtbox_pr_new_contract.Text + "', " +
-                    " '"+ dateTimePicker_pr_new_start.Value.ToString("yyyy-MM-dd HH:mm:ss") + "', " +
-                    " '" + dateTimePicker_pr_new_end.Value.ToString("yyyy-MM-dd HH:mm:ss") + "', " +
-                    " '1', '" + txtbox_stages_num_add.Text + "');");
+                if (int.TryParse(txtbox_stages_num_add.Text, out int stages) &&
+                    int.TryParse(txtbox_specs_state_add.Text, out int specs_per_state))
+                {
+                    SQL_com("INSERT INTO test2base.projects (name, id_respons, priority, contract, start_date, end_date, stage_count, specs_per_state, contacts) " +
+                        "VALUES ('" + txtbox_pr_new_name.Text + "', " +
+                        "(SELECT id_producer FROM test2base.producers WHERE (surname = '" + combox_pr_new_resp.Text + "')), " +
+                        "'" + priority.ToString() + "', " +
+                        "'" + txtbox_pr_new_contract.Text + "', " +
+                        " '" + dateTimePicker_pr_new_start.Value.ToString("yyyy-MM-dd HH:mm:ss") + "', " +
+                        " '" + dateTimePicker_pr_new_end.Value.ToString("yyyy-MM-dd HH:mm:ss") + "', " +
+                        " '" + stages.ToString() + "', '" + specs_per_state.ToString() + "', '" + txtbox_contacts_add.Text + "');");
+                }
+                else
+                {
+                    MessageBox.Show("Parsing proplems, check the numbers");
+                }
             }
             else
             {
@@ -1246,7 +1268,7 @@ namespace RSB
             //обновить всё
             Refresh_DG();
             //обновить список проектов
-            Fill_combo(combox_projects, "SELECT Projects.name FROM projects");
+            Fill_combo(combox_projects, "SELECT Projects.name FROM projects ORDER BY name ASC");
         }
 
         private void combox_pr_new_resp_KeyUp(object sender, KeyEventArgs e)
@@ -1274,27 +1296,65 @@ namespace RSB
                 "LEFT OUTER JOIN test2base.specimens ON researches.id_specimen = specimens.idspecimens " +
                 "LEFT OUTER JOIN test2base.materials ON test2base.specimens.id_material = test2base.materials.id_material " +
                 "LEFT OUTER JOIN test2base.treatment ON specimens.id_treatment = treatment.id_treatment " +
-                "WHERE (state.name = 'State finished') AND (specimens.id_project =  " + id_project.ToString() + ") " +
-                "AND (materials.name = '" + Mat_sel + "') " +
-                "AND (treatment.name = '" + Treat_sel + "');");
+                "WHERE (specimens.id_project =  " + id_project.ToString() + ") " +
+                "AND (materials.name = '" + Mat_sel + "') AND (treatment.name = '" + Treat_sel + "') " +
+                "AND (dataminig.id_status = 15);");
             return _ans;
         }
         private void tabcontrol_projects_main_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //если это вкладка Specimens, то обновляем данные по образцам
-            if (tabcontrol_projects_main.SelectedTab.Text == "Specimens" && dataGridView1_APT_data.Rows.Count > 0 && dataGridView1_APT_data.SelectedRows.Count>0)
+            try
             {
-                //в Лабел выводим название состояния
-                string material = dataGridView1_APT_data.Rows[dataGridView1_APT_data.SelectedRows[0].Index].Cells[0].Value.ToString();
-                string treatment = dataGridView1_APT_data.Rows[dataGridView1_APT_data.SelectedRows[0].Index].Cells[1].Value.ToString();
-                lbl_State_caption.Text = material + treatment ;
-                DataTable dt_specs = Fill_dt_specs(material,treatment);
-                dataGridView_specimens.DataSource = dt_specs;
+                //если это вкладка Specimens, то обновляем данные по образцам
+                if (tabcontrol_projects_main.SelectedTab.Text == "Specimens" && dataGridView1_APT_data.Rows.Count > 0 && dataGridView1_APT_data.SelectedRows.Count > 0)
+                {
+                    //в Лабел выводим название состояния
+                    string material = dataGridView1_APT_data.Rows[dataGridView1_APT_data.SelectedRows[0].Index].Cells[0].Value.ToString();
+                    string treatment = dataGridView1_APT_data.Rows[dataGridView1_APT_data.SelectedRows[0].Index].Cells[1].Value.ToString();
+                    lbl_State_caption.Text = material + treatment;
+                    DataTable dt_specs = Fill_dt_specs(material, treatment);
+                    dataGridView_specimens.DataSource = dt_specs;
+                }
+                else
+                {
+                    lbl_State_caption.Text = "";
+                    dataGridView_specimens.DataSource = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString() , "error in tabcontrol_projects_main_SelectedIndexChanged", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+            }
+        }
+
+        private void btn_ch_prj_name_Click(object sender, EventArgs e)
+        {
+            if (Check_access_project(txtbox_info_responsible.Text, Properties.Settings.Default.default_username) && txtbox_info_name.Text!="")
+            {
+                //MessageBox.Show("Yes we can ch name of project");
+                //UPDATE `test2base`.`projects` SET `name` = 'NO  ' WHERE (`id_project` = '21');
+                SQL_com("UPDATE test2base.projects SET name = '"+txtbox_info_name.Text+"' WHERE (id_project = "+id_project.ToString()+")");
+                Refresh_all();
+                
             }
             else
             {
-                lbl_State_caption.Text = "";
-                dataGridView_specimens.DataSource = null;
+                MessageBox.Show("Changing name of project not allowed");
+            }
+        }
+
+        private void btn_ch_contacts_Click(object sender, EventArgs e)
+        {
+            //изменить контактную информацию
+            if (Check_access_project(txtbox_info_responsible.Text, Properties.Settings.Default.default_username))
+            {
+                SQL_com("UPDATE test2base.projects SET contacts = '" + richtxtbox_contacts_info.Text + "' WHERE (id_project = " + id_project.ToString() + ")");
+                Refresh_all();
+            }
+            else
+            {
+                MessageBox.Show("Changing contacts info of project not allowed");
             }
         }
     }

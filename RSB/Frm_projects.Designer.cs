@@ -108,6 +108,12 @@ namespace RSB
             this.dataGridView_specimens = new System.Windows.Forms.DataGridView();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.btn_ch_prj_name = new System.Windows.Forms.Button();
+            this.txtbox_contacts_add = new System.Windows.Forms.TextBox();
+            this.lbl_contacts_add = new System.Windows.Forms.Label();
+            this.lbl_contacts_info = new System.Windows.Forms.Label();
+            this.btn_ch_contacts = new System.Windows.Forms.Button();
+            this.richtxtbox_contacts_info = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitcontainer_projects_main)).BeginInit();
             this.splitcontainer_projects_main.Panel1.SuspendLayout();
             this.splitcontainer_projects_main.Panel2.SuspendLayout();
@@ -269,12 +275,13 @@ namespace RSB
             // tableLayoutPanel_project_info
             // 
             this.tableLayoutPanel_project_info.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tableLayoutPanel_project_info.ColumnCount = 5;
+            this.tableLayoutPanel_project_info.ColumnCount = 6;
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 443F));
+            this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 240F));
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_start_date, 1, 4);
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_info_stages_num, 1, 3);
             this.tableLayoutPanel_project_info.Controls.Add(this.lbl_info_end_date, 0, 5);
@@ -317,6 +324,12 @@ namespace RSB
             this.tableLayoutPanel_project_info.Controls.Add(this.lbl_specs_state_add, 3, 10);
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_specs_state_add, 4, 10);
             this.tableLayoutPanel_project_info.Controls.Add(this.btn_create_new_project, 4, 11);
+            this.tableLayoutPanel_project_info.Controls.Add(this.btn_ch_prj_name, 2, 0);
+            this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_contacts_add, 4, 4);
+            this.tableLayoutPanel_project_info.Controls.Add(this.lbl_contacts_add, 3, 4);
+            this.tableLayoutPanel_project_info.Controls.Add(this.lbl_contacts_info, 0, 11);
+            this.tableLayoutPanel_project_info.Controls.Add(this.btn_ch_contacts, 2, 11);
+            this.tableLayoutPanel_project_info.Controls.Add(this.richtxtbox_contacts_info, 1, 11);
             this.tableLayoutPanel_project_info.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel_project_info.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel_project_info.Margin = new System.Windows.Forms.Padding(5);
@@ -430,7 +443,6 @@ namespace RSB
             this.txtbox_info_name.Location = new System.Drawing.Point(142, 2);
             this.txtbox_info_name.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_info_name.Name = "txtbox_info_name";
-            this.txtbox_info_name.ReadOnly = true;
             this.txtbox_info_name.Size = new System.Drawing.Size(191, 30);
             this.txtbox_info_name.TabIndex = 1;
             // 
@@ -505,31 +517,28 @@ namespace RSB
             // 
             // combox_pr_new_resp
             // 
-            this.combox_pr_new_resp.Dock = System.Windows.Forms.DockStyle.Top;
             this.combox_pr_new_resp.FormattingEnabled = true;
             this.combox_pr_new_resp.Location = new System.Drawing.Point(773, 84);
             this.combox_pr_new_resp.Margin = new System.Windows.Forms.Padding(1);
             this.combox_pr_new_resp.Name = "combox_pr_new_resp";
-            this.combox_pr_new_resp.Size = new System.Drawing.Size(441, 30);
+            this.combox_pr_new_resp.Size = new System.Drawing.Size(198, 30);
             this.combox_pr_new_resp.TabIndex = 9;
             this.combox_pr_new_resp.KeyUp += new System.Windows.Forms.KeyEventHandler(this.combox_pr_new_resp_KeyUp);
             // 
             // txtbox_pr_new_contract
             // 
-            this.txtbox_pr_new_contract.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtbox_pr_new_contract.Location = new System.Drawing.Point(773, 43);
             this.txtbox_pr_new_contract.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_pr_new_contract.Name = "txtbox_pr_new_contract";
-            this.txtbox_pr_new_contract.Size = new System.Drawing.Size(441, 30);
+            this.txtbox_pr_new_contract.Size = new System.Drawing.Size(198, 30);
             this.txtbox_pr_new_contract.TabIndex = 8;
             // 
             // txtbox_pr_new_name
             // 
-            this.txtbox_pr_new_name.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtbox_pr_new_name.Location = new System.Drawing.Point(773, 2);
             this.txtbox_pr_new_name.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_pr_new_name.Name = "txtbox_pr_new_name";
-            this.txtbox_pr_new_name.Size = new System.Drawing.Size(441, 30);
+            this.txtbox_pr_new_name.Size = new System.Drawing.Size(198, 30);
             this.txtbox_pr_new_name.TabIndex = 7;
             // 
             // lbl_pr_new_name
@@ -592,7 +601,7 @@ namespace RSB
             this.dateTimePicker_pr_new_end.Location = new System.Drawing.Point(773, 289);
             this.dateTimePicker_pr_new_end.Margin = new System.Windows.Forms.Padding(1);
             this.dateTimePicker_pr_new_end.Name = "dateTimePicker_pr_new_end";
-            this.dateTimePicker_pr_new_end.Size = new System.Drawing.Size(195, 30);
+            this.dateTimePicker_pr_new_end.Size = new System.Drawing.Size(198, 30);
             this.dateTimePicker_pr_new_end.TabIndex = 11;
             // 
             // lbl_start_date_pr_stage
@@ -691,7 +700,7 @@ namespace RSB
             this.btn_ch_dates.BackColor = System.Drawing.Color.LightSeaGreen;
             this.btn_ch_dates.Location = new System.Drawing.Point(775, 332);
             this.btn_ch_dates.Name = "btn_ch_dates";
-            this.btn_ch_dates.Size = new System.Drawing.Size(198, 32);
+            this.btn_ch_dates.Size = new System.Drawing.Size(196, 32);
             this.btn_ch_dates.TabIndex = 28;
             this.btn_ch_dates.Text = "Change dates";
             this.btn_ch_dates.UseVisualStyleBackColor = false;
@@ -732,11 +741,10 @@ namespace RSB
             // 
             // txtbox_stages_num_add
             // 
-            this.txtbox_stages_num_add.Dock = System.Windows.Forms.DockStyle.Top;
             this.txtbox_stages_num_add.Location = new System.Drawing.Point(773, 125);
             this.txtbox_stages_num_add.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_stages_num_add.Name = "txtbox_stages_num_add";
-            this.txtbox_stages_num_add.Size = new System.Drawing.Size(441, 30);
+            this.txtbox_stages_num_add.Size = new System.Drawing.Size(198, 30);
             this.txtbox_stages_num_add.TabIndex = 32;
             // 
             // lbl_priority_add
@@ -752,11 +760,10 @@ namespace RSB
             // 
             // txtbox_priority_add
             // 
-            this.txtbox_priority_add.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtbox_priority_add.Location = new System.Drawing.Point(773, 371);
             this.txtbox_priority_add.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_priority_add.Name = "txtbox_priority_add";
-            this.txtbox_priority_add.Size = new System.Drawing.Size(441, 30);
+            this.txtbox_priority_add.Size = new System.Drawing.Size(198, 30);
             this.txtbox_priority_add.TabIndex = 35;
             // 
             // lbl_specs_state_add
@@ -772,11 +779,10 @@ namespace RSB
             // 
             // txtbox_specs_state_add
             // 
-            this.txtbox_specs_state_add.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtbox_specs_state_add.Location = new System.Drawing.Point(773, 412);
             this.txtbox_specs_state_add.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_specs_state_add.Name = "txtbox_specs_state_add";
-            this.txtbox_specs_state_add.Size = new System.Drawing.Size(441, 30);
+            this.txtbox_specs_state_add.Size = new System.Drawing.Size(198, 30);
             this.txtbox_specs_state_add.TabIndex = 36;
             // 
             // btn_create_new_project
@@ -784,7 +790,7 @@ namespace RSB
             this.btn_create_new_project.BackColor = System.Drawing.Color.LightPink;
             this.btn_create_new_project.Location = new System.Drawing.Point(775, 455);
             this.btn_create_new_project.Name = "btn_create_new_project";
-            this.btn_create_new_project.Size = new System.Drawing.Size(200, 57);
+            this.btn_create_new_project.Size = new System.Drawing.Size(196, 57);
             this.btn_create_new_project.TabIndex = 37;
             this.btn_create_new_project.Text = "Create new project";
             this.btn_create_new_project.UseVisualStyleBackColor = false;
@@ -1080,11 +1086,11 @@ namespace RSB
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.SplitContainer_Specs);
-            this.tabPage2.Location = new System.Drawing.Point(4, 31);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(5);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPage2.Size = new System.Drawing.Size(1508, 778);
+            this.tabPage2.Size = new System.Drawing.Size(1508, 787);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Specimens";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1100,7 +1106,7 @@ namespace RSB
             // SplitContainer_Specs.Panel1
             // 
             this.SplitContainer_Specs.Panel1.Controls.Add(this.dataGridView_specimens);
-            this.SplitContainer_Specs.Size = new System.Drawing.Size(1498, 768);
+            this.SplitContainer_Specs.Size = new System.Drawing.Size(1498, 777);
             this.SplitContainer_Specs.SplitterDistance = 971;
             this.SplitContainer_Specs.TabIndex = 1;
             // 
@@ -1108,7 +1114,8 @@ namespace RSB
             // 
             this.dataGridView_specimens.AllowUserToAddRows = false;
             this.dataGridView_specimens.AllowUserToDeleteRows = false;
-            this.dataGridView_specimens.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            this.dataGridView_specimens.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dataGridView_specimens.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridView_specimens.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_specimens.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView_specimens.Location = new System.Drawing.Point(0, 0);
@@ -1117,7 +1124,7 @@ namespace RSB
             this.dataGridView_specimens.Name = "dataGridView_specimens";
             this.dataGridView_specimens.ReadOnly = true;
             this.dataGridView_specimens.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView_specimens.Size = new System.Drawing.Size(969, 766);
+            this.dataGridView_specimens.Size = new System.Drawing.Size(969, 775);
             this.dataGridView_specimens.TabIndex = 0;
             // 
             // tabPage5
@@ -1138,6 +1145,64 @@ namespace RSB
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "TEM";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // btn_ch_prj_name
+            // 
+            this.btn_ch_prj_name.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_ch_prj_name.Location = new System.Drawing.Point(338, 4);
+            this.btn_ch_prj_name.Name = "btn_ch_prj_name";
+            this.btn_ch_prj_name.Size = new System.Drawing.Size(194, 34);
+            this.btn_ch_prj_name.TabIndex = 38;
+            this.btn_ch_prj_name.Text = "Change";
+            this.btn_ch_prj_name.UseVisualStyleBackColor = true;
+            this.btn_ch_prj_name.Click += new System.EventHandler(this.btn_ch_prj_name_Click);
+            // 
+            // txtbox_contacts_add
+            // 
+            this.txtbox_contacts_add.Location = new System.Drawing.Point(775, 168);
+            this.txtbox_contacts_add.Name = "txtbox_contacts_add";
+            this.txtbox_contacts_add.Size = new System.Drawing.Size(196, 30);
+            this.txtbox_contacts_add.TabIndex = 39;
+            // 
+            // lbl_contacts_add
+            // 
+            this.lbl_contacts_add.AutoSize = true;
+            this.lbl_contacts_add.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_contacts_add.Location = new System.Drawing.Point(539, 165);
+            this.lbl_contacts_add.Name = "lbl_contacts_add";
+            this.lbl_contacts_add.Size = new System.Drawing.Size(229, 40);
+            this.lbl_contacts_add.TabIndex = 40;
+            this.lbl_contacts_add.Text = "Contact info";
+            this.lbl_contacts_add.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lbl_contacts_info
+            // 
+            this.lbl_contacts_info.AutoSize = true;
+            this.lbl_contacts_info.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_contacts_info.Location = new System.Drawing.Point(4, 452);
+            this.lbl_contacts_info.Name = "lbl_contacts_info";
+            this.lbl_contacts_info.Size = new System.Drawing.Size(133, 205);
+            this.lbl_contacts_info.TabIndex = 42;
+            this.lbl_contacts_info.Text = "Contact info";
+            this.lbl_contacts_info.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // btn_ch_contacts
+            // 
+            this.btn_ch_contacts.Location = new System.Drawing.Point(338, 455);
+            this.btn_ch_contacts.Name = "btn_ch_contacts";
+            this.btn_ch_contacts.Size = new System.Drawing.Size(194, 30);
+            this.btn_ch_contacts.TabIndex = 43;
+            this.btn_ch_contacts.Text = "Change";
+            this.btn_ch_contacts.UseVisualStyleBackColor = true;
+            this.btn_ch_contacts.Click += new System.EventHandler(this.btn_ch_contacts_Click);
+            // 
+            // richtxtbox_contacts_info
+            // 
+            this.richtxtbox_contacts_info.Location = new System.Drawing.Point(144, 455);
+            this.richtxtbox_contacts_info.Name = "richtxtbox_contacts_info";
+            this.richtxtbox_contacts_info.Size = new System.Drawing.Size(187, 151);
+            this.richtxtbox_contacts_info.TabIndex = 44;
+            this.richtxtbox_contacts_info.Text = "";
             // 
             // Frm_projects
             // 
@@ -1269,5 +1334,11 @@ namespace RSB
         private System.Windows.Forms.SplitContainer SplitContainer_Specs;
         private System.Windows.Forms.Label lbl_State_caption;
         private System.Windows.Forms.CheckedListBox checkedListBox1;
+        private System.Windows.Forms.Button btn_ch_prj_name;
+        private System.Windows.Forms.TextBox txtbox_contacts_add;
+        private System.Windows.Forms.Label lbl_contacts_add;
+        private System.Windows.Forms.Label lbl_contacts_info;
+        private System.Windows.Forms.Button btn_ch_contacts;
+        private System.Windows.Forms.RichTextBox richtxtbox_contacts_info;
     }
 }

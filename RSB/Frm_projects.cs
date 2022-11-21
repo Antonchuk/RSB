@@ -11,6 +11,7 @@ using MySql.Data.MySqlClient;
 using MySql.Data;
 using System.IO;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Diagnostics;
 
 namespace RSB
 {
@@ -859,10 +860,10 @@ namespace RSB
                 Draw_simple_chart(zed_state_succ, "State successfullness", Get_statenames(), State_suc_aquis(), "", "Percentage",false);
                 Draw_GANT_chart(zg_gantt, "GAAAANT!","Time","Stages",Get_stages_names(),30);
                 //Draw_simple_chart(zed_progress, "Progress", new string[] { "Reamin" }, new double[] { (specs_all_prog - specs_suc), ddd }, "Specimens", "",true);
-                if (specs_all_prog - specs_suc >= 0 && ddd>0)
+                if (specs_all_prog - specs_suc >= 0 && ddd>0 && (specs_all_prog-specs_suc< Math.Round(ddd)))
                 {
                     prog_bar_remain.Maximum = Convert.ToInt32(Math.Round(ddd));
-                    prog_bar_remain.Minimum = 0;
+                    prog_bar_remain.Minimum = 0;                    
                     prog_bar_remain.Value = Convert.ToInt32(specs_all_prog - specs_suc);
                     prog_bar_remain.BackColor = Color.PaleGreen;
                     lbl_progressbar_end.BackColor = Color.Transparent;
@@ -1044,9 +1045,7 @@ namespace RSB
             //то, что нужно, пишет значение то ,что было до изменения
             if (e.ColumnIndex==5)
             {
-                //MessageBox.Show("state = " + dataGridView1_APT_data.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
-                //
-                
+
             }
         }
 
@@ -1093,9 +1092,7 @@ namespace RSB
                         {
                             Refresh_DG();
                         }
-                    }
-                    
-                    
+                    }                                       
                 }
             }
         }
@@ -1241,7 +1238,6 @@ namespace RSB
                 && Check_new_pr_name(txtbox_pr_new_name.Text))
             {
                 //создаем
-                //MessageBox.Show("create");
                 int priority = 0;
                 if (int.TryParse(txtbox_priority_add.Text, out int prior)) priority = prior;
                 if (int.TryParse(txtbox_stages_num_add.Text, out int stages) &&
@@ -1290,15 +1286,15 @@ namespace RSB
             //_ans.Columns.Add("Datamining status", Type.GetType("System.String"));
 */
             _ans = GetTableFromSQL("SELECT researches.id_research, dataminig.id_grade, dataminig.volume, dataminig.feature_count, dataminig.feature_density, dataminig.feature_type " +
-                "FROM test2base.dataminig " +
-                "LEFT OUTER JOIN test2base.researches ON dataminig.id_research = researches.id_research " +
+                "FROM test2base.researches " +
+                "LEFT OUTER JOIN test2base.dataminig ON dataminig.id_research = researches.id_research " +
                 "LEFT OUTER JOIN test2base.state ON state.id_state = dataminig.id_status " +
                 "LEFT OUTER JOIN test2base.specimens ON researches.id_specimen = specimens.idspecimens " +
-                "LEFT OUTER JOIN test2base.materials ON test2base.specimens.id_material = test2base.materials.id_material " +
+                "LEFT OUTER JOIN test2base.materials ON specimens.id_material = materials.id_material " +
                 "LEFT OUTER JOIN test2base.treatment ON specimens.id_treatment = treatment.id_treatment " +
                 "WHERE (specimens.id_project =  " + id_project.ToString() + ") " +
                 "AND (materials.name = '" + Mat_sel + "') AND (treatment.name = '" + Treat_sel + "') " +
-                "AND (dataminig.id_status = 15);");
+                "AND (researches.success = '+');") ;
             return _ans;
         }
         private void tabcontrol_projects_main_SelectedIndexChanged(object sender, EventArgs e)
@@ -1355,6 +1351,112 @@ namespace RSB
             else
             {
                 MessageBox.Show("Changing contacts info of project not allowed");
+            }
+        }
+
+        private void btn_ch_contract_Click(object sender, EventArgs e)
+        {
+            //изменить контректную информацию
+            if (Check_access_project(txtbox_info_responsible.Text, Properties.Settings.Default.default_username))
+            {
+                SQL_com("UPDATE test2base.projects SET contract = '" + txtbox_info_contract.Text + "' WHERE (id_project = " + id_project.ToString() + ")");
+                Refresh_all();
+            }
+            else
+            {
+                MessageBox.Show("Changing contacts info of project not allowed");
+            }
+        }
+        /// <summary>
+        /// добавляем префикс к навзанию файла, оставляя только навзание из всего пути, len - длина пути без названия файла
+        /// </summary>
+        /// <param name="old_names"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
+        private List<string> Add_perfix(string[] old_names, int len)
+        {
+            List<string> ans = new List<string>();
+            if (old_names.Length > 0)
+            {
+                for (int i = 0; i < old_names.Length; i++)
+                {
+                    ans.Add(DateTime.Now.ToString("yyyy-MM-dd ")+ old_names[i].Substring(len+1));
+                    MessageBox.Show(ans[i]);
+                }
+            }
+            return ans;
+        }
+        /// <summary>
+        /// проверяем и создаем дирректорию, по умолчанию будет HOLY-BOX\APTfiles\Reports\
+        /// </summary>
+        /// <returns></returns>
+        private string DirectoryReport_getnew()
+        {
+            string ans = @"\\HOLY-BOX\APTfiles\Reports\";
+            try
+            {
+                string _directory_new = ans+SQL_str_request("SELECT name FROM test2base.projects WHERE (id_project = " + id_project.ToString() + ");")[0];
+                if (!Directory.Exists(_directory_new))
+                {
+                    DirectoryInfo dirInfo = new DirectoryInfo(_directory_new);
+                    dirInfo.Create();
+                }
+                ans = _directory_new+@"\";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in DirectoryReport_getnew\n"+ex.ToString());
+            }
+            return ans;
+        }
+        private void btn_report_load_Click(object sender, EventArgs e)
+        {
+            //проверить доступ
+            if (Check_access_project(txtbox_info_responsible.Text, Properties.Settings.Default.default_username) && txtbox_info_name.Text != "")
+            {
+                //загрузка отчета
+                //получить файл(ы)            
+                //res =  saveFileDialog_report.ShowDialog();
+                openFileDialog_report.Filter = "Report files (*.txt;*doc;*.docx;*pdf)|*.txt;*doc;*.docx;*pdf)";
+                if (openFileDialog_report.ShowDialog() == DialogResult.OK)
+                {
+                    string[] _files = openFileDialog_report.FileNames;
+                    if (_files.Length > 0)
+                    {
+                        //добавить к имени префикс даты
+                        FileInfo _f_info = new FileInfo(_files[0]);
+                        string _directory = _f_info.DirectoryName;
+                        //создать/проверить на существование директории под проект
+                        string _new_dir = DirectoryReport_getnew();
+                        List<string> _names_new = Add_perfix(_files, _directory.Length);
+                        //записать файл
+                        for (int i = 0; i < _names_new.Count; i++)
+                        {
+                            File.Copy(_files[i], Path.Combine(_new_dir, _names_new[i]), true);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Only project master could add files");
+            }
+        }
+
+        private void btn_report_show_Click(object sender, EventArgs e)
+        {
+            //проверить доступ
+            if (Check_access_project(txtbox_info_responsible.Text, Properties.Settings.Default.default_username) && txtbox_info_name.Text != "")
+            {
+                string _path = @"\\HOLY-BOX\APTfiles\Reports\"+ SQL_str_request("SELECT name FROM test2base.projects WHERE (id_project = " + id_project.ToString() + ");")[0];
+                if (Directory.Exists(_path))
+                {
+                    Process.Start("explorer.exe", _path);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Only project master could look into files");
             }
         }
     }

@@ -608,11 +608,7 @@ namespace RSB
                                         {
                                             Clear_pics_info(2);
                                         }
-                                        break;
-                                    case "stor_position":
-                                        string posi = reader[0].ToString();
-                                        combox_position.Text = posi;
-                                        break;
+                                        break;                                    
                                     case "comments":
                                         rich_txtbox_comments_info.Text = reader[0].ToString();
                                         break;
@@ -1156,7 +1152,13 @@ namespace RSB
             }
             return directory_new;
         }
-
+        /// <summary>
+        /// проверка есть ли такое состояние, true - да
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="tr"></param>
+        /// <param name="mat"></param>
+        /// <returns></returns>
         private bool Is_state_exist(MySqlConnection c,string tr, string mat)
         {
             bool ans = false;
@@ -1179,6 +1181,14 @@ namespace RSB
             //MessageBox.Show("find such state = "+ans.ToString());
             return ans;
         }
+        /// <summary>
+        /// добавляем новое состояние
+        /// </summary>
+        /// <param name="ccc"></param>
+        /// <param name="treat"></param>
+        /// <param name="material"></param>
+        /// <param name="name"></param>
+        /// <param name="id_project"></param>
         private void Push_state(MySqlConnection ccc, string treat, string material, string name, string id_project)
         {
             //если нет такого состояния - создаем

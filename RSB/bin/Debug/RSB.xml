@@ -159,6 +159,20 @@
             <param name="sender"></param>
             <param name="e"></param>
         </member>
+        <member name="M:RSB.Frm_projects.Add_perfix(System.String[],System.Int32)">
+            <summary>
+            добавляем префикс к навзанию файла, оставляя только навзание из всего пути, len - длина пути без названия файла
+            </summary>
+            <param name="old_names"></param>
+            <param name="len"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RSB.Frm_projects.DirectoryReport_getnew">
+            <summary>
+            проверяем и создаем дирректорию, по умолчанию будет HOLY-BOX\APTfiles\Reports\
+            </summary>
+            <returns></returns>
+        </member>
         <member name="F:RSB.Frm_projects.components">
             <summary>
             Required designer variable.
@@ -316,6 +330,25 @@
             <param name="col_name"></param>
             <param name="name2"></param>
             <returns></returns>
+        </member>
+        <member name="M:RSB.Form_specimens.Is_state_exist(MySql.Data.MySqlClient.MySqlConnection,System.String,System.String)">
+            <summary>
+            проверка есть ли такое состояние, true - да
+            </summary>
+            <param name="c"></param>
+            <param name="tr"></param>
+            <param name="mat"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RSB.Form_specimens.Push_state(MySql.Data.MySqlClient.MySqlConnection,System.String,System.String,System.String,System.String)">
+            <summary>
+            добавляем новое состояние
+            </summary>
+            <param name="ccc"></param>
+            <param name="treat"></param>
+            <param name="material"></param>
+            <param name="name"></param>
+            <param name="id_project"></param>
         </member>
         <member name="M:RSB.Form_specimens.Get_max_positions(MySql.Data.MySqlClient.MySqlConnection,System.String)">
             <summary>

@@ -82,6 +82,15 @@ namespace RSB
             this.lbl_specs_state_add = new System.Windows.Forms.Label();
             this.txtbox_specs_state_add = new System.Windows.Forms.TextBox();
             this.btn_create_new_project = new System.Windows.Forms.Button();
+            this.btn_ch_prj_name = new System.Windows.Forms.Button();
+            this.txtbox_contacts_add = new System.Windows.Forms.TextBox();
+            this.lbl_contacts_add = new System.Windows.Forms.Label();
+            this.lbl_contacts_info = new System.Windows.Forms.Label();
+            this.richtxtbox_contacts_info = new System.Windows.Forms.RichTextBox();
+            this.btn_ch_contract = new System.Windows.Forms.Button();
+            this.btn_ch_contacts = new System.Windows.Forms.Button();
+            this.btn_report_load = new System.Windows.Forms.Button();
+            this.btn_report_show = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.prog_bar_remain = new System.Windows.Forms.ProgressBar();
             this.lbl_progressbar_left = new System.Windows.Forms.Label();
@@ -108,12 +117,8 @@ namespace RSB
             this.dataGridView_specimens = new System.Windows.Forms.DataGridView();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.btn_ch_prj_name = new System.Windows.Forms.Button();
-            this.txtbox_contacts_add = new System.Windows.Forms.TextBox();
-            this.lbl_contacts_add = new System.Windows.Forms.Label();
-            this.lbl_contacts_info = new System.Windows.Forms.Label();
-            this.btn_ch_contacts = new System.Windows.Forms.Button();
-            this.richtxtbox_contacts_info = new System.Windows.Forms.RichTextBox();
+            this.saveFileDialog_report = new System.Windows.Forms.SaveFileDialog();
+            this.openFileDialog_report = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.splitcontainer_projects_main)).BeginInit();
             this.splitcontainer_projects_main.Panel1.SuspendLayout();
             this.splitcontainer_projects_main.Panel2.SuspendLayout();
@@ -281,7 +286,7 @@ namespace RSB
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 240F));
+            this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 245F));
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_start_date, 1, 4);
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_info_stages_num, 1, 3);
             this.tableLayoutPanel_project_info.Controls.Add(this.lbl_info_end_date, 0, 5);
@@ -328,13 +333,16 @@ namespace RSB
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_contacts_add, 4, 4);
             this.tableLayoutPanel_project_info.Controls.Add(this.lbl_contacts_add, 3, 4);
             this.tableLayoutPanel_project_info.Controls.Add(this.lbl_contacts_info, 0, 11);
-            this.tableLayoutPanel_project_info.Controls.Add(this.btn_ch_contacts, 2, 11);
             this.tableLayoutPanel_project_info.Controls.Add(this.richtxtbox_contacts_info, 1, 11);
+            this.tableLayoutPanel_project_info.Controls.Add(this.btn_ch_contract, 2, 1);
+            this.tableLayoutPanel_project_info.Controls.Add(this.btn_ch_contacts, 2, 12);
+            this.tableLayoutPanel_project_info.Controls.Add(this.btn_report_load, 4, 12);
+            this.tableLayoutPanel_project_info.Controls.Add(this.btn_report_show, 3, 12);
             this.tableLayoutPanel_project_info.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel_project_info.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel_project_info.Margin = new System.Windows.Forms.Padding(5);
             this.tableLayoutPanel_project_info.Name = "tableLayoutPanel_project_info";
-            this.tableLayoutPanel_project_info.RowCount = 12;
+            this.tableLayoutPanel_project_info.RowCount = 13;
             this.tableLayoutPanel_project_info.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel_project_info.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel_project_info.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
@@ -347,6 +355,7 @@ namespace RSB
             this.tableLayoutPanel_project_info.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel_project_info.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel_project_info.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel_project_info.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel_project_info.Size = new System.Drawing.Size(1121, 658);
             this.tableLayoutPanel_project_info.TabIndex = 0;
             this.tableLayoutPanel_project_info.CellPaint += new System.Windows.Forms.TableLayoutCellPaintEventHandler(this.tableLayoutPanel_project_info_CellPaint);
@@ -452,7 +461,6 @@ namespace RSB
             this.txtbox_info_contract.Location = new System.Drawing.Point(142, 43);
             this.txtbox_info_contract.Margin = new System.Windows.Forms.Padding(1);
             this.txtbox_info_contract.Name = "txtbox_info_contract";
-            this.txtbox_info_contract.ReadOnly = true;
             this.txtbox_info_contract.Size = new System.Drawing.Size(191, 30);
             this.txtbox_info_contract.TabIndex = 2;
             // 
@@ -796,6 +804,97 @@ namespace RSB
             this.btn_create_new_project.UseVisualStyleBackColor = false;
             this.btn_create_new_project.Click += new System.EventHandler(this.btn_create_new_project_Click);
             // 
+            // btn_ch_prj_name
+            // 
+            this.btn_ch_prj_name.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_ch_prj_name.Location = new System.Drawing.Point(338, 4);
+            this.btn_ch_prj_name.Name = "btn_ch_prj_name";
+            this.btn_ch_prj_name.Size = new System.Drawing.Size(194, 34);
+            this.btn_ch_prj_name.TabIndex = 38;
+            this.btn_ch_prj_name.Text = "Change";
+            this.btn_ch_prj_name.UseVisualStyleBackColor = true;
+            this.btn_ch_prj_name.Click += new System.EventHandler(this.btn_ch_prj_name_Click);
+            // 
+            // txtbox_contacts_add
+            // 
+            this.txtbox_contacts_add.Location = new System.Drawing.Point(775, 168);
+            this.txtbox_contacts_add.Name = "txtbox_contacts_add";
+            this.txtbox_contacts_add.Size = new System.Drawing.Size(196, 30);
+            this.txtbox_contacts_add.TabIndex = 39;
+            // 
+            // lbl_contacts_add
+            // 
+            this.lbl_contacts_add.AutoSize = true;
+            this.lbl_contacts_add.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_contacts_add.Location = new System.Drawing.Point(539, 165);
+            this.lbl_contacts_add.Name = "lbl_contacts_add";
+            this.lbl_contacts_add.Size = new System.Drawing.Size(229, 40);
+            this.lbl_contacts_add.TabIndex = 40;
+            this.lbl_contacts_add.Text = "Contact info";
+            this.lbl_contacts_add.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lbl_contacts_info
+            // 
+            this.lbl_contacts_info.AutoSize = true;
+            this.lbl_contacts_info.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_contacts_info.Location = new System.Drawing.Point(4, 452);
+            this.lbl_contacts_info.Name = "lbl_contacts_info";
+            this.lbl_contacts_info.Size = new System.Drawing.Size(133, 157);
+            this.lbl_contacts_info.TabIndex = 42;
+            this.lbl_contacts_info.Text = "Contact info";
+            this.lbl_contacts_info.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // richtxtbox_contacts_info
+            // 
+            this.tableLayoutPanel_project_info.SetColumnSpan(this.richtxtbox_contacts_info, 2);
+            this.richtxtbox_contacts_info.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richtxtbox_contacts_info.Location = new System.Drawing.Point(144, 455);
+            this.richtxtbox_contacts_info.Name = "richtxtbox_contacts_info";
+            this.richtxtbox_contacts_info.Size = new System.Drawing.Size(388, 151);
+            this.richtxtbox_contacts_info.TabIndex = 44;
+            this.richtxtbox_contacts_info.Text = "";
+            // 
+            // btn_ch_contract
+            // 
+            this.btn_ch_contract.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_ch_contract.Location = new System.Drawing.Point(338, 45);
+            this.btn_ch_contract.Name = "btn_ch_contract";
+            this.btn_ch_contract.Size = new System.Drawing.Size(194, 34);
+            this.btn_ch_contract.TabIndex = 45;
+            this.btn_ch_contract.Text = "Change";
+            this.btn_ch_contract.UseVisualStyleBackColor = true;
+            this.btn_ch_contract.Click += new System.EventHandler(this.btn_ch_contract_Click);
+            // 
+            // btn_ch_contacts
+            // 
+            this.btn_ch_contacts.Location = new System.Drawing.Point(338, 613);
+            this.btn_ch_contacts.Name = "btn_ch_contacts";
+            this.btn_ch_contacts.Size = new System.Drawing.Size(194, 35);
+            this.btn_ch_contacts.TabIndex = 43;
+            this.btn_ch_contacts.Text = "Change";
+            this.btn_ch_contacts.UseVisualStyleBackColor = true;
+            this.btn_ch_contacts.Click += new System.EventHandler(this.btn_ch_contacts_Click);
+            // 
+            // btn_report_load
+            // 
+            this.btn_report_load.Location = new System.Drawing.Point(775, 613);
+            this.btn_report_load.Name = "btn_report_load";
+            this.btn_report_load.Size = new System.Drawing.Size(196, 35);
+            this.btn_report_load.TabIndex = 4;
+            this.btn_report_load.Text = "Load Report";
+            this.btn_report_load.UseVisualStyleBackColor = true;
+            this.btn_report_load.Click += new System.EventHandler(this.btn_report_load_Click);
+            // 
+            // btn_report_show
+            // 
+            this.btn_report_show.Location = new System.Drawing.Point(539, 613);
+            this.btn_report_show.Name = "btn_report_show";
+            this.btn_report_show.Size = new System.Drawing.Size(182, 35);
+            this.btn_report_show.TabIndex = 46;
+            this.btn_report_show.Text = "Show report";
+            this.btn_report_show.UseVisualStyleBackColor = true;
+            this.btn_report_show.Click += new System.EventHandler(this.btn_report_show_Click);
+            // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 2;
@@ -1058,7 +1157,7 @@ namespace RSB
             this.lbl_ch_state_caption.Name = "lbl_ch_state_caption";
             this.lbl_ch_state_caption.Size = new System.Drawing.Size(378, 36);
             this.lbl_ch_state_caption.TabIndex = 6;
-            this.lbl_ch_state_caption.Text = "Change stage for sekected APT state";
+            this.lbl_ch_state_caption.Text = "Change stage for selected APT state";
             this.lbl_ch_state_caption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btn_ch_stage
@@ -1086,11 +1185,11 @@ namespace RSB
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.SplitContainer_Specs);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 31);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(5);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPage2.Size = new System.Drawing.Size(1508, 787);
+            this.tabPage2.Size = new System.Drawing.Size(1508, 778);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Specimens";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1106,7 +1205,7 @@ namespace RSB
             // SplitContainer_Specs.Panel1
             // 
             this.SplitContainer_Specs.Panel1.Controls.Add(this.dataGridView_specimens);
-            this.SplitContainer_Specs.Size = new System.Drawing.Size(1498, 777);
+            this.SplitContainer_Specs.Size = new System.Drawing.Size(1498, 768);
             this.SplitContainer_Specs.SplitterDistance = 971;
             this.SplitContainer_Specs.TabIndex = 1;
             // 
@@ -1124,7 +1223,7 @@ namespace RSB
             this.dataGridView_specimens.Name = "dataGridView_specimens";
             this.dataGridView_specimens.ReadOnly = true;
             this.dataGridView_specimens.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView_specimens.Size = new System.Drawing.Size(969, 775);
+            this.dataGridView_specimens.Size = new System.Drawing.Size(969, 766);
             this.dataGridView_specimens.TabIndex = 0;
             // 
             // tabPage5
@@ -1146,63 +1245,9 @@ namespace RSB
             this.tabPage4.Text = "TEM";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // btn_ch_prj_name
+            // saveFileDialog_report
             // 
-            this.btn_ch_prj_name.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_ch_prj_name.Location = new System.Drawing.Point(338, 4);
-            this.btn_ch_prj_name.Name = "btn_ch_prj_name";
-            this.btn_ch_prj_name.Size = new System.Drawing.Size(194, 34);
-            this.btn_ch_prj_name.TabIndex = 38;
-            this.btn_ch_prj_name.Text = "Change";
-            this.btn_ch_prj_name.UseVisualStyleBackColor = true;
-            this.btn_ch_prj_name.Click += new System.EventHandler(this.btn_ch_prj_name_Click);
-            // 
-            // txtbox_contacts_add
-            // 
-            this.txtbox_contacts_add.Location = new System.Drawing.Point(775, 168);
-            this.txtbox_contacts_add.Name = "txtbox_contacts_add";
-            this.txtbox_contacts_add.Size = new System.Drawing.Size(196, 30);
-            this.txtbox_contacts_add.TabIndex = 39;
-            // 
-            // lbl_contacts_add
-            // 
-            this.lbl_contacts_add.AutoSize = true;
-            this.lbl_contacts_add.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_contacts_add.Location = new System.Drawing.Point(539, 165);
-            this.lbl_contacts_add.Name = "lbl_contacts_add";
-            this.lbl_contacts_add.Size = new System.Drawing.Size(229, 40);
-            this.lbl_contacts_add.TabIndex = 40;
-            this.lbl_contacts_add.Text = "Contact info";
-            this.lbl_contacts_add.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lbl_contacts_info
-            // 
-            this.lbl_contacts_info.AutoSize = true;
-            this.lbl_contacts_info.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_contacts_info.Location = new System.Drawing.Point(4, 452);
-            this.lbl_contacts_info.Name = "lbl_contacts_info";
-            this.lbl_contacts_info.Size = new System.Drawing.Size(133, 205);
-            this.lbl_contacts_info.TabIndex = 42;
-            this.lbl_contacts_info.Text = "Contact info";
-            this.lbl_contacts_info.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // btn_ch_contacts
-            // 
-            this.btn_ch_contacts.Location = new System.Drawing.Point(338, 455);
-            this.btn_ch_contacts.Name = "btn_ch_contacts";
-            this.btn_ch_contacts.Size = new System.Drawing.Size(194, 30);
-            this.btn_ch_contacts.TabIndex = 43;
-            this.btn_ch_contacts.Text = "Change";
-            this.btn_ch_contacts.UseVisualStyleBackColor = true;
-            this.btn_ch_contacts.Click += new System.EventHandler(this.btn_ch_contacts_Click);
-            // 
-            // richtxtbox_contacts_info
-            // 
-            this.richtxtbox_contacts_info.Location = new System.Drawing.Point(144, 455);
-            this.richtxtbox_contacts_info.Name = "richtxtbox_contacts_info";
-            this.richtxtbox_contacts_info.Size = new System.Drawing.Size(187, 151);
-            this.richtxtbox_contacts_info.TabIndex = 44;
-            this.richtxtbox_contacts_info.Text = "";
+            this.saveFileDialog_report.Title = "Choose your destiny!";
             // 
             // Frm_projects
             // 
@@ -1340,5 +1385,10 @@ namespace RSB
         private System.Windows.Forms.Label lbl_contacts_info;
         private System.Windows.Forms.Button btn_ch_contacts;
         private System.Windows.Forms.RichTextBox richtxtbox_contacts_info;
+        private System.Windows.Forms.Button btn_ch_contract;
+        private System.Windows.Forms.Button btn_report_load;
+        private System.Windows.Forms.Button btn_report_show;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog_report;
+        private System.Windows.Forms.OpenFileDialog openFileDialog_report;
     }
 }

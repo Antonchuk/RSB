@@ -299,6 +299,7 @@
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "RSBMainForm";
             this.Text = "RSB Main";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RSBMainForm_FormClosing);
             this.Load += new System.EventHandler(this.RSBMainForm_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
             this.tableLayoutPanel1.ResumeLayout(false);

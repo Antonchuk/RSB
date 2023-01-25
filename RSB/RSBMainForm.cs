@@ -403,5 +403,10 @@ namespace RSB
         {
             Process.Start("chrome", @"https://apt-develop.atlassian.net/wiki/spaces/AT/pages/425992/RSB");
         }
+
+        private void RSBMainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+        }
     }
 }

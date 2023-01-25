@@ -1313,6 +1313,14 @@ namespace RSB
 
         private void txtbox_inf_data_dir_DoubleClick(object sender, EventArgs e)
         {
+            //вешаем предупреждение
+            /*Form add_new_material = new Materials_new();
+                        add_new_material.ShowDialog();
+                        add_new_material.Dispose();*/
+            Form hypno = new Special_message();
+            hypno.ShowDialog();
+            hypno.Dispose();
+
             //открываем проводник с данным путем
             string str = Directory.GetParent(txtbox_inf_data_dir.Text).ToString();
             //string str = txtbox_inf_data_dir.Text;

@@ -1217,7 +1217,8 @@ namespace RSB
         private bool Check_new_pr_name(string name)
         {
             bool ans = false;
-            if (SQL_str_request("SELECT name FROM test2base.projects WHERE (projects.name = '" + name + "')").Count == 0)
+            List<string> ttt = SQL_str_request("SELECT name FROM test2base.projects WHERE (projects.name = '" + name + "')");
+            if (ttt.Count()==1 && ttt[0] == "")
             {
                 ans = true;
             }            
@@ -1285,7 +1286,7 @@ namespace RSB
             _ans.Columns.Add("Feature type-composition", Type.GetType("System.String"));
             //_ans.Columns.Add("Datamining status", Type.GetType("System.String"));
 */
-            _ans = GetTableFromSQL("SELECT researches.id_research, dataminig.id_grade, dataminig.volume, dataminig.feature_count, dataminig.feature_density, dataminig.feature_type " +
+            /*_ans = GetTableFromSQL("SELECT researches.id_research, dataminig.id_grade, dataminig.volume, dataminig.feature_count, dataminig.feature_density, dataminig.feature_type " +
                 "FROM test2base.researches " +
                 "LEFT OUTER JOIN test2base.dataminig ON dataminig.id_research = researches.id_research " +
                 "LEFT OUTER JOIN test2base.state ON state.id_state = dataminig.id_status " +
@@ -1294,7 +1295,9 @@ namespace RSB
                 "LEFT OUTER JOIN test2base.treatment ON specimens.id_treatment = treatment.id_treatment " +
                 "WHERE (specimens.id_project =  " + id_project.ToString() + ") " +
                 "AND (materials.name = '" + Mat_sel + "') AND (treatment.name = '" + Treat_sel + "') " +
-                "AND (researches.success = '+');") ;
+                "AND ((dataminig.id_status = '15') OR ((dataminig.id_status = '14')));") ;*/
+            //выбрать исследование, показать макс 
+            List<string> temp = SQL_str_request("SELECT dataminig.id_dataminig FROM test2base.dataminig");
             return _ans;
         }
         private void tabcontrol_projects_main_SelectedIndexChanged(object sender, EventArgs e)

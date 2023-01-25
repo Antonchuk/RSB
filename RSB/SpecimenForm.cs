@@ -12,10 +12,9 @@ using System.Diagnostics;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using Excel = Microsoft.Office.Interop.Excel;
-using Telegram.Bot;
-using Telegram.Bot.Args;
 using MihaZupan;
 using Newtonsoft.Json;
+using Discord.WebSocket;
 
 namespace RSB
 {
@@ -33,7 +32,8 @@ namespace RSB
         private static bool isrefreshing = true; // просто для исключения ненужных обновлений при нажатии кнопок Select All/Clear All
         //для картинки на кнопке
         private bool pic_change = true; //true - up, false - down
-        private int show_only_spec;                
+        private int show_only_spec;
+        private DiscordSocketClient _client;
         public class Filtres_master
         {
             public List<string> common_filters;// = new List<string>();
@@ -991,35 +991,44 @@ namespace RSB
                         Properties.Settings.Default.material_name = surname;
                         Properties.Settings.Default.Save();
                         Form add_new_material = new Materials_new();
-                        add_new_material.ShowDialog();
-                        add_new_material.Dispose();
-                        New_material new_mat = new New_material
+                        //add_new_material.ShowDialog();
+                        if (add_new_material.ShowDialog() == DialogResult.OK)
                         {
-                            name = Properties.Settings.Default.material_name,
-                            compostion = Properties.Settings.Default.material_composition
-                        };
-                        string sqlcom_3 = "INSERT INTO test2base." + table_name + " (name,composition) VALUES (@name,@comp)";
-                        using (MySqlCommand comand = new MySqlCommand(sqlcom_3, connect))
-                        {
-                            comand.Parameters.AddWithValue("@name", new_mat.name);
-                            comand.Parameters.AddWithValue("@comp", new_mat.compostion);
-                            _ = comand.ExecuteNonQuery();
-                        }
-                        sqlcom_3 = "SELECT max(" + col_name + ") FROM test2base." + table_name;
-                        using (MySqlCommand comm = new MySqlCommand(sqlcom_3, connect))
-                        {
-                            using (MySqlDataReader reader = comm.ExecuteReader())
+                            //add_new_material.Dispose();
+
+                            New_material new_mat = new New_material
                             {
-                                if (reader.HasRows)
+                                name = Properties.Settings.Default.material_name,
+                                compostion = Properties.Settings.Default.material_composition
+                            };
+                            string sqlcom_3 = "INSERT INTO test2base." + table_name + " (name,composition) VALUES (@name,@comp)";
+                            using (MySqlCommand comand = new MySqlCommand(sqlcom_3, connect))
+                            {
+                                comand.Parameters.AddWithValue("@name", new_mat.name);
+                                comand.Parameters.AddWithValue("@comp", new_mat.compostion);
+                                _ = comand.ExecuteNonQuery();
+                            }
+                            sqlcom_3 = "SELECT max(" + col_name + ") FROM test2base." + table_name;
+                            using (MySqlCommand comm = new MySqlCommand(sqlcom_3, connect))
+                            {
+                                using (MySqlDataReader reader = comm.ExecuteReader())
                                 {
-                                    while (reader.Read())
+                                    if (reader.HasRows)
                                     {
-                                        ans = reader[0].ToString();
-                                        //MessageBox.Show("новый ид" + table_name + "=" + ans);
+                                        while (reader.Read())
+                                        {
+                                            ans = reader[0].ToString();
+                                            //MessageBox.Show("новый ид" + table_name + "=" + ans);
+                                        }
+                                        reader.Close();
                                     }
-                                    reader.Close();
                                 }
                             }
+                        }
+                        else
+                        {
+                            //запрещаем создание образца (ползователь не добавил материал)
+                            specimen_new_accepted = false;
                         }
                         break;
                     case "storage":
@@ -1054,8 +1063,8 @@ namespace RSB
                             _ = comand.ExecuteNonQuery();
                         }
                         //какой-то тсранный выбор ИД, основанный на том, что последний и есть максимальный
-                        sqlcom_3 = "SELECT max(" + col_name + ") FROM test2base." + table_name;
-                        using (MySqlCommand comm = new MySqlCommand(sqlcom_3, connect))
+                        string sqlcom_5 = "SELECT max(" + col_name + ") FROM test2base." + table_name;
+                        using (MySqlCommand comm = new MySqlCommand(sqlcom_5, connect))
                         {
                             using (MySqlDataReader reader = comm.ExecuteReader())
                             {
@@ -1441,6 +1450,10 @@ namespace RSB
             //сохранить фильтры в json
             Save_def_json(@"\Settings\test_json.json");
             e.Cancel = true;
+            /*if (_client.ConnectionState == Discord.ConnectionState.Connected)
+            {
+                _client.StopAsync();
+            }*/
             Hide();
         }
 
@@ -2833,8 +2846,60 @@ namespace RSB
                     MessageBoxDefaultButton.Button1);
                 }
             }
+            //пытаемся слать уведомление
+            Send_discord(false, user, action_type, id_spec);            
         }
-
+        private List<string> Get_related(string action_type, string id_spec)
+        {
+            List<string> ans = new List<string>();
+            switch (action_type)
+            {
+                case "research was made":
+                case "new specimen":
+                    //получаем изготовителя
+                    string prod = SQL_List_querry("SELECT discord_id FROM test2base.producers " +
+                        "WHERE (id_producer = (SELECT id_producer FROM test2base.specimens WHERE (idspecimens='"+id_spec+"')));")[0];
+                    if (prod == "") ans.Add(prod);
+                    //получаем отв за проект
+                    string resp = SQL_List_querry("SELECT discord_id FROM test2base.producers " +
+                        "WHERE (id_producer = (SELECT id_respon FROM test2base.specimens WHERE (idspecimens='" + id_spec + "')));")[0];
+                    if (resp == "") ans.Add(resp);
+                    return ans;                    
+                case "change position":
+                    //получаем изготовителя
+                    string prod_c = SQL_List_querry("SELECT discord_id FROM test2base.producers " +
+                        "WHERE (id_producer = (SELECT id_producer FROM test2base.specimens WHERE (idspecimens='" + id_spec + "')));")[0];
+                    if (prod_c == "") ans.Add(prod_c);
+                    return ans;
+                default:
+                    return new List<string>();
+            }
+        }
+        private async void Send_discord(bool voice, string actor, string action_t, string id_spec)
+        {
+            List<string> actors = new List<string>();
+            //пробуем получить кто
+            string actor_id = SQL_List_querry("SELECT producers.discord_id FROM test2base.producers WHERE (user_name = '"+actor+"')")[0];
+            if (actor_id != "") actors.Add("author "+actor_id+", ");
+            //получаем зависимые
+            actors.AddRange(Get_related(action_t, id_spec));
+            string hook;
+            if (action_t == "research was made")
+            {
+                hook = Properties.Settings.Default.disc_hook_research;
+            }
+            else
+            {
+                hook = Properties.Settings.Default.disc_hook_chposition;
+            }
+            //название материала и обработку
+            string _material = SQL_List_querry("SELECT materials.name FROM test2base.materials WHERE (id_material = (SELECT id_material FROM test2base.specimens WHERE (idspecimens = '"+ id_spec + "')))")[0];
+            string _treat = SQL_List_querry("SELECT treatment.name FROM test2base.treatment WHERE (id_treatment = (SELECT id_treatment FROM test2base.specimens WHERE (idspecimens = '" + id_spec + "')))")[0];
+            Discord.Webhook.DiscordWebhookClient disc_client = new Discord.Webhook.DiscordWebhookClient(hook);
+            string message = id_spec + " " +_material + " " +_treat + " " + action_t + ", " + String.Join(" ", actors.ToArray());
+            await disc_client.SendMessageAsync(message, voice, null, "RSB", null, null, Discord.AllowedMentions.All);
+            disc_client.Dispose();
+        }
         private string Show_history(int spec_id)
         {
             //показываем контекстную историю выбранного образца
@@ -3144,43 +3209,25 @@ namespace RSB
             MessageBoxDefaultButton.Button1);
             }
         }
-        private void btn_test_Click(object sender, EventArgs e)
+        private async Task test_D_message(string mess)
+        {
+            _client = new DiscordSocketClient();
+            //получаем токен бота
+            var token = SQL_List_querry("SELECT producers.token FROM test2base.producers WHERE (user_name = 'chuk')")[0];
+            await _client.LoginAsync(Discord.TokenType.Bot, token);
+            await _client.StartAsync();
+            await Task.Delay(-1);
+        }
+        private async void btn_test_Click(object sender, EventArgs e)
         {
             //кнопка для разных тестов
-            //загрузим файл
-            open_dial_im_before.Title = "load file";
-            DialogResult result = open_dial_im_before.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                string path = open_dial_im_before.FileName;
-                MessageBox.Show("Диретокрия + файл" + path);
-                //FileInfo fileInf = new FileInfo(path);
-                //path = fileInf.DirectoryName;
-                //MessageBox.Show("Диретокрия" + path);
-                //конвертнем в бинарник
-                try
-                {
-                    //конвертнем в бинарник
-                    byte[] file = GetBinaryFile(path);
-                    string data = Encoding.Default.GetString(file);
-                    //запихнем в базу
-                    File_to_DB_test("INSERT INTO test2base.dataminig " +
-                        "(name, id_specimen, grade, volume, feature_count, feature_density, feature_type, status, id_miner, project_file) " +
-                        "VALUES ('test', '1', 'bad', '10', '0', '1e-5', '1', '1', '1', @file );", file);
-                    //прочитаем из базы
-                    byte[] read_data= ReadDataFromDB("SELECT project_file FROM test2base.dataminig WHERE (name = 'test')");
-                    //сохраним в директорию
-                    if (read_data.Length>1)
-                    {
-                        Save_file_From_DB(read_data);
-                    }                   
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString(), "error in btn_test_Click", MessageBoxButtons.OK, MessageBoxIcon.Error,
-            MessageBoxDefaultButton.Button1);
-                }
-            }
+            MessageBox.Show("test discord bot");
+            //шлем сообщение            
+            Discord.Webhook.DiscordWebhookClient cl = new Discord.Webhook.DiscordWebhookClient(Properties.Settings.Default.disc_hook_research);
+            await cl.SendMessageAsync("Тридцать три корабля лавировали-лавировали, лавировали-лавировали, " +
+                "лавировали-лавировали, да не вылавировали, не вылавировали, не вылавировали, тридцать три корабля", true, null, "loh");
+            cl.Dispose();
+            //cl.
         }
 
         private void btn_clr_storage_Click(object sender, EventArgs e)

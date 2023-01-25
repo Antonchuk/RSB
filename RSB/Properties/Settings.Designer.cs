@@ -478,5 +478,28 @@ namespace RSB.Properties {
                 this["project_split_graphs"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://discord.com/api/webhooks/1067057478044500019/WMHk3rvElx7Xoc1c6Q4DOwA8AZBg" +
+            "5kBwX4I63g89hEDIgdSf9P1urm9bndqXmOmy-pAX")]
+        public string disc_hook_research {
+            get {
+                return ((string)(this["disc_hook_research"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://discord.com/api/webhooks/1067092729668055090/SbX1v8zDAdWvDrI73Oc3rI1SSVIn" +
+            "W9bkEyAX--eyEAJPL9OnqRms07RaZPvM2YRZk6LT")]
+        public string disc_hook_chposition {
+            get {
+                return ((string)(this["disc_hook_chposition"]));
+            }
+            set {
+                this["disc_hook_chposition"] = value;
+            }
+        }
     }
 }

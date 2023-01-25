@@ -190,6 +190,11 @@
             the contents of this method with the code editor.
             </summary>
         </member>
+        <member name="M:RSB.Materials_new.#ctor">
+            <summary>
+            форма создания нового материала
+            </summary>
+        </member>
         <member name="F:RSB.Materials_new.components">
             <summary>
             Required designer variable.
@@ -300,6 +305,28 @@
             <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         </member>
         <member name="M:RSB.from_conn_prop.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:RSB.Special_message.#ctor">
+            <summary>
+            форма предупреждения!!!!
+            </summary>
+        </member>
+        <member name="F:RSB.Special_message.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:RSB.Special_message.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:RSB.Special_message.InitializeComponent">
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
@@ -589,6 +616,11 @@
             </summary>
         </member>
         <member name="P:RSB.Properties.Resources.down">
+            <summary>
+              Поиск локализованного ресурса типа System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:RSB.Properties.Resources.hypno_g">
             <summary>
               Поиск локализованного ресурса типа System.Drawing.Bitmap.
             </summary>

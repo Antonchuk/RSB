@@ -39,7 +39,7 @@
             // btn_denay
             // 
             this.btn_denay.Location = new System.Drawing.Point(226, 117);
-            this.btn_denay.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.btn_denay.Margin = new System.Windows.Forms.Padding(5);
             this.btn_denay.Name = "btn_denay";
             this.btn_denay.Size = new System.Drawing.Size(145, 54);
             this.btn_denay.TabIndex = 0;
@@ -101,9 +101,10 @@
             this.Controls.Add(this.btn_add_new);
             this.Controls.Add(this.btn_denay);
             this.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "Materials_new";
             this.Text = "Materials";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Materials_new_FormClosed);
             this.Load += new System.EventHandler(this.Materials_new_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

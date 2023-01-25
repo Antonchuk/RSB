@@ -116,11 +116,5 @@
     <Setting Name="project_split_graphs" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="disc_hook_research" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">https://discord.com/api/webhooks/1067057478044500019/WMHk3rvElx7Xoc1c6Q4DOwA8AZBg5kBwX4I63g89hEDIgdSf9P1urm9bndqXmOmy-pAX</Value>
-    </Setting>
-    <Setting Name="disc_hook_chposition" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://discord.com/api/webhooks/1067092729668055090/SbX1v8zDAdWvDrI73Oc3rI1SSVInW9bkEyAX--eyEAJPL9OnqRms07RaZPvM2YRZk6LT</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

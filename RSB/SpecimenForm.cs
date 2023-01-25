@@ -2880,17 +2880,17 @@ namespace RSB
             List<string> actors = new List<string>();
             //пробуем получить кто
             string actor_id = SQL_List_querry("SELECT producers.discord_id FROM test2base.producers WHERE (user_name = '"+actor+"')")[0];
-            if (actor_id != "") actors.Add("author "+actor_id+", ");
+            if (actor_id == "") actors.Add("author "+actor_id+", ");
             //получаем зависимые
             actors.AddRange(Get_related(action_t, id_spec));
             string hook;
             if (action_t == "research was made")
             {
-                hook = Properties.Settings.Default.disc_hook_research;
+                hook = SQL_List_querry("SELECT token FROM test2base.producers WHERE (user_name = 'res')")[0];
             }
             else
             {
-                hook = Properties.Settings.Default.disc_hook_chposition;
+                hook = SQL_List_querry("SELECT token FROM test2base.producers WHERE (user_name = 'move')")[0];
             }
             //название материала и обработку
             string _material = SQL_List_querry("SELECT materials.name FROM test2base.materials WHERE (id_material = (SELECT id_material FROM test2base.specimens WHERE (idspecimens = '"+ id_spec + "')))")[0];
@@ -3223,10 +3223,10 @@ namespace RSB
             //кнопка для разных тестов
             MessageBox.Show("test discord bot");
             //шлем сообщение            
-            Discord.Webhook.DiscordWebhookClient cl = new Discord.Webhook.DiscordWebhookClient(Properties.Settings.Default.disc_hook_research);
+           /* Discord.Webhook.DiscordWebhookClient cl = new Discord.Webhook.DiscordWebhookClient(Properties.Settings.Default.disc_hook_research);
             await cl.SendMessageAsync("Тридцать три корабля лавировали-лавировали, лавировали-лавировали, " +
-                "лавировали-лавировали, да не вылавировали, не вылавировали, не вылавировали, тридцать три корабля", true, null, "loh");
-            cl.Dispose();
+                "лавировали-лавировали, да не вылавировали, не вылавировали, не вылавировали, тридцать три корабля", true, null, "loh");*/
+            //cl.Dispose();
             //cl.
         }
 

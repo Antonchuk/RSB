@@ -2846,30 +2846,37 @@ namespace RSB
                     MessageBoxDefaultButton.Button1);
                 }
             }
-            //пытаемся слать уведомление
+            //пытаемся слать уведомление research was made
+            if (action_type == "research was made" || action_type == "new specimen" || action_type == "change position")
             Send_discord(false, user, action_type, id_spec);            
         }
         private List<string> Get_related(string action_type, string id_spec)
         {
             List<string> ans = new List<string>();
+            //получаем изготовителя
+            string prod = SQL_List_querry("SELECT discord_id FROM test2base.producers " +
+                        "WHERE (id_producer = (SELECT id_producer FROM test2base.specimens WHERE (idspecimens='" + id_spec + "')));")[0];
+            if (prod == "")
+            {
+                prod = SQL_List_querry("SELECT user_name FROM test2base.producers " +
+                        "WHERE (id_producer = (SELECT id_producer FROM test2base.specimens WHERE (idspecimens='" + id_spec + "')));")[0];
+            }
+            ans.Add("pr " +prod+",");
             switch (action_type)
             {
                 case "research was made":
-                case "new specimen":
-                    //получаем изготовителя
-                    string prod = SQL_List_querry("SELECT discord_id FROM test2base.producers " +
-                        "WHERE (id_producer = (SELECT id_producer FROM test2base.specimens WHERE (idspecimens='"+id_spec+"')));")[0];
-                    if (prod == "") ans.Add(prod);
+                case "new specimen":                                        
                     //получаем отв за проект
                     string resp = SQL_List_querry("SELECT discord_id FROM test2base.producers " +
                         "WHERE (id_producer = (SELECT id_respon FROM test2base.specimens WHERE (idspecimens='" + id_spec + "')));")[0];
-                    if (resp == "") ans.Add(resp);
-                    return ans;                    
+                    if (resp == "")
+                    {
+                        resp = SQL_List_querry("SELECT user_name FROM test2base.producers " +
+                        "WHERE (id_producer = (SELECT id_respon FROM test2base.specimens WHERE (idspecimens='" + id_spec + "')));")[0];
+                    }
+                    ans.Add("rsp " + resp);
+                    return ans;
                 case "change position":
-                    //получаем изготовителя
-                    string prod_c = SQL_List_querry("SELECT discord_id FROM test2base.producers " +
-                        "WHERE (id_producer = (SELECT id_producer FROM test2base.specimens WHERE (idspecimens='" + id_spec + "')));")[0];
-                    if (prod_c == "") ans.Add(prod_c);
                     return ans;
                 default:
                     return new List<string>();
@@ -2880,7 +2887,14 @@ namespace RSB
             List<string> actors = new List<string>();
             //пробуем получить кто
             string actor_id = SQL_List_querry("SELECT producers.discord_id FROM test2base.producers WHERE (user_name = '"+actor+"')")[0];
-            if (actor_id == "") actors.Add("author "+actor_id+", ");
+            if (actor_id == "")
+            {
+                actors.Add("author " + actor + ",");
+            }
+            else
+            {
+                actors.Add("author " + actor_id + ",");
+            }
             //получаем зависимые
             actors.AddRange(Get_related(action_t, id_spec));
             string hook;

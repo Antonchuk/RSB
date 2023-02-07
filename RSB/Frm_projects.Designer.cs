@@ -286,7 +286,7 @@ namespace RSB
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 251F));
+            this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 254F));
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_start_date, 1, 4);
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_info_stages_num, 1, 3);
             this.tableLayoutPanel_project_info.Controls.Add(this.lbl_info_end_date, 0, 5);

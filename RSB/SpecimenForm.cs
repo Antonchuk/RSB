@@ -2093,8 +2093,8 @@ namespace RSB
                 //MessageBox.Show(txtbox_move_from.Text.Substring(0, txtbox_move_from.Text.Length - txtbox_move_from.Text.IndexOf(' ')+1));
                 //MessageBox.Show("-"+txtbox_move_from.Text.Substring(txtbox_move_from.Text.LastIndexOf(' ')+1)+"-");
                 int pos_old = Convert.ToInt32(txtbox_move_from.Text.Substring(txtbox_move_from.Text.LastIndexOf(' ') + 1));
-                string pos_o = txtbox_move_from.Text.Substring(txtbox_move_from.Text.LastIndexOf(' ') + 1);
-                int stor_old_id = Get_stor_index(txtbox_move_from.Text.Substring(0, txtbox_move_from.Text.IndexOf(pos_o)-1));
+                //string pos_o = txtbox_move_from.Text.Substring(txtbox_move_from.Text.LastIndexOf(' ') + 1);
+                int stor_old_id = Get_stor_index(txtbox_move_from.Text.Substring(0, txtbox_move_from.Text.LastIndexOf(' ')));
                                 
                 //удаляем запись о старом месте
                 Ch_or_create_stor_pos(stor_old_id, pos_old, indexx, true);

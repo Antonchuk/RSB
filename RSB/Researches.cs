@@ -11,17 +11,70 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using Word = Microsoft.Office.Interop.Word;
-
+using System.Windows.Forms.DataVisualization.Charting;
+using Newtonsoft.Json;
+using static RSB.Form_specimens;
+using Microsoft.Office.Interop.Excel;
 
 namespace RSB
-{
+{    
     public partial class Researches : Form
     {
+        class FilterMaster
+        {
+            public List<string> common_filters;// = new List<string>();
+            public bool is_special_filter;
+            public string special_filter;
+            public FilterMaster()
+            {
+                common_filters = new List<string>();
+                is_special_filter = false;
+                special_filter = "";
+            }
+            public void LoadFilters(string name)
+            {
+                //Load_def_json(@"\Settings\ResearchesFilters.json");
+                //процедура грузит из json фильтры с обновлением
+                try
+                {
+                    string json_path = Directory.GetCurrentDirectory() + name;
+                    if (File.Exists(json_path))
+                    {
+                        var _temp_master = JsonConvert.DeserializeObject<Filtres_master>(File.ReadAllText(json_path));
+                        //isrefreshing = false;
+                        //on_load = true;
+                        common_filters.Clear();
+                        common_filters.AddRange(_temp_master.common_filters);
+                        is_special_filter = _temp_master.is_special_filter;
+                        special_filter = _temp_master.special_filter;
+                        //Reverse_ch_boxes_filtres();
+                        //isrefreshing = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка при загрузке дефотных фильтров", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                MessageBoxDefaultButton.Button1);
+                }
+            }
+            public void SaveFilters(string _path)
+            {
+                string json_path = Directory.GetCurrentDirectory() + _path;
+                //попытаться сохранить фильтры в json
+                using (StreamWriter file = File.CreateText(json_path))
+                {
+                    JsonSerializer seriz = new JsonSerializer();
+                    seriz.Serialize(file, this);
+                }
+            }
+        }
         private readonly RSBMainForm Parent_form;
         private string conn_str;
         private bool on_load = false;
-        private static List<string> data_filters = new List<string>();
+        //private static List<string> data_filters = new List<string>();
         private static List<string> serv_data_filters = new List<string>();
+        private static bool isrefreshing = false;
+        private FilterMaster FiltMaster;
         //private List<string> data_filters;        
         private int show_only_spec;
         /// <summary>
@@ -33,7 +86,7 @@ namespace RSB
             InitializeComponent();
             Parent_form = parent;
         }
-        public static MySqlConnection New_connection(string connString)
+        private static MySqlConnection New_connection(string connString)
         {
             // Connection String.
             MySqlConnection conn = new MySqlConnection(connString);
@@ -70,9 +123,7 @@ namespace RSB
         }        
         private void Refresh_data_researches()
         {
-            datagrid_researches.Rows.Clear();
-            conn_str = Get_conn_string(Properties.Settings.Default.server, Properties.Settings.Default.port,
-               Properties.Settings.Default.database, Parent_form.cbox_username.Text, Parent_form.txtbox_pass.Text);
+            datagrid_researches.Rows.Clear();            
             if (chbox_show_serv.CheckState != CheckState.Checked)
             {
                 using (MySqlConnection conn = New_connection(conn_str))
@@ -80,14 +131,11 @@ namespace RSB
                     try
                     {
                         conn.Open();
-                        //dateTimePicker_ref_end.Value();
-                        //dateTimePicker_stat_end
-                        string sort_dec_asc = "";
-                        string sort_sql = "";
-                        //DateTime.TryParse(dateTimePicker_ref_start.Text, out DateTime temp_dat_start);
-                        //DateTime.TryParse(dateTimePicker_ref_end.Text, out DateTime temp_dat_end);
+                        //string sort_dec_asc = "";
+                        //string sort_sql = "";
                         //фильтры для SQL запроса
-                        string sql_filtres = do_filtres_for_SQL(data_filters);
+                        //string sql_filtres = do_filtres_for_SQL(data_filters);
+                        string sql_filtres = do_filtres_for_SQL(FiltMaster.common_filters);
                         string sqlcom = "SELECT id_research, researches.res_date, materials.name, projects.name, type.name, producers.surname, " +
                             "researches.success, researches.temperature, researches.power_laser, setups.name " +
                         "FROM test2base.researches " +
@@ -100,8 +148,8 @@ namespace RSB
                         " WHERE (res_date >= '" + dateTimePicker_ref_start.Value.ToString("yyyy-MM-dd HH:mm:ss") + "' " +
                         " AND res_date <= '" + dateTimePicker_ref_end.Value.ToString("yyyy-MM-dd HH:mm:ss") + "') " +
                         sql_filtres +
-                        " ORDER BY researches.res_date DESC" +
-                        sort_sql + sort_dec_asc;
+                        " ORDER BY researches.res_date DESC";
+                        //sort_sql + sort_dec_asc;
 
                         using (MySqlCommand comand = new MySqlCommand(sqlcom, conn))
                         {
@@ -243,10 +291,10 @@ namespace RSB
         }
         private void Fill_one_combo(MySqlConnection conect, string combo, string colname, string table_name)
         {
+            string sqlcom = "SELECT " + colname + " FROM test2base." + table_name + " ORDER BY " + colname;
             try
             {
-                conect.Open();
-                string sqlcom = "SELECT " + colname + " FROM test2base." + table_name + " ORDER BY " + colname;
+                conect.Open();                
                 using (MySqlCommand comand = new MySqlCommand(sqlcom, conect))
                 {
                     using (MySqlDataReader reader = comand.ExecuteReader())
@@ -258,19 +306,15 @@ namespace RSB
                                 switch (combo)
                                 {
                                     case "type":
-                                        //combox_f_type.Items.Add(reader[0].ToString());
                                         ch_listbox_type.Items.Add(reader[0].ToString(), true);
                                         break;
                                     case "project":
-                                        //combox_f_project.Items.Add(reader[0].ToString());
                                         ch_listbox_projects.Items.Add(reader[0].ToString(), true);
                                         break;
                                     case "setups":
-                                        //
                                         combox_setups_select.Items.Add(reader[0].ToString());
                                         break;
                                     case "setups_filter":
-                                        //
                                         combox_setup_filter.Items.Add(reader[0].ToString());
                                         break;
                                 }
@@ -284,7 +328,7 @@ namespace RSB
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                MessageBox.Show(sqlcom+"\n" +ex.Message, "Ошибка в Fill_one_combo", MessageBoxButtons.OK, MessageBoxIcon.Error,
             MessageBoxDefaultButton.Button1);
             }
         }
@@ -303,6 +347,7 @@ namespace RSB
                 Fill_one_combo(conn, "setups", "name", "setups");
                 combox_setup_filter.Items.Clear();
                 Fill_one_combo(conn, "setups_filter", "name", "setups");
+                combox_setup_filter.Items.Add("All");
                 ch_listbox_success.Items.Clear();
                 ch_listbox_success.Items.Add("+", true);
                 ch_listbox_success.Items.Add("-", true);
@@ -441,26 +486,88 @@ namespace RSB
                 Fill_info_text(Sel_index);
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ch_box"></param>
+        private void Fill_chbox_true(CheckedListBox ch_box)
+        {
+            //просто ставим у ListCheckedBox все галочки
+            for (int i = 0; i < ch_box.Items.Count; i++)
+            {
+                ch_box.SetItemChecked(i, true);
+            }
+        }
+        /// <summary>
+        /// убираем галки там, где они не должны быть
+        /// </summary>
+        /// <param name="ch_box"></param>
+        /// <param name="ch_box_filter"></param>
+        private void Fill_chbox(CheckedListBox ch_box, string ch_box_filter)
+        {
+            for (int i = 0; i < ch_box.Items.Count; i++)
+            {
+                if (ch_box.Items[i].ToString() == ch_box_filter)
+                {
+                    ch_box.SetItemChecked(i, false);
+                }
+            }
+        }
+        private bool Reverse_ch_boxes_filtres()
+        {
+            bool ans = false;
+            //процедура проставляет галочик в чек-боксах в соответствии с фильтрами
+            if (FiltMaster.common_filters != null)
+                if (FiltMaster.common_filters.Count > 0)
+                {
+                    //в фильтрах что-то есть, проверяем каждый чек-бокс     
+                    //ставим везде галочки
+                    Fill_chbox_true(ch_listbox_type);
+                    Fill_chbox_true(ch_listbox_success);
+                    Fill_chbox_true(ch_listbox_projects);
+                    foreach (string filt in FiltMaster.common_filters)
+                    {
+                        string ch_box_name = filt.Substring(0, filt.IndexOf("<") - 1);
+                        string ch_box_filter = filt.Substring(filt.IndexOf("'") + 1, filt.Length - filt.IndexOf("'") - 2);
+                        switch (ch_box_name)
+                        {
+                            case "type.name":
+                                Fill_chbox(ch_listbox_type, ch_box_filter);
+                                break;
+                            case "researches.success":
+                                Fill_chbox(ch_listbox_success, ch_box_filter);
+                                break;
+                            case "project.name":
+                                Fill_chbox(ch_listbox_projects, ch_box_filter);
+                                break;                            
+                        }
+                    }
+                }
+            return ans;
+        }
         private void Researches_Load(object sender, EventArgs e)
         {
             //грузим все данные в датагрид
             on_load = true;
-            //MessageBox.Show("value= "+ dateTimePicker_ref_end.Value.ToString()+"\n text=" + dateTimePicker_ref_end.Text);
-            //data_filters = new List<string>();
-            data_filters.Clear();
+            conn_str = Get_conn_string(Properties.Settings.Default.server, Properties.Settings.Default.port,
+               Properties.Settings.Default.database, Parent_form.cbox_username.Text, Parent_form.txtbox_pass.Text);
+            Fill_combo();
+            //грузим фильтры
+            isrefreshing = false;
+            FiltMaster = new FilterMaster();
+            FiltMaster.LoadFilters(@"\\Settings\\ResearchesFilters.json");
+            Reverse_ch_boxes_filtres();            
+            isrefreshing = true;
+            //data_filters.Clear();
             show_only_spec = Convert.ToInt32(combox_show_only.Text);
             //заполняем поля из сохраненных параметров
             combox_show_only.Text = Properties.Settings.Default.show_only_researches.ToString();
-            chbox_show_serv.Checked = Properties.Settings.Default.show_techinfo;
-            
+            chbox_show_serv.Checked = Properties.Settings.Default.show_techinfo;            
             DateTime.TryParse(dateTimePicker_ref_start.Text, out DateTime temp_dat_end);         
             string date_start = temp_dat_end.AddYears(-1).ToString("dd MMMM yyyy");
             //MessageBox.Show(date_start + " г.");
             dateTimePicker_ref_start.Text = date_start+" г.";
-            //
-            Refresh_data_researches();
-            Fill_combo();
+            Refresh_data_researches();            
             on_load = false;
             Fill_information();            
         }
@@ -469,18 +576,24 @@ namespace RSB
 
         private void btn_clear_projects_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_projects.Items.Count; i++)
             {
                 ch_listbox_projects.SetItemChecked(i, false);
             }
+            isrefreshing=true;
+            Refresh_data_researches();
         }
 
         private void btn_clear_types_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_type.Items.Count; i++)
             {
                 ch_listbox_type.SetItemChecked(i, false);
             }
+            isrefreshing = true;
+            Refresh_data_researches();
         }
         private void Do_filters(List<string> filters)
         {
@@ -527,51 +640,12 @@ namespace RSB
         }
         private void ch_listbox_type_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            if (!on_load)
-            {
-                if (e.NewValue == CheckState.Checked)
-                {
-                    //тест новых фильтров
-                    data_filters.Remove("type.name <> '" + ch_listbox_type.Items[e.Index].ToString() + "'");
-
-                    //удаляем из фильтров
-                    //data_filters.Remove(ch_listbox_type.Items[e.Index].ToString());
-                }
-                else
-                {
-                    //тест новых фмльтров
-                    data_filters.Add("type.name <> '" + ch_listbox_type.Items[e.Index].ToString()+"'");
-
-                    //добавляем к фильтрам
-                    //data_filters.Add(ch_listbox_type.Items[e.Index].ToString());
-                }                
-                Refresh_data_researches();
-            }
+                Checked(e, ch_listbox_type, isrefreshing);
         }
 
         private void ch_listbox_projects_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            if (!on_load)
-            {
-                if (e.NewValue == CheckState.Checked)
-                {
-                    //тест новых фильтров
-                    data_filters.Remove("projects.name <> '" + ch_listbox_projects.Items[e.Index].ToString() + "'");
-
-                    //удаляем из фильтров
-                    //data_filters.Remove(ch_listbox_projects.Items[e.Index].ToString());
-                }
-                else
-                {
-                    //тест новых фмльтров
-                    //MessageBox.Show("Index = "+e.Index.ToString());
-                    data_filters.Add("projects.name <> '" + ch_listbox_projects.Items[e.Index].ToString() + "'");
-
-                    //добавляем к фильтрам
-                    //data_filters.Add(ch_listbox_projects.Items[e.Index].ToString());
-                }
-                Refresh_data_researches();
-            }
+                Checked(e, ch_listbox_projects, isrefreshing);
         }
 
         private void btn_select_all_Click(object sender, EventArgs e)
@@ -592,34 +666,50 @@ namespace RSB
 
         private void btn_clear_succ_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_success.Items.Count; i++)
             {
                 ch_listbox_success.SetItemChecked(i, false);
             }
+            isrefreshing = true;
+            Refresh_data_researches();
         }
-
-        private void ch_listbox_success_ItemCheck(object sender, ItemCheckEventArgs e)
+        private void Checked(ItemCheckEventArgs e, CheckedListBox obje, bool dorefresh)
         {
             if (!on_load)
             {
+                string str_f = "";
+                switch (obje.Name)
+                {
+                    case "ch_listbox_success":
+                        str_f = "researches.success <> '";
+                        break;
+                    case "ch_listbox_projects":
+                        str_f = "projects.name <> '";
+                        break;
+                    case "ch_listbox_type":
+                        str_f = "type.name <> '";
+                        break;
+                    case "":
+
+                        break;
+                }
                 if (e.NewValue == CheckState.Checked)
                 {
-                    //тест новых фильтров
-                    data_filters.Remove("researches.success <> '" + ch_listbox_success.Items[e.Index].ToString() + "'");
-
                     //удаляем из фильтров
-                    //data_filters.Remove(ch_listbox_success.Items[e.Index].ToString());
+                    FiltMaster.common_filters.Remove(str_f + obje.Items[e.Index].ToString() + "'");
                 }
                 else
                 {
-                    //тест новых фмльтров
-                    data_filters.Add("researches.success <> '" + ch_listbox_success.Items[e.Index].ToString() + "'");
-
                     //добавляем к фильтрам
-                    //data_filters.Add(ch_listbox_success.Items[e.Index].ToString());
+                    FiltMaster.common_filters.Add(str_f + obje.Items[e.Index].ToString() + "'");
                 }
-                Refresh_data_researches();
+                if (dorefresh) Refresh_data_researches();
             }
+        }
+        private void ch_listbox_success_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+                Checked(e, ch_listbox_success, isrefreshing);
         }
 
         private void datagrid_researches_KeyUp(object sender, KeyEventArgs e)
@@ -637,23 +727,27 @@ namespace RSB
 
         private void Researches_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //Save_settings_res();
+            if (FiltMaster.common_filters.IndexOf("setups.name = 'АТЛАЗ'") >= 0) FiltMaster.common_filters.Remove("setups.name = 'АТЛАЗ'");
+            if (FiltMaster.common_filters.IndexOf("setups.name = 'ПАЗЛ'") >= 0) FiltMaster.common_filters.Remove("setups.name = 'ПАЗЛ'");
+            if (FiltMaster.common_filters.IndexOf("setups.name = 'ЛАЗТ'") >= 0) FiltMaster.common_filters.Remove("setups.name = 'ЛАЗТ'");
+            FiltMaster.SaveFilters(@"\Settings\\ResearchesFilters.json");
             GC.Collect();
         }
 
         private void Researches_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (FiltMaster.common_filters.IndexOf("setups.name = 'АТЛАЗ'") >= 0) FiltMaster.common_filters.Remove("setups.name = 'АТЛАЗ'");
+            if (FiltMaster.common_filters.IndexOf("setups.name = 'ПАЗЛ'") >= 0) FiltMaster.common_filters.Remove("setups.name = 'ПАЗЛ'");
+            if (FiltMaster.common_filters.IndexOf("setups.name = 'ЛАЗТ'") >= 0) FiltMaster.common_filters.Remove("setups.name = 'ЛАЗТ'");
+            FiltMaster.SaveFilters(@"\Settings\\ResearchesFilters.json");
             Save_settings_res();
+            GC.Collect();
             e.Cancel = true;
-            //MessageBox.Show("Нельзя просто закрыть окно. \n Надо решить задание. \n Если правильно решишь, то больше будешь играть.");
-            //else e.Cancel = false;
             Hide();
-            //GC.Collect();
         }
         private int Get_id_research(string where, string index)
         {
             int ans = -1;
-            //int index = -1;
             string col_name = "";
             string col_name_2 = "";
             switch (where)
@@ -677,7 +771,6 @@ namespace RSB
                     {
                         conn.Open();
                         string sql_comand = "SELECT researches." + col_name + " FROM test2base.researches WHERE " + col_name_2 + "=" + index; //второй сол_наме должен быть id_specimen
-                        //MessageBox.Show(sql_comand);
                         using (MySqlCommand comand = new MySqlCommand(sql_comand, conn))
                         {
                             using (MySqlDataReader reader = comand.ExecuteReader())
@@ -711,7 +804,6 @@ namespace RSB
             //если есть образец этого исследования - переход в окно образцов
             if (datagrid_researches.CurrentRow.Cells[0].Value != null && datagrid_researches.CurrentRow.Cells[0].Value.ToString()!="tech")
             {
-                //MessageBox.Show("показываем форму образцов");
                 string index = datagrid_researches.CurrentRow.Cells[0].Value.ToString();
                 Properties.Settings.Default.main_res_id = Convert.ToInt32(index);
                 Properties.Settings.Default.Save();
@@ -722,8 +814,6 @@ namespace RSB
 
         private void Researches_Activated(object sender, EventArgs e)
         {
-            //Select_index();
-            //MessageBox.Show("Байда активированна");
             if (Properties.Settings.Default.main_res_id!=-1 && !on_load)
             {
                 //MessageBox.Show("нужно показать образец");
@@ -772,6 +862,11 @@ namespace RSB
                 MessageBox.Show("Bad parameters");
             }
         }
+        /// <summary>
+        /// формирвоание отчета
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Btn_report_create_Click(object sender, EventArgs e)
         {
             //создаем отчеты
@@ -903,11 +998,9 @@ namespace RSB
             //смена шрифта диалог и зменю
             if (fontDial_resech.ShowDialog() == DialogResult.OK)
             {
-                //textBox1.Font = fontDialog1.Font;
-                //textBox1.ForeColor = fontDialog1.Color;
                 try
                 {
-                    this.Font = new Font(fontDial_resech.Font, this.Font.Style);
+                    this.Font = new System.Drawing.Font(fontDial_resech.Font, this.Font.Style);
                 }
                 catch (Exception ex)
                 {
@@ -1161,7 +1254,11 @@ namespace RSB
             Properties.Settings.Default.show_techinfo = chbox_show_serv.Checked;
             Properties.Settings.Default.Save();
         }
-
+        /// <summary>
+        /// статистика
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Btn_stat_show_Click(object sender, EventArgs e)
         {
             //посчитать статистику по выбранным исследованиям
@@ -1351,13 +1448,17 @@ namespace RSB
                     if (str!=combox_setup_filter.Text)
                     {
                         serv_data_filters.Remove("setups.name = '" + str + "'");
-                        data_filters.Remove("setups.name = '" + str + "'");
+                        //data_filters.Remove("setups.name = '" + str + "'");
                     }
-                    //MessageBox.Show(str);
                 }
-                data_filters.Add("setups.name = '" + combox_setup_filter.Text + "'");
                 serv_data_filters.Add("setups.name = '" + combox_setup_filter.Text + "'");
-                //data_filters.Remove("setups.name <> '" + ch_listbox_success.Items[e.Index].ToString() + "'");                                           
+                if (FiltMaster.common_filters.IndexOf("setups.name = 'АТЛАЗ'") >=0) FiltMaster.common_filters.Remove("setups.name = 'АТЛАЗ'");
+                if (FiltMaster.common_filters.IndexOf("setups.name = 'ПАЗЛ'") >= 0) FiltMaster.common_filters.Remove("setups.name = 'ПАЗЛ'");
+                if (FiltMaster.common_filters.IndexOf("setups.name = 'ЛАЗТ'") >= 0) FiltMaster.common_filters.Remove("setups.name = 'ЛАЗТ'");
+                if (combox_setup_filter.Text != "All")
+                {
+                    FiltMaster.common_filters.Add("setups.name = '" + combox_setup_filter.Text + "'");
+                }
                 Refresh_data_researches();
             }
         }

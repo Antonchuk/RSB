@@ -34,6 +34,9 @@ namespace RSB
         private bool pic_change = true; //true - up, false - down
         private int show_only_spec;
         private DiscordSocketClient _client;
+        /// <summary>
+        /// класс для хранения фильтров
+        /// </summary>
         public class Filtres_master
         {
             public List<string> common_filters;// = new List<string>();
@@ -759,11 +762,18 @@ namespace RSB
                 //заполняем остальные поля                
                 if (dataGrid_specimens.Rows[index].Cells[0].Value != null)
                 {
-                    //treatment
+
+                    
                     int i = Convert.ToInt32(dataGrid_specimens.Rows[index].Cells[0].Value);
-                    txtbox_treat_inf.Text = Fill_info_text_sql(i, conn, "treatment", "Name", "id_treatment", "id_treatment");
                     //response
                     txtbox_respon_inf.Text = Fill_info_text_sql(i, conn, "producers", "surname", "id_producer", "id_respon");
+                    //treatment
+                    //txtbox_treat_inf.Text = Fill_info_text_sql(i, conn, "treatment", "Name", "id_treatment", "id_treatment");
+                    Fill_clever_combo(comboxTreatInfo, txtbox_respon_inf.Text,
+                "SELECT DISTINCT treatment.name FROM test2base.treatment ORDER BY treatment.name ASC;",
+                "SELECT DISTINCT treatment.name FROM test2base.materialstate LEFT OUTER JOIN test2base.treatment ON treatment.id_treatment = materialstate.id_treatment " +
+                "WHERE (materialstate.id_project = (SELECT id_project FROM test2base.projects WHERE projects.name = '", ch_box_all_treats, txtbox_project_inf.Text); 
+                    comboxTreatInfo.Text = Fill_info_text_sql(i, conn, "treatment", "Name", "id_treatment", "id_treatment");
                     //fill composition
                     txt_composition.Text = Fill_info_text_sql(i, conn, "materials", "composition", "id_material", "id_material");
                     //storage position
@@ -772,8 +782,6 @@ namespace RSB
                     Fill_info_foto(i, conn, "specimens", "comments");
                     //установки
                     Fill_list_box(i, conn, ch_listbox_setup_inf);
-                    //Fill_list_box(i, conn, ch_listbox_setup_inf);
-
                     //foto
                     //удалить картинки "before" и "after"
                     Clear_pics_info(1);
@@ -3077,7 +3085,7 @@ namespace RSB
                 {
                     try
                     {
-                        new_treatment = Check_for_exist(txtbox_treat_inf.Text, conn, "treatment", "id_treatment", "name");
+                        new_treatment = Check_for_exist(comboxTreatInfo.Text, conn, "treatment", "id_treatment", "name");
                     }
                     catch (Exception ex)
                     {
@@ -3095,9 +3103,8 @@ namespace RSB
                     }
                     conn.Close();
                 }
-
                 //лог действия
-                Log_action(Properties.Settings.Default.default_username, "change treatment", Properties.Settings.Default.old_treatment, txtbox_treat_inf.Text, dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[0].Value.ToString());
+                Log_action(Properties.Settings.Default.default_username, "change treatment", Properties.Settings.Default.old_treatment, comboxTreatInfo.Text, dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[0].Value.ToString());
             }
             else
             {
@@ -3113,12 +3120,12 @@ namespace RSB
             //Properties.Settings.Default.Save();
         }
 
-        private void txtbox_treat_inf_Enter(object sender, EventArgs e)
+        /*private void txtbox_treat_inf_Enter(object sender, EventArgs e)
         {
             //MessageBox.Show("кто-то пытается удалить важнейшую информацию");
-            Properties.Settings.Default.old_treatment = txtbox_treat_inf.Text;
+            Properties.Settings.Default.old_treatment = comboxTreatInfo.Text;
             Properties.Settings.Default.Save();
-        }
+        }*/
 
         private void btn_test_telegrambot_Click(object sender, EventArgs e)
         {
@@ -3331,6 +3338,10 @@ namespace RSB
             }
             return ans;
         }
+        /// <summary>
+        /// загрузка фильтров и проставление галочек в чекбокс в ГУИ
+        /// </summary>
+        /// <param name="name"></param>
         private void Load_def_json(string name)
         {
             //процедура грузит из json фильтры с обновлением
@@ -3339,14 +3350,7 @@ namespace RSB
                 string json_path = Directory.GetCurrentDirectory() + name;
                 if (File.Exists(json_path))
                 {
-                    //filt_master = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(json_path));
                     filt_master = JsonConvert.DeserializeObject<Filtres_master>(File.ReadAllText(json_path));
-                    /*if (filt_master.is_special_filter == true)
-                    {
-                        btn_sql_filter_special.BackColor = Color.Green;
-                        richTextBox_special_filt.Text = filt_master.special_filter;
-                    }
-                    else btn_sql_filter_special.BackColor = Color.Red;*/
                     isrefreshing = false;
                     on_load = true;
                     Reverse_ch_boxes_filtres();
@@ -3551,22 +3555,22 @@ namespace RSB
                 switch (id)
                 {
                     case 1:
-                        filt_master.special_filter = " WHERE ((storage.name = 'ПАЗЛ') OR (storage.name = 'ПАЗЛ Кассета')) ORDER BY idspecimens DESC";
+                        filt_master.special_filter = " WHERE ((storage.name = 'ПАЗЛ') OR (storage.name = 'ПАЗЛ Кассета'))";
                         break;
                     case 2:
                         filt_master.special_filter = " WHERE ((storage.name = 'ЛАЗТ') OR (storage.name = 'ЛАЗТ Загрузка') " +
-                            "OR (storage.name = 'ЛАЗТ Барабан')) ORDER BY idspecimens DESC";
+                            "OR (storage.name = 'ЛАЗТ Барабан'))";
                         break;
                     case 3:
                         filt_master.special_filter = " WHERE ((storage.name = 'АТЛАЗ') OR (storage.name = 'АТЛАЗ Загрузка') " +
-                            "OR (storage.name = 'АТЛАЗ Барабан'))  ORDER BY idspecimens DESC";
+                            "OR (storage.name = 'АТЛАЗ Барабан'))";
                         break;
                 }
             }            
             else
             {
                 filt_master.special_filter = " WHERE (id_setup = " + id.ToString() + ") " +
-                "AND (state.name = 'Ready for APT')";
+                "AND (state.name = 'Ready for APT') ORDER BY specimens.priority DESC";
             }
             Refresh_datagrid();
         }
@@ -3963,7 +3967,15 @@ namespace RSB
             box.Text = "";
             box.Items.AddRange(SQL_List_querry(sql).ToArray());
         }
-        private void Fill_clever_combo(ComboBox box, string response, string sql_first, string sql_next, CheckBox ch_box)
+        /// <summary>
+        /// ch_box=true - выбор всех элементов (запрос sql_first) иначе sql_next
+        /// </summary>
+        /// <param name="box"></param>
+        /// <param name="response"></param>
+        /// <param name="sql_first"></param>
+        /// <param name="sql_next"></param>
+        /// <param name="ch_box"></param>
+        private void Fill_clever_combo(ComboBox box, string response, string sql_first, string sql_next, CheckBox ch_box, string ProjectName)
         {
             string _sql_material;
             if (Check_access_project(response, Properties.Settings.Default.default_username) && ch_box.Checked)
@@ -3976,7 +3988,7 @@ namespace RSB
                 /*_sql_material = "SELECT DISTINCT materials.name FROM test2base.materialstate " +
                 "LEFT OUTER JOIN test2base.materials ON materials.id_material = materialstate.id_material " +
                 "WHERE (materialstate.id_project = (SELECT id_project FROM test2base.projects WHERE projects.name = '" + combox_project.Text + "'));";*/
-                _sql_material = sql_next + combox_project.Text + "'));";
+                _sql_material = sql_next + ProjectName + "'));";
             }
             Fill_combox_pr_filt(box, _sql_material);
         }
@@ -3989,10 +4001,12 @@ namespace RSB
             //грузим материалы только для данного проекта или если вы выладелец проекта - то все доступные
             Fill_clever_combo(combox_material, combox_response.Text, 
                 "SELECT DISTINCT materials.name FROM test2base.materials ORDER BY materials.name ASC;",
-                "SELECT DISTINCT materials.name FROM test2base.materialstate LEFT OUTER JOIN test2base.materials ON materials.id_material = materialstate.id_material WHERE (materialstate.id_project = (SELECT id_project FROM test2base.projects WHERE projects.name = '", ch_box_all_materials);
+                "SELECT DISTINCT materials.name FROM test2base.materialstate LEFT OUTER JOIN test2base.materials ON materials.id_material = materialstate.id_material " +
+                "WHERE (materialstate.id_project = (SELECT id_project FROM test2base.projects WHERE projects.name = '", ch_box_all_materials, combox_project.Text);
             Fill_clever_combo(combox_treatment, combox_response.Text,
                 "SELECT DISTINCT treatment.name FROM test2base.treatment ORDER BY treatment.name ASC;",
-                "SELECT DISTINCT treatment.name FROM test2base.materialstate LEFT OUTER JOIN test2base.treatment ON treatment.id_treatment = materialstate.id_treatment WHERE (materialstate.id_project = (SELECT id_project FROM test2base.projects WHERE projects.name = '", ch_box_all_treats);
+                "SELECT DISTINCT treatment.name FROM test2base.materialstate LEFT OUTER JOIN test2base.treatment ON treatment.id_treatment = materialstate.id_treatment " +
+                "WHERE (materialstate.id_project = (SELECT id_project FROM test2base.projects WHERE projects.name = '", ch_box_all_treats, combox_project.Text);
 
             /*string sql_treat;            
             
@@ -4056,7 +4070,8 @@ namespace RSB
             combox_material.Items.Clear();
             Fill_clever_combo(combox_material, combox_response.Text,
                 "SELECT DISTINCT materials.name FROM test2base.materials ORDER BY materials.name ASC;",
-                "SELECT DISTINCT materials.name FROM test2base.materialstate LEFT OUTER JOIN test2base.materials ON materials.id_material = materialstate.id_material WHERE (materialstate.id_project = (SELECT id_project FROM test2base.projects WHERE projects.name = '", ch_box_all_materials);
+                "SELECT DISTINCT materials.name FROM test2base.materialstate LEFT OUTER JOIN test2base.materials ON materials.id_material = materialstate.id_material " +
+                "WHERE (materialstate.id_project = (SELECT id_project FROM test2base.projects WHERE projects.name = '", ch_box_all_materials, combox_project.Text);
         }
 
         private void ch_box_all_treats_CheckedChanged(object sender, EventArgs e)
@@ -4064,7 +4079,17 @@ namespace RSB
             combox_treatment.Items.Clear();
             Fill_clever_combo(combox_treatment, combox_response.Text,
                 "SELECT DISTINCT treatment.name FROM test2base.treatment ORDER BY treatment.name ASC;",
-                "SELECT DISTINCT treatment.name FROM test2base.materialstate LEFT OUTER JOIN test2base.treatment ON treatment.id_treatment = materialstate.id_treatment WHERE (materialstate.id_project = (SELECT id_project FROM test2base.projects WHERE projects.name = '", ch_box_all_treats);
+                "SELECT DISTINCT treatment.name FROM test2base.materialstate LEFT OUTER JOIN test2base.treatment ON treatment.id_treatment = materialstate.id_treatment " +
+                "WHERE (materialstate.id_project = (SELECT id_project FROM test2base.projects WHERE projects.name = '", ch_box_all_treats, combox_project.Text);
+        }
+
+        private void comboxTreatInfo_KeyUp(object sender, KeyEventArgs e)
+        {
+            //проверяем имеете ли вы право создавать новые обработки
+            if (!Check_access_project(txtbox_respon_inf.Text, Properties.Settings.Default.default_username))
+            {
+                comboxTreatInfo.Text = "";
+            }
         }
     }
 }

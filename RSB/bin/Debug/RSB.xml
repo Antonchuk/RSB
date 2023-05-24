@@ -235,6 +235,33 @@
             </summary>
             <param name="parent"></param>
         </member>
+        <member name="M:RSB.Researches.Fill_chbox_true(System.Windows.Forms.CheckedListBox)">
+            <summary>
+            
+            </summary>
+            <param name="ch_box"></param>
+        </member>
+        <member name="M:RSB.Researches.Fill_chbox(System.Windows.Forms.CheckedListBox,System.String)">
+            <summary>
+            убираем галки там, где они не должны быть
+            </summary>
+            <param name="ch_box"></param>
+            <param name="ch_box_filter"></param>
+        </member>
+        <member name="M:RSB.Researches.Btn_report_create_Click(System.Object,System.EventArgs)">
+            <summary>
+            формирвоание отчета
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:RSB.Researches.Btn_stat_show_Click(System.Object,System.EventArgs)">
+            <summary>
+            статистика
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
         <member name="F:RSB.Researches.components">
             <summary>
             Required designer variable.
@@ -332,6 +359,11 @@
             the contents of this method with the code editor.
             </summary>
         </member>
+        <member name="T:RSB.Form_specimens.Filtres_master">
+            <summary>
+            класс для хранения фильтров
+            </summary>
+        </member>
         <member name="M:RSB.Form_specimens.Clear_pics_info(System.Int32)">
             <summary>
             удаляет картинки  1 - before, 2 - after
@@ -413,6 +445,12 @@
             </summary>
             <param name="sqlreq"></param>
             <param name="data"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.Load_def_json(System.String)">
+            <summary>
+            загрузка фильтров и проставление галочек в чекбокс в ГУИ
+            </summary>
+            <param name="name"></param>
         </member>
         <member name="M:RSB.Form_specimens.Simple_SQL_req(System.String)">
             <summary>
@@ -563,6 +601,16 @@
             </summary>
             <param name="sender"></param>
             <param name="e"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.Fill_clever_combo(System.Windows.Forms.ComboBox,System.String,System.String,System.String,System.Windows.Forms.CheckBox,System.String)">
+            <summary>
+            ch_box=true - выбор всех элементов (запрос sql_first) иначе sql_next
+            </summary>
+            <param name="box"></param>
+            <param name="response"></param>
+            <param name="sql_first"></param>
+            <param name="sql_next"></param>
+            <param name="ch_box"></param>
         </member>
         <member name="M:RSB.Form_specimens.Check_access_project(System.String,System.String)">
             <summary>

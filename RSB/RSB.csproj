@@ -324,7 +324,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="RSB_1_TemporaryKey.pfx" />
-    <None Include="RSB_2_TemporaryKey.pfx" />
     <None Include="RSB_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

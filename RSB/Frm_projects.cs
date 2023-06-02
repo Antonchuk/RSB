@@ -255,7 +255,7 @@ namespace RSB
                     "LEFT OUTER JOIN test2base.materialstate ON materialstate_state.id_materialstate = materialstate.id_materialstate " +
                     "LEFT OUTER JOIN test2base.treatment ON materialstate.id_treatment = treatment.id_treatment " +
                     "LEFT OUTER JOIN test2base.materials ON materialstate.id_material = materials.id_material " +
-                    "WHERE (materials.name = '"+ dt.Rows[i].ItemArray[0] + "')  AND(treatment.name = '"+ dt.Rows[i].ItemArray[1] + "'); ");
+                    "WHERE (materials.name = '"+ dt.Rows[i].ItemArray[0] + "')  AND (treatment.name = '"+ dt.Rows[i].ItemArray[1] + "'); ");
                 if (str.Count>0)
                 {
                     ans.Add(str[0]);
@@ -1297,7 +1297,7 @@ namespace RSB
                 "AND (materials.name = '" + Mat_sel + "') AND (treatment.name = '" + Treat_sel + "') " +
                 "AND ((dataminig.id_status = '15') OR ((dataminig.id_status = '14')));") ;*/
             //выбрать исследование, показать макс 
-            List<string> temp = SQL_str_request("SELECT dataminig.id_dataminig FROM test2base.dataminig");
+            //List<string> temp = SQL_str_request("SELECT dataminig.id_dataminig FROM test2base.dataminig");
             return _ans;
         }
         private void tabcontrol_projects_main_SelectedIndexChanged(object sender, EventArgs e)
@@ -1319,6 +1319,7 @@ namespace RSB
                     lbl_State_caption.Text = "";
                     dataGridView_specimens.DataSource = null;
                 }
+                //if (tabcontrol_projects_main.SelectedTab.Text == "Specimens")
             }
             catch (Exception ex)
             {
@@ -1460,6 +1461,17 @@ namespace RSB
             else
             {
                 MessageBox.Show("Only project master could look into files");
+            }
+        }
+
+        private void txtbox_info_name_KeyUp(object sender, KeyEventArgs e)
+        {
+            //ограничение макс размера
+            if (txtbox_info_name.Text.Length>20)
+            {
+                MessageBox.Show("НЕ больше 20 символов");
+                txtbox_info_name.Text = txtbox_info_name.Text.Remove(txtbox_info_name.Text.Length - 1, 1);
+                e.Handled = false;                
             }
         }
     }

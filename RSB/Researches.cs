@@ -537,7 +537,7 @@ namespace RSB
                             case "researches.success":
                                 Fill_chbox(ch_listbox_success, ch_box_filter);
                                 break;
-                            case "project.name":
+                            case "projects.name":
                                 Fill_chbox(ch_listbox_projects, ch_box_filter);
                                 break;                            
                         }
@@ -650,18 +650,24 @@ namespace RSB
 
         private void btn_select_all_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_type.Items.Count; i++)
             {
                 ch_listbox_type.SetItemChecked(i, true);
             }
+            isrefreshing = true;
+            Refresh_data_researches();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            isrefreshing = false;
             for (int i = 0; i < ch_listbox_projects.Items.Count; i++)
             {
                 ch_listbox_projects.SetItemChecked(i, true);
             }
+            isrefreshing = true;
+            Refresh_data_researches();
         }
 
         private void btn_clear_succ_Click(object sender, EventArgs e)

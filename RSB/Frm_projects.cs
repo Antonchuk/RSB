@@ -12,6 +12,7 @@ using MySql.Data;
 using System.IO;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Diagnostics;
+using Microsoft.Office.Interop.Word;
 
 namespace RSB
 {
@@ -26,10 +27,11 @@ namespace RSB
         private bool on_load = false;
         private static int id_project = -1;
         private List<string> filters_APT = new List<string>();
-        private DataTable dt_grid = new DataTable();
+        private System.Data.DataTable dt_grid = new System.Data.DataTable();
         private static int selected_id = 0;
         private static bool first_draw = true;
         private static readonly Random rand = new Random();
+        private static bool is_FilterCheked = true;
         /// <summary>
         /// конструктор формы проекта
         /// </summary>
@@ -85,9 +87,7 @@ namespace RSB
                         using (MySqlCommand comand = new MySqlCommand(request, conn))
                         {
                             using (MySqlDataReader reader = comand.ExecuteReader())
-                            {
-                                
-                                //ans.Add("");
+                            {                             
                                 while (reader.Read())
                                 {                                    
                                     ans.Add(reader[0].ToString());
@@ -146,7 +146,7 @@ namespace RSB
             listbox_stages.Items.Clear();
             listbox_stages.Items.AddRange(SQL_str_request("SELECT stages.name FROM test2base.stages WHERE (id_project = " + id_project.ToString() + ")").ToArray());
         }
-        private List<string> Form_list_forGrid(DataTable dt, string querry_part1, string querry_part2)
+        private List<string> Form_list_forGrid(System.Data.DataTable dt, string querry_part1, string querry_part2)
         {
             List<string> ans = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -219,7 +219,7 @@ namespace RSB
         /// </summary>
         /// <param name="dt">таблица данных состояний со столбцами _материал, _обработка</param>
         /// <returns></returns>
-        private List<double> Count_atoms(DataTable dt)
+        private List<double> Count_atoms(System.Data.DataTable dt)
         {
             List<double> ans = new List<double>();
             //для каждого состояния
@@ -245,7 +245,7 @@ namespace RSB
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
-        private List<string> Get_statuses(DataTable dt)
+        private List<string> Get_statuses(System.Data.DataTable dt)
         {
             List<string> ans = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -272,7 +272,7 @@ namespace RSB
         /// </summary>
         /// <param name="dt">талица с состояниями |материал|обработка| DataTable</param>
         /// <returns></returns>
-        private List<int> Specs_in_queue(DataTable dt)
+        private List<int> Specs_in_queue(System.Data.DataTable dt)
         {
             List<int> ans = new List<int>();
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -312,9 +312,9 @@ namespace RSB
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
-        private DataTable Add_colomns(DataTable dt)
+        private System.Data.DataTable Add_colomns(System.Data.DataTable dt)
         {
-            var n_dt = new DataTable();
+            var n_dt = new System.Data.DataTable();
             var state = new DataColumn("Material");
             var treat = new DataColumn("Treatment");
             n_dt.Columns.Add(state);
@@ -334,7 +334,7 @@ namespace RSB
             List<string> col = Form_list_forGrid(dt, "SELECT count(*) " +
                     "FROM test2base.specimens " +
                     "LEFT OUTER JOIN test2base.materials ON test2base.specimens.id_material = test2base.materials.id_material " +
-                    "LEFT OUTER JOIN test2base.treatment ON specimens.id_treatment = treatment.id_treatment ","");
+                    "LEFT OUTER JOIN test2base.treatment ON specimens.id_treatment = treatment.id_treatment "," AND (specimens.id_state <> '7')");
             //формируем второй доп.столбец (успешных)
             List<string> suc = Form_list_forGrid(dt, "SELECT count(*) " +
                     "FROM test2base.specimens " +
@@ -363,9 +363,9 @@ namespace RSB
         /// </summary>
         /// <param name="select_table"></param>
         /// <returns></returns>
-        private DataTable GetTableFromSQL(string select_table)
+        private System.Data.DataTable GetTableFromSQL(string select_table)
         {
-            DataTable dt = new DataTable();
+            System.Data.DataTable dt = new System.Data.DataTable();
             using (MySqlConnection cc = new MySqlConnection(conn_str))
             {
                 try
@@ -384,7 +384,7 @@ namespace RSB
             }
             return dt;
         }
-        private DataTable GetAPTdata(string selectcommand)
+        private System.Data.DataTable GetAPTdata(string selectcommand)
         {
             DataSet ds = new DataSet();
             //получаем талблицу с сырыми данными
@@ -425,9 +425,11 @@ namespace RSB
             if (splitContainer_infor_2.SplitterDistance<=splitContainer_infor_2.Height/5*4)
             {
                 splitContainer_infor_2.SplitterDistance = splitContainer_infor_2.Height*4 / 5;
-            }            
+            }
+            splitContainer_APT_table.SplitterDistance = Convert.ToInt32(this.Width * 0.60);
             lbl_progressbar_left.Text = "Now\n(remain specimens)";
             lbl_progressbar_end.Text = "End of project\n(remain days in project)";
+            ch_list_box_filters.SetItemChecked(0, true);
             //грузим дефотные настройки в вкладку info
             Refresh_project_maintab();            
             //списоки в combox            
@@ -505,6 +507,10 @@ namespace RSB
                 on_load = false;
             }
             combox_stages.Text = "";
+
+            //test
+            FillSpecInfo();
+            //test
         }
         /// <summary>
         /// команда SQL без ответа
@@ -1273,53 +1279,114 @@ namespace RSB
             //анти сови-продюсер
             combox_pr_new_resp.Text = "";
         }
-        private DataTable Fill_dt_specs(string Mat_sel, string Treat_sel)
+        private string GetYesNoDataminig(string _ID, string _treat, string _mat, string _state)
         {
-            DataTable _ans = new DataTable();
-            //dt_specs.Columns.Add()
+            string _MassRec = SQL_str_request("SELECT distinct researches.id_research " +
+                " FROM test2base.researches " +
+                " LEFT OUTER JOIN test2base.specimens ON researches.id_specimen = specimens.idspecimens " +
+                " LEFT OUTER JOIN test2base.projects ON projects.id_project = specimens.id_project " +
+                " LEFT OUTER JOIN test2base.materials ON materials.id_material = specimens.id_material " +
+                " LEFT OUTER JOIN test2base.treatment ON treatment.id_treatment = specimens.id_treatment " +
+                " LEFT OUTER JOIN test2base.dataminig ON dataminig.id_research = researches.id_research " +
+                " LEFT OUTER JOIN test2base.state ON state.id_state = dataminig.id_status " +
+                " WHERE (specimens.id_project = '" + id_project.ToString() + "') AND  (treatment.name = '" + _treat + "') AND (materials.name = '" + _mat + "') " +
+                " AND ("+_state+") AND (researches.id_research = '" + _ID + "');")[0];
+            if (_MassRec == "")
+            {
+                //_MassRec = "no";
+            }
+            else
+            {
+                _MassRec = "yes";
+            }
+
+
+            return _MassRec;
+        }
+        private System.Data.DataTable Fill_dt_specs(string Mat_sel, string Treat_sel)
+        {
+            System.Data.DataTable _ans = new System.Data.DataTable();
+            string _filter = "";
             //номер исследования, оценка после обработки, объем (лучше в атомах, но нужно в нм), Число кластеров, Плотность объектов, Тип кластеров, Статус обработки
-            /*_ans.Columns.Add("IDres", Type.GetType("System.Int32"));
-            _ans.Columns.Add("Grade", Type.GetType("System.String"));
-            _ans.Columns.Add("Volume nm^3", Type.GetType("System.Double"));
-            _ans.Columns.Add("Feature count", Type.GetType("System.Int32"));
-            _ans.Columns.Add("Feature density nm^-3", Type.GetType("System.Double"));
-            _ans.Columns.Add("Feature type-composition", Type.GetType("System.String"));
-            //_ans.Columns.Add("Datamining status", Type.GetType("System.String"));
-*/
-            /*_ans = GetTableFromSQL("SELECT researches.id_research, dataminig.id_grade, dataminig.volume, dataminig.feature_count, dataminig.feature_density, dataminig.feature_type " +
-                "FROM test2base.researches " +
-                "LEFT OUTER JOIN test2base.dataminig ON dataminig.id_research = researches.id_research " +
-                "LEFT OUTER JOIN test2base.state ON state.id_state = dataminig.id_status " +
-                "LEFT OUTER JOIN test2base.specimens ON researches.id_specimen = specimens.idspecimens " +
-                "LEFT OUTER JOIN test2base.materials ON specimens.id_material = materials.id_material " +
-                "LEFT OUTER JOIN test2base.treatment ON specimens.id_treatment = treatment.id_treatment " +
-                "WHERE (specimens.id_project =  " + id_project.ToString() + ") " +
-                "AND (materials.name = '" + Mat_sel + "') AND (treatment.name = '" + Treat_sel + "') " +
-                "AND ((dataminig.id_status = '15') OR ((dataminig.id_status = '14')));") ;*/
-            //выбрать исследование, показать макс 
-            //List<string> temp = SQL_str_request("SELECT dataminig.id_dataminig FROM test2base.dataminig");
+            _ans.Columns.Add("IDres");
+            _ans.Columns.Add("Mass-rec.");
+            _ans.Columns.Add("3D-rec.");
+            _ans.Columns.Add("Converted");
+            _ans.Columns.Add("Voxels");
+            _ans.Columns.Add("Clusters");
+            _ans.Columns.Add("Positioning");
+            //получить список ИД образцов
+            if (is_FilterCheked)
+            {
+                _filter = " AND (researches.success = '+')";
+            }
+            List<string> _SpecsID = SQL_str_request("SELECT distinct researches.id_research " +
+                " FROM test2base.researches " +
+                " LEFT OUTER JOIN test2base.specimens ON researches.id_specimen = specimens.idspecimens " +
+                " LEFT OUTER JOIN test2base.projects ON projects.id_project = specimens.id_project " +
+                " LEFT OUTER JOIN test2base.materials ON materials.id_material = specimens.id_material " +
+                " LEFT OUTER JOIN test2base.treatment ON treatment.id_treatment = specimens.id_treatment " +
+                " LEFT OUTER JOIN test2base.dataminig ON dataminig.id_research = researches.id_research " +
+                " LEFT OUTER JOIN test2base.state ON state.id_state = dataminig.id_status " +
+                " WHERE  (specimens.id_project = '"+ id_project.ToString() + "') AND  (treatment.name = '"+Treat_sel+"') AND (materials.name = '"+Mat_sel+"') "+_filter+";");
+            foreach (string _IDOneSpec in  _SpecsID) 
+            {
+                _ans.Rows.Add(_IDOneSpec, GetYesNoDataminig(_IDOneSpec,Treat_sel,Mat_sel, "state.name = 'raw mass-spector mining'"), 
+                    GetYesNoDataminig(_IDOneSpec, Treat_sel, Mat_sel, "(state.name = 'raw 3d mining') OR (state.name = 'raw approved')"),
+                    GetYesNoDataminig(_IDOneSpec, Treat_sel, Mat_sel, "dataminig.comments = 'Pos conversion'"),
+                    GetYesNoDataminig(_IDOneSpec, Treat_sel, Mat_sel, "deloc_param >0"), "",SQL_str_request("SELECT CONCAT(storage.name, ' ' ,storage_position.position)  " +
+                    "FROM test2base.storage_position " +
+                    "LEFT OUTER JOIN test2base.storage ON storage.id_storage = storage_position.id_storage" +
+                    " WHERE (id_specimen = (SELECT id_specimen FROM test2base.researches WHERE (id_research = '"+ _IDOneSpec + "')));")[0]);
+            }
             return _ans;
+        }
+        private void PaintGrid(DataGridView _tb)
+        {
+            if (_tb != null && _tb.RowCount > 0)
+            {
+                for (int i = 0; i < _tb.RowCount; i++)
+                {
+                    for (int j=1;j< _tb.Rows[i].Cells.Count-2;j++)
+                    {
+                        if (_tb.Rows[i].Cells[j].Value.ToString() == "yes")
+                        {
+                            _tb.Rows[i].Cells[j].Style.BackColor = Color.LightGreen;
+                        }
+                        else
+                        {
+                            _tb.Rows[i].Cells[j].Style.BackColor = Color.Salmon;
+                        }
+                    }
+                }
+            }
+        }
+        private void FillSpecInfo()
+        {
+            if (dataGridView1_APT_data.Rows.Count > 0 && dataGridView1_APT_data.SelectedRows.Count > 0)
+            {
+                //в Лабел выводим название состояния
+                string material = dataGridView1_APT_data.Rows[dataGridView1_APT_data.SelectedRows[0].Index].Cells[0].Value.ToString();
+                string treatment = dataGridView1_APT_data.Rows[dataGridView1_APT_data.SelectedRows[0].Index].Cells[1].Value.ToString();
+                lbl_State_caption.Text = material + treatment;
+                System.Data.DataTable dt_specs = Fill_dt_specs(material, treatment);
+                dataGridView_specimens.DataSource = dt_specs;
+                //раскраска?
+                PaintGrid(dataGridView_specimens);
+            }
+            else
+            {
+                lbl_State_caption.Text = "";
+                dataGridView_specimens.DataSource = null;
+            }
+            
         }
         private void tabcontrol_projects_main_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
                 //если это вкладка Specimens, то обновляем данные по образцам
-                if (tabcontrol_projects_main.SelectedTab.Text == "Specimens" && dataGridView1_APT_data.Rows.Count > 0 && dataGridView1_APT_data.SelectedRows.Count > 0)
-                {
-                    //в Лабел выводим название состояния
-                    string material = dataGridView1_APT_data.Rows[dataGridView1_APT_data.SelectedRows[0].Index].Cells[0].Value.ToString();
-                    string treatment = dataGridView1_APT_data.Rows[dataGridView1_APT_data.SelectedRows[0].Index].Cells[1].Value.ToString();
-                    lbl_State_caption.Text = material + treatment;
-                    DataTable dt_specs = Fill_dt_specs(material, treatment);
-                    dataGridView_specimens.DataSource = dt_specs;
-                }
-                else
-                {
-                    lbl_State_caption.Text = "";
-                    dataGridView_specimens.DataSource = null;
-                }
-                //if (tabcontrol_projects_main.SelectedTab.Text == "Specimens")
+                FillSpecInfo();
             }
             catch (Exception ex)
             {
@@ -1472,6 +1539,22 @@ namespace RSB
                 MessageBox.Show("НЕ больше 20 символов");
                 txtbox_info_name.Text = txtbox_info_name.Text.Remove(txtbox_info_name.Text.Length - 1, 1);
                 e.Handled = false;                
+            }
+        }
+
+        private void ch_list_box_filters_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (!on_load)
+            {
+                if (e.NewValue == CheckState.Checked && ch_list_box_filters.SelectedIndex == 0)
+                {
+                    is_FilterCheked = true;
+                }
+                else
+                {
+                    is_FilterCheked = false;
+                }
+                FillSpecInfo();
             }
         }
     }

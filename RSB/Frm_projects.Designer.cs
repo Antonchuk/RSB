@@ -111,14 +111,14 @@ namespace RSB
             this.lbl_sel_state_stage = new System.Windows.Forms.Label();
             this.lbl_ch_state_caption = new System.Windows.Forms.Label();
             this.btn_ch_stage = new System.Windows.Forms.Button();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this.ch_list_box_filters = new System.Windows.Forms.CheckedListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.SplitContainer_Specs = new System.Windows.Forms.SplitContainer();
-            this.dataGridView_specimens = new System.Windows.Forms.DataGridView();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.saveFileDialog_report = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog_report = new System.Windows.Forms.OpenFileDialog();
+            this.dataGridView_specimens = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.splitcontainer_projects_main)).BeginInit();
             this.splitcontainer_projects_main.Panel1.SuspendLayout();
             this.splitcontainer_projects_main.Panel2.SuspendLayout();
@@ -145,7 +145,6 @@ namespace RSB
             this.tableLayoutPanel1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer_Specs)).BeginInit();
-            this.SplitContainer_Specs.Panel1.SuspendLayout();
             this.SplitContainer_Specs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_specimens)).BeginInit();
             this.SuspendLayout();
@@ -286,7 +285,7 @@ namespace RSB
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 255F));
+            this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 257F));
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_start_date, 1, 4);
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_info_stages_num, 1, 3);
             this.tableLayoutPanel_project_info.Controls.Add(this.lbl_info_end_date, 0, 5);
@@ -1068,6 +1067,7 @@ namespace RSB
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 102F));
+            this.tableLayoutPanel1.Controls.Add(this.dataGridView_specimens, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.ch_listbox_project_stage, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.lbl_stages_list, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.combox_stages, 0, 3);
@@ -1076,16 +1076,18 @@ namespace RSB
             this.tableLayoutPanel1.Controls.Add(this.lbl_sel_state_stage, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.lbl_ch_state_caption, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.btn_ch_stage, 2, 3);
-            this.tableLayoutPanel1.Controls.Add(this.checkedListBox1, 1, 4);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(18, 22);
+            this.tableLayoutPanel1.Controls.Add(this.ch_list_box_filters, 1, 4);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 5;
+            this.tableLayoutPanel1.RowCount = 6;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 114F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 39F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 59F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(384, 457);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(408, 776);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // ch_listbox_project_stage
@@ -1095,7 +1097,7 @@ namespace RSB
             this.ch_listbox_project_stage.FormattingEnabled = true;
             this.ch_listbox_project_stage.Location = new System.Drawing.Point(3, 3);
             this.ch_listbox_project_stage.Name = "ch_listbox_project_stage";
-            this.ch_listbox_project_stage.Size = new System.Drawing.Size(135, 108);
+            this.ch_listbox_project_stage.Size = new System.Drawing.Size(147, 108);
             this.ch_listbox_project_stage.TabIndex = 0;
             this.ch_listbox_project_stage.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ch_listbox_project_stage_ItemCheck);
             // 
@@ -1103,9 +1105,9 @@ namespace RSB
             // 
             this.lbl_stages_list.AutoSize = true;
             this.lbl_stages_list.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_stages_list.Location = new System.Drawing.Point(144, 0);
+            this.lbl_stages_list.Location = new System.Drawing.Point(156, 0);
             this.lbl_stages_list.Name = "lbl_stages_list";
-            this.lbl_stages_list.Size = new System.Drawing.Size(135, 114);
+            this.lbl_stages_list.Size = new System.Drawing.Size(147, 114);
             this.lbl_stages_list.TabIndex = 1;
             this.lbl_stages_list.Text = "Stages List";
             this.lbl_stages_list.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1116,16 +1118,16 @@ namespace RSB
             this.combox_stages.FormattingEnabled = true;
             this.combox_stages.Location = new System.Drawing.Point(3, 192);
             this.combox_stages.Name = "combox_stages";
-            this.combox_stages.Size = new System.Drawing.Size(135, 30);
+            this.combox_stages.Size = new System.Drawing.Size(147, 30);
             this.combox_stages.TabIndex = 4;
             // 
             // lbl_ch_stage_new
             // 
             this.lbl_ch_stage_new.AutoSize = true;
             this.lbl_ch_stage_new.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_ch_stage_new.Location = new System.Drawing.Point(144, 189);
+            this.lbl_ch_stage_new.Location = new System.Drawing.Point(156, 189);
             this.lbl_ch_stage_new.Name = "lbl_ch_stage_new";
-            this.lbl_ch_stage_new.Size = new System.Drawing.Size(135, 59);
+            this.lbl_ch_stage_new.Size = new System.Drawing.Size(147, 59);
             this.lbl_ch_stage_new.TabIndex = 5;
             this.lbl_ch_stage_new.Text = "New Stage";
             this.lbl_ch_stage_new.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1135,16 +1137,16 @@ namespace RSB
             this.txtbox_sel_state_stage.Dock = System.Windows.Forms.DockStyle.Top;
             this.txtbox_sel_state_stage.Location = new System.Drawing.Point(3, 153);
             this.txtbox_sel_state_stage.Name = "txtbox_sel_state_stage";
-            this.txtbox_sel_state_stage.Size = new System.Drawing.Size(135, 30);
+            this.txtbox_sel_state_stage.Size = new System.Drawing.Size(147, 30);
             this.txtbox_sel_state_stage.TabIndex = 3;
             // 
             // lbl_sel_state_stage
             // 
             this.lbl_sel_state_stage.AutoSize = true;
             this.lbl_sel_state_stage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_sel_state_stage.Location = new System.Drawing.Point(144, 150);
+            this.lbl_sel_state_stage.Location = new System.Drawing.Point(156, 150);
             this.lbl_sel_state_stage.Name = "lbl_sel_state_stage";
-            this.lbl_sel_state_stage.Size = new System.Drawing.Size(135, 39);
+            this.lbl_sel_state_stage.Size = new System.Drawing.Size(147, 39);
             this.lbl_sel_state_stage.TabIndex = 2;
             this.lbl_sel_state_stage.Text = "Selected stage";
             this.lbl_sel_state_stage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1156,14 +1158,14 @@ namespace RSB
             this.lbl_ch_state_caption.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbl_ch_state_caption.Location = new System.Drawing.Point(3, 114);
             this.lbl_ch_state_caption.Name = "lbl_ch_state_caption";
-            this.lbl_ch_state_caption.Size = new System.Drawing.Size(378, 36);
+            this.lbl_ch_state_caption.Size = new System.Drawing.Size(402, 36);
             this.lbl_ch_state_caption.TabIndex = 6;
             this.lbl_ch_state_caption.Text = "Change stage for selected APT state";
             this.lbl_ch_state_caption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btn_ch_stage
             // 
-            this.btn_ch_stage.Location = new System.Drawing.Point(285, 192);
+            this.btn_ch_stage.Location = new System.Drawing.Point(309, 192);
             this.btn_ch_stage.Name = "btn_ch_stage";
             this.btn_ch_stage.Size = new System.Drawing.Size(96, 53);
             this.btn_ch_stage.TabIndex = 4;
@@ -1171,17 +1173,18 @@ namespace RSB
             this.btn_ch_stage.UseVisualStyleBackColor = true;
             this.btn_ch_stage.Click += new System.EventHandler(this.btn_ch_stage_Click);
             // 
-            // checkedListBox1
+            // ch_list_box_filters
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.checkedListBox1, 2);
-            this.checkedListBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Items.AddRange(new object[] {
-            "Show only prooved states"});
-            this.checkedListBox1.Location = new System.Drawing.Point(144, 251);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(237, 179);
-            this.checkedListBox1.TabIndex = 7;
+            this.tableLayoutPanel1.SetColumnSpan(this.ch_list_box_filters, 2);
+            this.ch_list_box_filters.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ch_list_box_filters.FormattingEnabled = true;
+            this.ch_list_box_filters.Items.AddRange(new object[] {
+            "Only success researches"});
+            this.ch_list_box_filters.Location = new System.Drawing.Point(156, 251);
+            this.ch_list_box_filters.Name = "ch_list_box_filters";
+            this.ch_list_box_filters.Size = new System.Drawing.Size(249, 54);
+            this.ch_list_box_filters.TabIndex = 7;
+            this.ch_list_box_filters.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ch_list_box_filters_ItemCheck);
             // 
             // tabPage2
             // 
@@ -1202,30 +1205,9 @@ namespace RSB
             this.SplitContainer_Specs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SplitContainer_Specs.Location = new System.Drawing.Point(5, 5);
             this.SplitContainer_Specs.Name = "SplitContainer_Specs";
-            // 
-            // SplitContainer_Specs.Panel1
-            // 
-            this.SplitContainer_Specs.Panel1.Controls.Add(this.dataGridView_specimens);
             this.SplitContainer_Specs.Size = new System.Drawing.Size(1498, 768);
             this.SplitContainer_Specs.SplitterDistance = 971;
             this.SplitContainer_Specs.TabIndex = 1;
-            // 
-            // dataGridView_specimens
-            // 
-            this.dataGridView_specimens.AllowUserToAddRows = false;
-            this.dataGridView_specimens.AllowUserToDeleteRows = false;
-            this.dataGridView_specimens.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dataGridView_specimens.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dataGridView_specimens.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_specimens.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView_specimens.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView_specimens.Margin = new System.Windows.Forms.Padding(0);
-            this.dataGridView_specimens.MultiSelect = false;
-            this.dataGridView_specimens.Name = "dataGridView_specimens";
-            this.dataGridView_specimens.ReadOnly = true;
-            this.dataGridView_specimens.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView_specimens.Size = new System.Drawing.Size(969, 766);
-            this.dataGridView_specimens.TabIndex = 0;
             // 
             // tabPage5
             // 
@@ -1249,6 +1231,24 @@ namespace RSB
             // saveFileDialog_report
             // 
             this.saveFileDialog_report.Title = "Choose your destiny!";
+            // 
+            // dataGridView_specimens
+            // 
+            this.dataGridView_specimens.AllowUserToAddRows = false;
+            this.dataGridView_specimens.AllowUserToDeleteRows = false;
+            this.dataGridView_specimens.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dataGridView_specimens.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridView_specimens.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tableLayoutPanel1.SetColumnSpan(this.dataGridView_specimens, 3);
+            this.dataGridView_specimens.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView_specimens.Location = new System.Drawing.Point(0, 318);
+            this.dataGridView_specimens.Margin = new System.Windows.Forms.Padding(0);
+            this.dataGridView_specimens.MultiSelect = false;
+            this.dataGridView_specimens.Name = "dataGridView_specimens";
+            this.dataGridView_specimens.ReadOnly = true;
+            this.dataGridView_specimens.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView_specimens.Size = new System.Drawing.Size(408, 458);
+            this.dataGridView_specimens.TabIndex = 8;
             // 
             // Frm_projects
             // 
@@ -1292,7 +1292,6 @@ namespace RSB
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
-            this.SplitContainer_Specs.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer_Specs)).EndInit();
             this.SplitContainer_Specs.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_specimens)).EndInit();
@@ -1375,11 +1374,10 @@ namespace RSB
         private System.Windows.Forms.TextBox txtbox_priority_add;
         private System.Windows.Forms.TextBox txtbox_specs_state_add;
         private System.Windows.Forms.Button btn_create_new_project;
-        private System.Windows.Forms.DataGridView dataGridView_specimens;
         private System.Windows.Forms.Label lbl_ch_state_caption;
         private System.Windows.Forms.SplitContainer SplitContainer_Specs;
         private System.Windows.Forms.Label lbl_State_caption;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
+        private System.Windows.Forms.CheckedListBox ch_list_box_filters;
         private System.Windows.Forms.Button btn_ch_prj_name;
         private System.Windows.Forms.TextBox txtbox_contacts_add;
         private System.Windows.Forms.Label lbl_contacts_add;
@@ -1391,5 +1389,6 @@ namespace RSB
         private System.Windows.Forms.Button btn_report_show;
         private System.Windows.Forms.SaveFileDialog saveFileDialog_report;
         private System.Windows.Forms.OpenFileDialog openFileDialog_report;
+        private System.Windows.Forms.DataGridView dataGridView_specimens;
     }
 }

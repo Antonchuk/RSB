@@ -13,6 +13,8 @@ using System.IO;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Diagnostics;
 using Microsoft.Office.Interop.Word;
+using ZedGraph;
+using Microsoft.Office.Interop.Excel;
 
 namespace RSB
 {
@@ -241,6 +243,33 @@ namespace RSB
             return ans;
         }
         /// <summary>
+        /// расчет числа атомов для состояния
+        /// </summary>
+        /// <param name="projectID"></param>
+        /// <param name="material"></param>
+        /// <param name="treatment"></param>
+        /// <returns></returns>
+        private List<double> Count_atoms(string material, string treatment)
+        {
+            List<double> ans = new List<double>();
+            List<string> data_dirs = SQL_str_request("SELECT researches.data_dir " +
+                   "FROM test2base.specimens " +
+                   "LEFT OUTER JOIN test2base.materials ON test2base.specimens.id_material = test2base.materials.id_material " +
+                   "LEFT OUTER JOIN test2base.treatment ON specimens.id_treatment = treatment.id_treatment " +
+                   "LEFT OUTER JOIN test2base.researches ON specimens.idspecimens = researches.id_specimen " +
+                   "WHERE (specimens.id_project =  " + id_project.ToString() + ") " +
+                   "AND (materials.name = '" + material + "') " +
+                   //"AND (treatment.name = '" + treatment + "') " +
+                   treatment +
+                   "AND (researches.success = '+')");
+            foreach (string direc in data_dirs)
+            {
+                List<string> data_ = new List<string> { direc };
+                ans.Add(Math.Round(calc_atoms(data_)));
+            }                                       
+            return ans;
+        }
+        /// <summary>
         /// Получаем статус состояния (нужно ещё одно/в процессе обработки данных/готово)
         /// </summary>
         /// <param name="dt"></param>
@@ -447,19 +476,31 @@ namespace RSB
         /// <summary>
         /// проверяем - если логин=ответсвенному за проект
         /// </summary>
-        /// <param name="response"></param>
+        /// <param name="project"></param>
         /// <param name="login"></param>
         /// <returns></returns>
-        private bool Check_access_project(string response, string login)
+        private bool Check_access_project(string login)
         {
-            //true - если можно
+            /*//true - если можно
             bool ans = false;
             string resp_login = SQL_str_request("SELECT surname FROM test2base.producers WHERE (user_name = '" + login + "')")[0];
             if (resp_login == response)
             {
                 ans = true;
             }
-            return ans;
+            return ans;*/
+            string resp_login = SQL_str_request("SELECT surname FROM test2base.producers WHERE (user_name = '" + login + "')")[0];
+            List<string> id_resp = SQL_str_request("SELECT Id_responsible FROM test2base.responsible_project " +
+                "WHERE (id_project = '"+id_project.ToString()+"');");
+            foreach (string prod in id_resp)
+            {
+                string sname = SQL_str_request("SELECT surname FROM test2base.producers WHERE (id_producer = '" + prod + "');")[0];
+                if (sname == resp_login)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         /// <summary>
         /// сохраняем все настройки
@@ -1258,6 +1299,11 @@ namespace RSB
                         " '" + dateTimePicker_pr_new_start.Value.ToString("yyyy-MM-dd HH:mm:ss") + "', " +
                         " '" + dateTimePicker_pr_new_end.Value.ToString("yyyy-MM-dd HH:mm:ss") + "', " +
                         " '" + stages.ToString() + "', '" + specs_per_state.ToString() + "', '" + txtbox_contacts_add.Text + "');");
+                    //получит ИД проекта
+                    string NewProjectId = SQL_str_request("SELECT projects.id_project FROM test2base.projects WHERE (projects.name = '"+ txtbox_pr_new_name.Text + "')")[0];
+                    //добавить ответственного
+                    SQL_com("INSERT INTO test2base.responsible_project (id_project, Id_responsible) " +
+                        "VALUES ('" + NewProjectId + "', (SELECT id_producer FROM test2base.producers WHERE (surname = '" + combox_pr_new_resp.Text + "')));");
                 }
                 else
                 {
@@ -1381,12 +1427,73 @@ namespace RSB
             }
             
         }
+        private bool DrawZGCurve(ZedGraphControl zg, List<string> X, List<double> Y, string name)
+        {
+            GraphPane _pane = zg.GraphPane;
+            _pane.CurveList.Clear();
+            PointPairList _points = new PointPairList();            
+
+            if (X.Count!=Y.Count) 
+            {
+                return false;
+            }
+            _pane.XAxis.Scale.TextLabels = X.ToArray();
+            for (int i = 0; i < X.Count;i++)
+            {
+                _points.Add(new XDate(Convert.ToDateTime(X[i]).Date), Y[i]);
+            }
+            _pane.XAxis.Type = ZedGraph.AxisType.Text;
+
+            _pane.AddCurve(name, _points, Color.Black);
+            _pane.XAxis.Title.Text = "Date";
+            _pane.YAxis.Title.Text = "Atoms count ";
+            _pane.Title.Text = name;
+            zg.AxisChange();
+            zg.Invalidate();
+            return true;
+        }
+        private List<string> GetDatas(string material, string treatment)
+        {
+            //List<string> ans = new List<string>();
+            List<string> data_dirs = SQL_str_request("SELECT researches.res_date " +
+                   "FROM test2base.specimens " +
+                   "LEFT OUTER JOIN test2base.materials ON test2base.specimens.id_material = test2base.materials.id_material " +
+                   "LEFT OUTER JOIN test2base.treatment ON specimens.id_treatment = treatment.id_treatment " +
+                   "LEFT OUTER JOIN test2base.researches ON specimens.idspecimens = researches.id_specimen " +
+                   "WHERE (specimens.id_project =  " + id_project.ToString() + ") " +
+                   "AND (materials.name = '" + material + "') " +
+                   treatment +
+                   "AND (researches.success = '+')");
+
+            return data_dirs;
+        }
+        private void PaintStatisctic()
+        {
+            try
+            {
+                //List<string> _dirs = new List<string>();
+                //List<double> Y = Count_atoms("mat", " AND (treatment.name = '" + treatment + "')", _dirs);
+                string material = dataGridView1_APT_data.Rows[dataGridView1_APT_data.SelectedRows[0].Index].Cells[0].Value.ToString();
+                List<double> Y = Count_atoms(material, "");
+                List<string> X = GetDatas(material, "");
+                DrawZGCurve(zedGR_statistic, X, Y, material);
+            }
+            catch 
+            {
+                MessageBox.Show("some error in PaintStatisctic");
+            }
+        }
         private void tabcontrol_projects_main_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
                 //если это вкладка Specimens, то обновляем данные по образцам
                 FillSpecInfo();
+                //вкладка статистики
+                if (tabcontrol_projects_main.SelectedIndex == 2 && dataGridView1_APT_data!=null && dataGridView1_APT_data.Rows!=null && dataGridView1_APT_data.Rows.Count!=0) 
+                {
+                    PaintStatisctic();
+                }
             }
             catch (Exception ex)
             {
@@ -1397,7 +1504,7 @@ namespace RSB
 
         private void btn_ch_prj_name_Click(object sender, EventArgs e)
         {
-            if (Check_access_project(txtbox_info_responsible.Text, Properties.Settings.Default.default_username) && txtbox_info_name.Text!="")
+            if (Check_access_project(Properties.Settings.Default.default_username) && txtbox_info_name.Text!="")
             {
                 //MessageBox.Show("Yes we can ch name of project");
                 //UPDATE `test2base`.`projects` SET `name` = 'NO  ' WHERE (`id_project` = '21');
@@ -1414,7 +1521,7 @@ namespace RSB
         private void btn_ch_contacts_Click(object sender, EventArgs e)
         {
             //изменить контактную информацию
-            if (Check_access_project(txtbox_info_responsible.Text, Properties.Settings.Default.default_username))
+            if (Check_access_project( Properties.Settings.Default.default_username))
             {
                 SQL_com("UPDATE test2base.projects SET contacts = '" + richtxtbox_contacts_info.Text + "' WHERE (id_project = " + id_project.ToString() + ")");
                 Refresh_all();
@@ -1428,7 +1535,7 @@ namespace RSB
         private void btn_ch_contract_Click(object sender, EventArgs e)
         {
             //изменить контректную информацию
-            if (Check_access_project(txtbox_info_responsible.Text, Properties.Settings.Default.default_username))
+            if (Check_access_project(Properties.Settings.Default.default_username))
             {
                 SQL_com("UPDATE test2base.projects SET contract = '" + txtbox_info_contract.Text + "' WHERE (id_project = " + id_project.ToString() + ")");
                 Refresh_all();
@@ -1483,7 +1590,7 @@ namespace RSB
         private void btn_report_load_Click(object sender, EventArgs e)
         {
             //проверить доступ
-            if (Check_access_project(txtbox_info_responsible.Text, Properties.Settings.Default.default_username) && txtbox_info_name.Text != "")
+            if (Check_access_project(Properties.Settings.Default.default_username) && txtbox_info_name.Text != "")
             {
                 //загрузка отчета
                 //получить файл(ы)            
@@ -1517,7 +1624,7 @@ namespace RSB
         private void btn_report_show_Click(object sender, EventArgs e)
         {
             //проверить доступ
-            if (Check_access_project(txtbox_info_responsible.Text, Properties.Settings.Default.default_username) && txtbox_info_name.Text != "")
+            if (Check_access_project(Properties.Settings.Default.default_username) && txtbox_info_name.Text != "")
             {
                 string _path = @"\\HOLY-BOX\APTfiles\Reports\"+ SQL_str_request("SELECT name FROM test2base.projects WHERE (id_project = " + id_project.ToString() + ");")[0];
                 if (Directory.Exists(_path))
@@ -1555,6 +1662,26 @@ namespace RSB
                     is_FilterCheked = false;
                 }
                 FillSpecInfo();
+            }
+        }
+        /// <summary>
+        /// добавление нового ответственного
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnAddResposible_Click(object sender, EventArgs e)
+        {
+            if (Check_access_project(Properties.Settings.Default.default_username) && combox_pr_new_resp.Text!="")
+            {
+                string id_newresp = SQL_str_request("SELECT id_producer FROM test2base.producers WHERE (producers.surname = '" + combox_pr_new_resp.Text + "');")[0];
+                if (id_newresp != "")
+                {
+                    SQL_com("INSERT INTO test2base.responsible_project (id_project, Id_responsible) VALUES ('" + id_project.ToString() + "', '"+id_newresp+"');");
+                }
+            }  
+            else
+            {
+                MessageBox.Show("Только ответсвенный за проект может добавлять в проект новых ответственных");
             }
         }
     }

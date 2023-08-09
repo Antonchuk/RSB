@@ -91,6 +91,7 @@ namespace RSB
             this.btn_ch_contacts = new System.Windows.Forms.Button();
             this.btn_report_load = new System.Windows.Forms.Button();
             this.btn_report_show = new System.Windows.Forms.Button();
+            this.btnAddResposible = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.prog_bar_remain = new System.Windows.Forms.ProgressBar();
             this.lbl_progressbar_left = new System.Windows.Forms.Label();
@@ -103,6 +104,7 @@ namespace RSB
             this.splitContainer_APT_table = new System.Windows.Forms.SplitContainer();
             this.dataGridView1_APT_data = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.dataGridView_specimens = new System.Windows.Forms.DataGridView();
             this.ch_listbox_project_stage = new System.Windows.Forms.CheckedListBox();
             this.lbl_stages_list = new System.Windows.Forms.Label();
             this.combox_stages = new System.Windows.Forms.ComboBox();
@@ -114,11 +116,11 @@ namespace RSB
             this.ch_list_box_filters = new System.Windows.Forms.CheckedListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.SplitContainer_Specs = new System.Windows.Forms.SplitContainer();
+            this.zedGR_statistic = new ZedGraph.ZedGraphControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.saveFileDialog_report = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog_report = new System.Windows.Forms.OpenFileDialog();
-            this.dataGridView_specimens = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.splitcontainer_projects_main)).BeginInit();
             this.splitcontainer_projects_main.Panel1.SuspendLayout();
             this.splitcontainer_projects_main.Panel2.SuspendLayout();
@@ -143,10 +145,11 @@ namespace RSB
             this.splitContainer_APT_table.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1_APT_data)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_specimens)).BeginInit();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer_Specs)).BeginInit();
+            this.SplitContainer_Specs.Panel1.SuspendLayout();
             this.SplitContainer_Specs.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_specimens)).BeginInit();
             this.SuspendLayout();
             // 
             // splitcontainer_projects_main
@@ -285,7 +288,7 @@ namespace RSB
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 257F));
+            this.tableLayoutPanel_project_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 261F));
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_start_date, 1, 4);
             this.tableLayoutPanel_project_info.Controls.Add(this.txtbox_info_stages_num, 1, 3);
             this.tableLayoutPanel_project_info.Controls.Add(this.lbl_info_end_date, 0, 5);
@@ -337,6 +340,7 @@ namespace RSB
             this.tableLayoutPanel_project_info.Controls.Add(this.btn_ch_contacts, 2, 12);
             this.tableLayoutPanel_project_info.Controls.Add(this.btn_report_load, 4, 12);
             this.tableLayoutPanel_project_info.Controls.Add(this.btn_report_show, 3, 12);
+            this.tableLayoutPanel_project_info.Controls.Add(this.btnAddResposible, 2, 2);
             this.tableLayoutPanel_project_info.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel_project_info.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel_project_info.Margin = new System.Windows.Forms.Padding(5);
@@ -895,6 +899,17 @@ namespace RSB
             this.btn_report_show.UseVisualStyleBackColor = true;
             this.btn_report_show.Click += new System.EventHandler(this.btn_report_show_Click);
             // 
+            // btnAddResposible
+            // 
+            this.btnAddResposible.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAddResposible.Location = new System.Drawing.Point(338, 86);
+            this.btnAddResposible.Name = "btnAddResposible";
+            this.btnAddResposible.Size = new System.Drawing.Size(194, 34);
+            this.btnAddResposible.TabIndex = 47;
+            this.btnAddResposible.Text = "Add resp ->";
+            this.btnAddResposible.UseVisualStyleBackColor = true;
+            this.btnAddResposible.Click += new System.EventHandler(this.btnAddResposible_Click);
+            // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 2;
@@ -1015,10 +1030,10 @@ namespace RSB
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.splitContainer_APT_table);
-            this.tabPage3.Location = new System.Drawing.Point(4, 31);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Margin = new System.Windows.Forms.Padding(5);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1508, 778);
+            this.tabPage3.Size = new System.Drawing.Size(1508, 787);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "APT states";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -1037,7 +1052,7 @@ namespace RSB
             // splitContainer_APT_table.Panel2
             // 
             this.splitContainer_APT_table.Panel2.Controls.Add(this.tableLayoutPanel1);
-            this.splitContainer_APT_table.Size = new System.Drawing.Size(1508, 778);
+            this.splitContainer_APT_table.Size = new System.Drawing.Size(1508, 787);
             this.splitContainer_APT_table.SplitterDistance = 1094;
             this.splitContainer_APT_table.TabIndex = 1;
             // 
@@ -1053,7 +1068,7 @@ namespace RSB
             this.dataGridView1_APT_data.Name = "dataGridView1_APT_data";
             this.dataGridView1_APT_data.ReadOnly = true;
             this.dataGridView1_APT_data.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1_APT_data.Size = new System.Drawing.Size(1092, 776);
+            this.dataGridView1_APT_data.Size = new System.Drawing.Size(1092, 785);
             this.dataGridView1_APT_data.TabIndex = 0;
             this.dataGridView1_APT_data.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_APT_data_CellContentClick);
             this.dataGridView1_APT_data.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_APT_data_CellDoubleClick);
@@ -1087,8 +1102,26 @@ namespace RSB
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 59F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(408, 776);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(408, 785);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // dataGridView_specimens
+            // 
+            this.dataGridView_specimens.AllowUserToAddRows = false;
+            this.dataGridView_specimens.AllowUserToDeleteRows = false;
+            this.dataGridView_specimens.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dataGridView_specimens.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridView_specimens.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tableLayoutPanel1.SetColumnSpan(this.dataGridView_specimens, 3);
+            this.dataGridView_specimens.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView_specimens.Location = new System.Drawing.Point(0, 318);
+            this.dataGridView_specimens.Margin = new System.Windows.Forms.Padding(0);
+            this.dataGridView_specimens.MultiSelect = false;
+            this.dataGridView_specimens.Name = "dataGridView_specimens";
+            this.dataGridView_specimens.ReadOnly = true;
+            this.dataGridView_specimens.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView_specimens.Size = new System.Drawing.Size(408, 467);
+            this.dataGridView_specimens.TabIndex = 8;
             // 
             // ch_listbox_project_stage
             // 
@@ -1189,13 +1222,13 @@ namespace RSB
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.SplitContainer_Specs);
-            this.tabPage2.Location = new System.Drawing.Point(4, 31);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(5);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPage2.Size = new System.Drawing.Size(1508, 778);
+            this.tabPage2.Size = new System.Drawing.Size(1508, 787);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Specimens";
+            this.tabPage2.Text = "Statistic";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // SplitContainer_Specs
@@ -1205,9 +1238,29 @@ namespace RSB
             this.SplitContainer_Specs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SplitContainer_Specs.Location = new System.Drawing.Point(5, 5);
             this.SplitContainer_Specs.Name = "SplitContainer_Specs";
-            this.SplitContainer_Specs.Size = new System.Drawing.Size(1498, 768);
+            // 
+            // SplitContainer_Specs.Panel1
+            // 
+            this.SplitContainer_Specs.Panel1.Controls.Add(this.zedGR_statistic);
+            this.SplitContainer_Specs.Size = new System.Drawing.Size(1498, 777);
             this.SplitContainer_Specs.SplitterDistance = 971;
             this.SplitContainer_Specs.TabIndex = 1;
+            // 
+            // zedGR_statistic
+            // 
+            this.zedGR_statistic.Location = new System.Drawing.Point(5, 5);
+            this.zedGR_statistic.Margin = new System.Windows.Forms.Padding(5);
+            this.zedGR_statistic.Name = "zedGR_statistic";
+            this.zedGR_statistic.ScrollGrace = 0D;
+            this.zedGR_statistic.ScrollMaxX = 0D;
+            this.zedGR_statistic.ScrollMaxY = 0D;
+            this.zedGR_statistic.ScrollMaxY2 = 0D;
+            this.zedGR_statistic.ScrollMinX = 0D;
+            this.zedGR_statistic.ScrollMinY = 0D;
+            this.zedGR_statistic.ScrollMinY2 = 0D;
+            this.zedGR_statistic.Size = new System.Drawing.Size(959, 533);
+            this.zedGR_statistic.TabIndex = 0;
+            this.zedGR_statistic.UseExtendedPrintDialog = true;
             // 
             // tabPage5
             // 
@@ -1231,24 +1284,6 @@ namespace RSB
             // saveFileDialog_report
             // 
             this.saveFileDialog_report.Title = "Choose your destiny!";
-            // 
-            // dataGridView_specimens
-            // 
-            this.dataGridView_specimens.AllowUserToAddRows = false;
-            this.dataGridView_specimens.AllowUserToDeleteRows = false;
-            this.dataGridView_specimens.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dataGridView_specimens.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dataGridView_specimens.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.tableLayoutPanel1.SetColumnSpan(this.dataGridView_specimens, 3);
-            this.dataGridView_specimens.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView_specimens.Location = new System.Drawing.Point(0, 318);
-            this.dataGridView_specimens.Margin = new System.Windows.Forms.Padding(0);
-            this.dataGridView_specimens.MultiSelect = false;
-            this.dataGridView_specimens.Name = "dataGridView_specimens";
-            this.dataGridView_specimens.ReadOnly = true;
-            this.dataGridView_specimens.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView_specimens.Size = new System.Drawing.Size(408, 458);
-            this.dataGridView_specimens.TabIndex = 8;
             // 
             // Frm_projects
             // 
@@ -1291,10 +1326,11 @@ namespace RSB
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1_APT_data)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_specimens)).EndInit();
             this.tabPage2.ResumeLayout(false);
+            this.SplitContainer_Specs.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer_Specs)).EndInit();
             this.SplitContainer_Specs.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_specimens)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1390,5 +1426,7 @@ namespace RSB
         private System.Windows.Forms.SaveFileDialog saveFileDialog_report;
         private System.Windows.Forms.OpenFileDialog openFileDialog_report;
         private System.Windows.Forms.DataGridView dataGridView_specimens;
+        private ZedGraph.ZedGraphControl zedGR_statistic;
+        private System.Windows.Forms.Button btnAddResposible;
     }
 }

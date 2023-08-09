@@ -212,7 +212,6 @@ namespace RSB
                     if (filt_master.is_special_filter == false)
                     {
                         sql_filtres = do_filtres_for_SQL(filt_master.common_filters);
-                        //richTextBox_special_filt.Text = sql_filtres;
                     }
                     else
                     {
@@ -253,12 +252,9 @@ namespace RSB
                                 {
                                     if (reader.Read())
                                     {
-                                        //MessageBox.Show("Нужно не более: "+show_only_spec.ToString()+" , А сейчас: "+num.ToString());
                                         string srt;
                                         if (DateTime.TryParse(reader[4].ToString(), out DateTime temp_dat))
                                         {
-
-                                            //srt = temp_dat.ToShortDateString();
                                             srt = temp_dat.ToString("yyyy.MM.dd");
                                         }
                                         else
@@ -270,7 +266,6 @@ namespace RSB
                                             reader[3].ToString(), srt, reader[5].ToString(), reader[6].ToString() + " " + reader[8].ToString(), reader[7].ToString(),reader[9].ToString());
                                         // цветовая дифференциация таблицы
                                         int ind = Get_index_datagrid(reader[0].ToString(),0);
-                                        //MessageBox.Show("Index = "+ind.ToString());
                                         if (ind != -1)
                                         {
                                             switch (reader[7].ToString())
@@ -294,7 +289,6 @@ namespace RSB
                                 }
                                 reader.Close();
                             }
-                            //else MessageBox.Show("nodata in refresh");
                         }
                         conn.Close();
 
@@ -306,7 +300,6 @@ namespace RSB
                 MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 }
             }
-            //Select_index();
             //пытаемся сохранить выбранный образец
             if (selected_id!=-1)
             {
@@ -318,16 +311,10 @@ namespace RSB
                         {
                             dataGrid_specimens.Rows[i].Selected = true;
                             dataGrid_specimens.CurrentCell = dataGrid_specimens.Rows[i].Cells[0];
-                            //dataGrid_specimens.Rows[i].Cells[0].                            
-                            //MessageBox.Show("сохранный номер строки" + selected_id.ToString());
-                            //dataGrid_specimens.SelectedRows.
                         }
                     }
                 }
             }
-            //TEST обновляем комбо-боксы
-            //НЕВКЛЮЧАТЬ делает много окннектов к базе(хз почему)
-            //Fill_combo();
             //пробуем встроить фильтры
             if (!on_load)
             {
@@ -766,10 +753,17 @@ namespace RSB
                     
                     int i = Convert.ToInt32(dataGrid_specimens.Rows[index].Cells[0].Value);
                     //response
-                    txtbox_respon_inf.Text = Fill_info_text_sql(i, conn, "producers", "surname", "id_producer", "id_respon");
+                    //txtbox_respon_inf.Text = Fill_info_text_sql(i, conn, "producers", "surname", "id_producer", "id_respon");
+                    string id_resp = SQL_List_querry("SELECT Id_responsible FROM test2base.responsible_project " +
+                        "WHERE (id_project = (SELECT id_project FROM test2base.specimens WHERE (idspecimens = '"+i.ToString()+"')));")[0];
+                    txtbox_respon_inf.Text = SQL_List_querry("SELECT surname FROM test2base.producers WHERE (id_producer = '"+id_resp+"');")[0];
+                    if (txtbox_respon_inf.Text == "")
+                    {
+                        //это старый вариант для легаси
+                        txtbox_respon_inf.Text = Fill_info_text_sql(i, conn, "producers", "surname", "id_producer", "id_respon");
+                    }
                     //treatment
-                    //txtbox_treat_inf.Text = Fill_info_text_sql(i, conn, "treatment", "Name", "id_treatment", "id_treatment");
-                    Fill_clever_combo(comboxTreatInfo, txtbox_respon_inf.Text,
+                    Fill_clever_combo(comboxTreatInfo,
                 "SELECT DISTINCT treatment.name FROM test2base.treatment ORDER BY treatment.name ASC;",
                 "SELECT DISTINCT treatment.name FROM test2base.materialstate LEFT OUTER JOIN test2base.treatment ON treatment.id_treatment = materialstate.id_treatment " +
                 "WHERE (materialstate.id_project = (SELECT id_project FROM test2base.projects WHERE projects.name = '", ch_box_all_treats, txtbox_project_inf.Text); 
@@ -1284,12 +1278,11 @@ namespace RSB
                         {
                             MessageBox.Show("No foto seleted, specimen marked as NOT ready for APT");
                             new_spec.state = 7;
-                        }
-                        
+                        }                        
                         conn.Open();
                         string sqlcom_3 = "INSERT INTO test2base.specimens (id_producer, id_state, date_prep, id_project, id_treatment, " +
-                            "id_treat_type, id_respon, place_foto_bef, place_foto_after, id_material, priority, comments) VALUES (@id_producer,@id_state,@datetime,@id_project,@treatment," +
-                        "@id_treat_type,@id_respon,@foto_before,@foro_after,@id_material,@priority, @comment)";
+                            "id_treat_type, place_foto_bef, place_foto_after, id_material, priority, comments) VALUES (@id_producer,@id_state,@datetime,@id_project,@treatment," +
+                        "@id_treat_type,@foto_before,@foro_after,@id_material,@priority, @comment)";
                         using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conn))
                         {
                             comand.Parameters.AddWithValue("@id_producer", new_spec.producer);
@@ -1302,7 +1295,7 @@ namespace RSB
                             comand.Parameters.AddWithValue("@foto_before", new_spec.foto_before);
                             comand.Parameters.AddWithValue("@foro_after", new_spec.foto_after);
                             comand.Parameters.AddWithValue("@id_material", new_spec.material);
-                            comand.Parameters.AddWithValue("@id_respon", new_spec.resonse);
+                            //comand.Parameters.AddWithValue("@id_respon", new_spec.resonse);
                             //comand.Parameters.AddWithValue("@stor_position", new_spec.stor_pos);
                             comand.Parameters.AddWithValue("@priority", new_spec.priority);
                             comand.Parameters.AddWithValue("@comment", rich_txtbox_comments.Text);
@@ -1311,12 +1304,14 @@ namespace RSB
                             //проверить выполнен ли запрос
                             conn.Close();
                         }
+                        //Simple_SQL_req("INSERT INTO test2base.responsible_project (id_project, Id_responsible) VALUES ('"+new_spec.project+"', '"+new_spec.resonse+"');");
+
                         //получить новый ID                        
                         conn.Open();
                         //MessageBox.Show("Дата для сравнения"+new_spec.datetime);
                         sqlcom_3 = "SELECT idspecimens FROM test2base.specimens WHERE id_producer=@id_producer AND id_state=@id_state AND date_prep=@datetime AND " +
                             "id_project=@id_project AND id_treatment=@id_treatment AND " +
-                            "id_treat_type=@id_treat_type AND id_respon=@id_respon AND id_material=@id_material";
+                            "id_treat_type=@id_treat_type AND id_material=@id_material";
                         using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conn))
                         {
                             comand.Parameters.AddWithValue("@id_producer", new_spec.producer);
@@ -1327,7 +1322,7 @@ namespace RSB
                             comand.Parameters.AddWithValue("@id_treatment", new_spec.treatment);
                             comand.Parameters.AddWithValue("@id_treat_type", new_spec.type);
                             comand.Parameters.AddWithValue("@id_material", new_spec.material);
-                            comand.Parameters.AddWithValue("@id_respon", new_spec.resonse);
+                            //comand.Parameters.AddWithValue("@id_respon", new_spec.resonse);
                             //MessageBox.Show("1");
                             using (MySqlDataReader reader = comand.ExecuteReader())
                             {
@@ -2856,7 +2851,7 @@ namespace RSB
             }
             //пытаемся слать уведомление research was made
             if (action_type == "research was made" || action_type == "new specimen" || action_type == "change position")
-            Send_discord(false, user, action_type, id_spec);            
+            Send_discord(false, user, action_type, id_spec, val_new);            
         }
         private List<string> Get_related(string action_type, string id_spec)
         {
@@ -2890,7 +2885,7 @@ namespace RSB
                     return new List<string>();
             }
         }
-        private async void Send_discord(bool voice, string actor, string action_t, string id_spec)
+        private async void Send_discord(bool voice, string actor, string action_t, string id_spec, string new_place)
         {
             List<string> actors = new List<string>();
             //пробуем получить кто
@@ -2917,8 +2912,10 @@ namespace RSB
             //название материала и обработку
             string _material = SQL_List_querry("SELECT materials.name FROM test2base.materials WHERE (id_material = (SELECT id_material FROM test2base.specimens WHERE (idspecimens = '"+ id_spec + "')))")[0];
             string _treat = SQL_List_querry("SELECT treatment.name FROM test2base.treatment WHERE (id_treatment = (SELECT id_treatment FROM test2base.specimens WHERE (idspecimens = '" + id_spec + "')))")[0];
+            //новое место перемещения
+
             Discord.Webhook.DiscordWebhookClient disc_client = new Discord.Webhook.DiscordWebhookClient(hook);
-            string message = id_spec + " " +_material + " " +_treat + " " + action_t + ", " + String.Join(" ", actors.ToArray());
+            string message = id_spec + " " +_material + " " +_treat + " " + action_t + ", moved to '"+new_place+"'" + String.Join(" ", actors.ToArray());
             await disc_client.SendMessageAsync(message, voice, null, "RSB", null, null, Discord.AllowedMentions.All);
             disc_client.Dispose();
         }
@@ -3971,23 +3968,19 @@ namespace RSB
         /// ch_box=true - выбор всех элементов (запрос sql_first) иначе sql_next
         /// </summary>
         /// <param name="box"></param>
-        /// <param name="response"></param>
         /// <param name="sql_first"></param>
         /// <param name="sql_next"></param>
         /// <param name="ch_box"></param>
-        private void Fill_clever_combo(ComboBox box, string response, string sql_first, string sql_next, CheckBox ch_box, string ProjectName)
+        /// <param name="ProjectName"></param>
+        private void Fill_clever_combo(ComboBox box, string sql_first, string sql_next, CheckBox ch_box, string ProjectName)
         {
             string _sql_material;
-            if (Check_access_project(response, Properties.Settings.Default.default_username) && ch_box.Checked)
+            if (Check_access_project(ProjectName, Properties.Settings.Default.default_username) && ch_box.Checked)
             {
-                //_sql_material = "SELECT DISTINCT materials.name FROM test2base.materials ORDER BY materials.name ASC;";
                 _sql_material = sql_first;
             }
             else
             {
-                /*_sql_material = "SELECT DISTINCT materials.name FROM test2base.materialstate " +
-                "LEFT OUTER JOIN test2base.materials ON materials.id_material = materialstate.id_material " +
-                "WHERE (materialstate.id_project = (SELECT id_project FROM test2base.projects WHERE projects.name = '" + combox_project.Text + "'));";*/
                 _sql_material = sql_next + ProjectName + "'));";
             }
             Fill_combox_pr_filt(box, _sql_material);
@@ -3995,34 +3988,19 @@ namespace RSB
         private void combox_project_SelectedIndexChanged(object sender, EventArgs e)
         {
             //меняем отвественного на того, что указан в проекте
-            combox_response.Text = SQL_List_querry("SELECT producers.surname FROM test2base.projects " +
+
+            /*combox_response.Text = SQL_List_querry("SELECT producers.surname FROM test2base.projects " +
                 "LEFT OUTER JOIN test2base.producers ON projects.id_respons = producers.id_producer " +
-                "WHERE (projects.name = '"+combox_project.Text+"')")[0];
+                "WHERE (projects.name = '"+combox_project.Text+"')")[0];*/
             //грузим материалы только для данного проекта или если вы выладелец проекта - то все доступные
-            Fill_clever_combo(combox_material, combox_response.Text, 
+            Fill_clever_combo(combox_material, 
                 "SELECT DISTINCT materials.name FROM test2base.materials ORDER BY materials.name ASC;",
                 "SELECT DISTINCT materials.name FROM test2base.materialstate LEFT OUTER JOIN test2base.materials ON materials.id_material = materialstate.id_material " +
                 "WHERE (materialstate.id_project = (SELECT id_project FROM test2base.projects WHERE projects.name = '", ch_box_all_materials, combox_project.Text);
-            Fill_clever_combo(combox_treatment, combox_response.Text,
+            Fill_clever_combo(combox_treatment,
                 "SELECT DISTINCT treatment.name FROM test2base.treatment ORDER BY treatment.name ASC;",
                 "SELECT DISTINCT treatment.name FROM test2base.materialstate LEFT OUTER JOIN test2base.treatment ON treatment.id_treatment = materialstate.id_treatment " +
                 "WHERE (materialstate.id_project = (SELECT id_project FROM test2base.projects WHERE projects.name = '", ch_box_all_treats, combox_project.Text);
-
-            /*string sql_treat;            
-            
-            if (Check_access_project(combox_response.Text, Properties.Settings.Default.default_username) && ch_box_all_treats.Checked)
-            {
-                sql_treat = "SELECT DISTINCT treatment.name FROM test2base.treatment ORDER BY treatment.name ASC; ";
-            }
-            else
-            {
-                sql_treat = "SELECT DISTINCT treatment.name FROM test2base.materialstate " +
-                "LEFT OUTER JOIN test2base.treatment ON treatment.id_treatment = materialstate.id_treatment " +
-                "WHERE (materialstate.id_project = (SELECT id_project FROM test2base.projects WHERE projects.name = '" + combox_project.Text + "'));";
-            }
-            
-            //грузим обработки только для даннго проекта или если вы выладелец проекта - то все доступные            
-            Fill_combox_pr_filt(combox_treatment, sql_treat);*/
         }
 
         private void combox_treatment_Click(object sender, EventArgs e)
@@ -4032,24 +4010,28 @@ namespace RSB
         /// <summary>
         /// проверяем - если логин=ответсвенному за проект
         /// </summary>
-        /// <param name="response"></param>
+        /// <param name="project"></param>
         /// <param name="login"></param>
         /// <returns></returns>
-        private bool Check_access_project(string response, string login)
+        private bool Check_access_project(string project, string login)
         {
-            //true - если можно
-            bool ans = false;
             string resp_login = SQL_List_querry("SELECT surname FROM test2base.producers WHERE (user_name = '" + login + "')")[0];
-            if (resp_login == response)
+            List<string> id_resp = SQL_List_querry("SELECT Id_responsible FROM test2base.responsible_project " +
+                "WHERE (id_project = (SELECT id_project FROM test2base.projects WHERE (name = '"+project+"')));");
+            foreach(string prod in  id_resp) 
             {
-                ans = true;
+                string sname = SQL_List_querry("SELECT surname FROM test2base.producers WHERE (id_producer = '"+prod+"');")[0];
+                if (sname == resp_login)
+                {
+                    return true;
+                }
             }
-            return ans;
+            return false;
         }
         private void combox_material_KeyUp(object sender, KeyEventArgs e)
         {
             //проверяем имеете ли вы право создавать новые материалы
-            if (!Check_access_project(combox_response.Text, Properties.Settings.Default.default_username))
+            if (!Check_access_project(combox_project.Text, Properties.Settings.Default.default_username))
             {
                 combox_material.Text = "";
             }
@@ -4058,7 +4040,7 @@ namespace RSB
         private void combox_treatment_KeyUp(object sender, KeyEventArgs e)
         {
             //проверяем имеете ли вы право создавать новые обработки
-            if (!Check_access_project(combox_response.Text, Properties.Settings.Default.default_username))
+            if (!Check_access_project(combox_project.Text, Properties.Settings.Default.default_username))
             {
                 combox_treatment.Text = "";
             }
@@ -4068,7 +4050,7 @@ namespace RSB
         {
             //перезаполняем комбобокс
             combox_material.Items.Clear();
-            Fill_clever_combo(combox_material, combox_response.Text,
+            Fill_clever_combo(combox_material,
                 "SELECT DISTINCT materials.name FROM test2base.materials ORDER BY materials.name ASC;",
                 "SELECT DISTINCT materials.name FROM test2base.materialstate LEFT OUTER JOIN test2base.materials ON materials.id_material = materialstate.id_material " +
                 "WHERE (materialstate.id_project = (SELECT id_project FROM test2base.projects WHERE projects.name = '", ch_box_all_materials, combox_project.Text);
@@ -4077,7 +4059,7 @@ namespace RSB
         private void ch_box_all_treats_CheckedChanged(object sender, EventArgs e)
         {
             combox_treatment.Items.Clear();
-            Fill_clever_combo(combox_treatment, combox_response.Text,
+            Fill_clever_combo(combox_treatment,
                 "SELECT DISTINCT treatment.name FROM test2base.treatment ORDER BY treatment.name ASC;",
                 "SELECT DISTINCT treatment.name FROM test2base.materialstate LEFT OUTER JOIN test2base.treatment ON treatment.id_treatment = materialstate.id_treatment " +
                 "WHERE (materialstate.id_project = (SELECT id_project FROM test2base.projects WHERE projects.name = '", ch_box_all_treats, combox_project.Text);
@@ -4086,7 +4068,7 @@ namespace RSB
         private void comboxTreatInfo_KeyUp(object sender, KeyEventArgs e)
         {
             //проверяем имеете ли вы право создавать новые обработки
-            if (!Check_access_project(txtbox_respon_inf.Text, Properties.Settings.Default.default_username))
+            if (!Check_access_project(txtbox_project_inf.Text, Properties.Settings.Default.default_username))
             {
                 comboxTreatInfo.Text = "";
             }

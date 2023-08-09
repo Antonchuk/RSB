@@ -64,6 +64,15 @@
             <param name="dt">таблица данных состояний со столбцами _материал, _обработка</param>
             <returns></returns>
         </member>
+        <member name="M:RSB.Frm_projects.Count_atoms(System.String,System.String)">
+            <summary>
+            расчет числа атомов для состояния
+            </summary>
+            <param name="projectID"></param>
+            <param name="material"></param>
+            <param name="treatment"></param>
+            <returns></returns>
+        </member>
         <member name="M:RSB.Frm_projects.Get_statuses(System.Data.DataTable)">
             <summary>
             Получаем статус состояния (нужно ещё одно/в процессе обработки данных/готово)
@@ -92,11 +101,11 @@
             <param name="select_table"></param>
             <returns></returns>
         </member>
-        <member name="M:RSB.Frm_projects.Check_access_project(System.String,System.String)">
+        <member name="M:RSB.Frm_projects.Check_access_project(System.String)">
             <summary>
             проверяем - если логин=ответсвенному за проект
             </summary>
-            <param name="response"></param>
+            <param name="project"></param>
             <param name="login"></param>
             <returns></returns>
         </member>
@@ -172,6 +181,13 @@
             проверяем и создаем дирректорию, по умолчанию будет HOLY-BOX\APTfiles\Reports\
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:RSB.Frm_projects.btnAddResposible_Click(System.Object,System.EventArgs)">
+            <summary>
+            добавление нового ответственного
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
         </member>
         <member name="F:RSB.Frm_projects.components">
             <summary>
@@ -602,21 +618,21 @@
             <param name="sender"></param>
             <param name="e"></param>
         </member>
-        <member name="M:RSB.Form_specimens.Fill_clever_combo(System.Windows.Forms.ComboBox,System.String,System.String,System.String,System.Windows.Forms.CheckBox,System.String)">
+        <member name="M:RSB.Form_specimens.Fill_clever_combo(System.Windows.Forms.ComboBox,System.String,System.String,System.Windows.Forms.CheckBox,System.String)">
             <summary>
             ch_box=true - выбор всех элементов (запрос sql_first) иначе sql_next
             </summary>
             <param name="box"></param>
-            <param name="response"></param>
             <param name="sql_first"></param>
             <param name="sql_next"></param>
             <param name="ch_box"></param>
+            <param name="ProjectName"></param>
         </member>
         <member name="M:RSB.Form_specimens.Check_access_project(System.String,System.String)">
             <summary>
             проверяем - если логин=ответсвенному за проект
             </summary>
-            <param name="response"></param>
+            <param name="project"></param>
             <param name="login"></param>
             <returns></returns>
         </member>

@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="server" Type="System.String" Scope="User">
-      <Value Profile="(Default)">172.16.0.152</Value>
+      <Value Profile="(Default)">172.16.0.151</Value>
     </Setting>
     <Setting Name="database" Type="System.String" Scope="User">
       <Value Profile="(Default)">test2base</Value>

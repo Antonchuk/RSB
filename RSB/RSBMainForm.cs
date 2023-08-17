@@ -12,6 +12,9 @@ using System.Diagnostics;
 using System.Net.Mail;
 using System.Net;
 using System.IO;
+using System.Reflection;
+using Newtonsoft.Json;
+using static RSB.Form_specimens;
 
 namespace RSB
 {
@@ -25,7 +28,41 @@ namespace RSB
         public RSBMainForm()
         {
             InitializeComponent();
-
+            CheckForUpdate();
+        }
+        private void CheckForUpdate()
+        {
+            string pathFrom = @"\\HOLY-BOX\Public\Обменник 2\Лукьянчук\Release\RBS";
+            string _AppName = @"\\RBSSetup.msi";
+            //сравнение версий
+            var current_ver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            //новая версия
+            string new_ver = "";
+            if (File.Exists(pathFrom + "\\Version.txt"))
+            {
+                new_ver = File.ReadAllText(pathFrom + "\\Version.txt");
+            }
+            if (current_ver != new_ver)
+            {
+                if (MessageBox.Show("A new update is available!", "Demo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    try
+                    {
+                        Process process = new Process();
+                        process.StartInfo.FileName = $"{pathFrom}{_AppName}";
+                        this.Close();
+                        process.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"erorr in SelfUpdate {ex}");
+                    }
+                }
+                else
+                {
+                    this.Close();
+                }
+            }
         }
         /// <summary>
         /// новое или разовое соединение с базой данных
@@ -66,6 +103,7 @@ namespace RSB
                 Properties.Settings.Default.default_username = cbox_username.Text;
                 Properties.Settings.Default.default_pass = txtbox_pass.Text;
                 Properties.Settings.Default.Save();
+                Save_def_json(@"\user.json");
             }
             GC.Collect();
             Close();
@@ -75,15 +113,60 @@ namespace RSB
         {
             Close_all();
         }
-
+        private void Load_json(string name)
+        {
+            //процедура грузит из json фильтры с обновлением
+            try
+            {
+                string json_path = Directory.GetCurrentDirectory() + name;
+                if (File.Exists(json_path))
+                {
+                    UserData _data= new UserData();
+                    _data = JsonConvert.DeserializeObject<UserData>(File.ReadAllText(json_path));
+                    cbox_username.Text = _data.username;
+                    txtbox_pass.Text = _data.password;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка при загрузке дефолтного пользователя", MessageBoxButtons.OK, MessageBoxIcon.Error,
+            MessageBoxDefaultButton.Button1);
+            }
+        }
+        private void Save_def_json(string name)
+        {
+            try
+            {
+                string json_path = Directory.GetCurrentDirectory() + name;
+                //DirectoryInfo dirinfo = new DirectoryInfo(json_path + @"\Settings");            
+                //попытаться сохранить фильтры в json
+                using (StreamWriter file = File.CreateText(json_path))
+                {
+                    JsonSerializer seriz = new JsonSerializer();
+                    //seriz.Serialize(file, data_filters);
+                    UserData _data = new UserData();
+                    _data.username = cbox_username.Text;
+                    _data.password = txtbox_pass.Text;
+                    seriz.Serialize(file, _data);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Ошибка при сохранении дефолтного пользователя", MessageBoxButtons.OK, MessageBoxIcon.Error,
+            MessageBoxDefaultButton.Button1);
+            }
+        }
         private void Form1_Shown(object sender, EventArgs e)
         {
             //подгрузка пользователей
             cbox_username.Items.Add(Properties.Settings.Default.default_username);
             //ЗАГЛУШКА
             txtbox_pass.Text = Properties.Settings.Default.default_pass;
-            cbox_username.Text = Properties.Settings.Default.default_username;
-
+            cbox_username.Text = Properties.Settings.Default.default_username;            
+            if (txtbox_pass.Text == "" || cbox_username.Text == "testadmin")
+            {
+                Load_json(@"\user.json");
+            }
             //проверяем создана ли директори для записи настроек
             string json_path = Directory.GetCurrentDirectory();
             DirectoryInfo dirInfo = new DirectoryInfo(json_path + @"\Settings");
@@ -202,7 +285,7 @@ namespace RSB
                 //Host= smtpServer,
                 //DeliveryMethod =SmtpDeliveryMethod.Network,
                 EnableSsl = true,
-                Credentials = new NetworkCredential("ant4uk@yandex.ru", "kl87bcd%1ap")                
+                Credentials = new NetworkCredential("ant4uk@yandex.ru", "")                
             };
             smtp.Send(m);
             MessageBox.Show("Письмо отправлено");
@@ -408,5 +491,10 @@ namespace RSB
         {
 
         }
+    }
+    public class UserData
+    {
+        public string username;
+        public string password;
     }
 }

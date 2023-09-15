@@ -380,6 +380,12 @@
             класс для хранения фильтров
             </summary>
         </member>
+        <member name="M:RSB.Form_specimens.Clear_one_picbox(System.Windows.Forms.PictureBox)">
+            <summary>
+            очистка Picturebox от картинки
+            </summary>
+            <param name="box"></param>
+        </member>
         <member name="M:RSB.Form_specimens.Clear_pics_info(System.Int32)">
             <summary>
             удаляет картинки  1 - before, 2 - after
@@ -404,6 +410,16 @@
             <param name="table_name"></param>
             <param name="col_name"></param>
             <param name="name2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RSB.Form_specimens.Copy_fotos(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            копируем фото 1 - фото до, 2 - фото после, 3 - фото СЭМ, 4 - фото после к любому образцу
+            </summary>
+            <param name="old_directory"></param>
+            <param name="directory_new"></param>
+            <param name="type"></param>
+            <param name="spec_id"></param>
             <returns></returns>
         </member>
         <member name="M:RSB.Form_specimens.Is_state_exist(MySql.Data.MySqlClient.MySqlConnection,System.String,System.String)">

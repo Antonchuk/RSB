@@ -65,6 +65,7 @@ namespace RSB
             public string resonse;
             public string stor_pos;
             public string priority;
+            public string foto_Forcopy;
         }
         class New_research
         {
@@ -629,6 +630,10 @@ namespace RSB
             MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
         }
+        /// <summary>
+        /// очистка Picturebox от картинки
+        /// </summary>
+        /// <param name="box"></param>
         private void Clear_one_picbox(PictureBox box)
         {
             if (box.Image != null)
@@ -1112,22 +1117,23 @@ namespace RSB
 
             return raw_data;
         }
-        private string Copy_fotos(string old_directory, string directory_new, int type, int spec_id)
+		/// <summary>
+		/// копируем фото 1 - фото до, 2 - фото после, 3 - фото СЭМ, 4 - фото после к любому образцу
+		/// </summary>
+		/// <param name="old_directory"></param>
+		/// <param name="directory_new"></param>
+		/// <param name="type"></param>
+		/// <param name="spec_id"></param>
+		/// <returns></returns>
+		private string Copy_fotos(string old_directory, string directory_new, int type, int spec_id)
         {
-            //type 1 - фото до
-            //2 - фото после
-            //3 - фото СЭМ  
-            //4 - фото после к любому образцу
-            //MessageBox.Show("1 старая директория "+old_directory);
+            //создаем директорию
             if (!Directory.Exists(directory_new))
             {
                 DirectoryInfo dirInfo = new DirectoryInfo(directory_new);
-                dirInfo.Create();
-                
+                dirInfo.Create();                
             }
-            //MessageBox.Show("2 старая директория " + old_directory);
             directory_new += @"\" + spec_id.ToString();
-            //MessageBox.Show("3 новая директория 1" + directory_new);
             switch (type)
             {
                 case 1:
@@ -1145,21 +1151,25 @@ namespace RSB
                 DirectoryInfo dirInfo = new DirectoryInfo(directory_new);
                 dirInfo.Create();
             }
-            //MessageBox.Show("4 новая директория 2" + directory_new);
             if (old_directory != "")
             {
-                string[] pic_list = Directory.GetFiles(old_directory);
+                //string[] pic_list = Directory.GetFiles(old_directory);
                 // Copy picture files.
-                //MessageBox.Show("5");
-                foreach (string f in pic_list)
+                //test
+                foreach (string path in images_paths)
+                {
+					string fName = path.Substring(old_directory.Length + 1);
+					File.Copy(Path.Combine(old_directory, fName), Path.Combine(directory_new, fName), true);
+				}
+                //test
+                /*foreach (string f in pic_list)
                 {
                     // Remove path from the file name.
                     string fName = f.Substring(old_directory.Length + 1);
-                    //MessageBox.Show("6");
                     // Use the Path.Combine method to safely append the file name to the path.
                     // Will overwrite if the destination file already exists.
                     File.Copy(Path.Combine(old_directory, fName), Path.Combine(directory_new, fName), true);
-                }
+                }*/
             }
             return directory_new;
         }
@@ -1225,7 +1235,40 @@ namespace RSB
                 ccc.Close();
             }            
         }
-        private void New_specimen()
+        private New_specimen_data SetPicsPath(New_specimen_data old)
+        {
+            New_specimen_data ans = old;
+            //проверяем заполненность полей фото, если нет, то маркируется как не для АЗТ
+            ans.foto_Forcopy = @"\\HOLY-BOX\APTfiles\Photo specimens" + @"\" + combox_project.Text;  //+папка для образца
+            if (images_paths.Count != 0 && images_paths[0] != "")
+            {
+                ans.state = 1;
+                //просто получаем директорию файла
+                ans.foto_before = images_paths[0];
+                FileInfo fileInf = new FileInfo(ans.foto_before);
+                ans.foto_before = fileInf.DirectoryName;
+                DirectoryInfo check = new DirectoryInfo(ans.foto_Forcopy);
+                if (!check.Exists)
+                {
+                    ans.foto_before = "no";
+                }
+            }
+            else
+            {
+                MessageBox.Show("No foto seleted, specimen marked as NOT ready for APT");
+                ans.state = 7;
+            }
+            return ans;
+        }
+        private void AddResponse(string id_project, string id_resp)
+        {
+            if (SQL_List_querry("SELECT * FROM test2base.responsible_project " +
+                "WHERE (responsible_project.id_project = '"+id_project+ "') AND (responsible_project.Id_responsible = '"+id_resp+"');").Count == 0)
+            {
+                Simple_SQL_req("INSERT INTO test2base.responsible_project (id_project, Id_responsible) VALUES ('" + id_project + "', '" + id_resp + "');");
+            }
+        }
+        private bool New_specimen()
         {
             conn_str = Get_conn_string(Properties.Settings.Default.server, Properties.Settings.Default.port,
                 Properties.Settings.Default.database, Parent_form.cbox_username.Text, Parent_form.txtbox_pass.Text);
@@ -1257,28 +1300,19 @@ namespace RSB
                     //если нет, то добавляем новые
                     specimen_new_accepted = true;
                     string state_name = new_spec.material + " " + new_spec.treatment;
+                    new_spec = SetPicsPath(new_spec);
+                    if (new_spec.foto_before == "no") 
+                    {
+                        MessageBox.Show("Check connection with HOLY-BOX");
+                        return false;
+                    }
                     Check_for_new_data(new_spec, conn);                     
                     if (specimen_new_accepted)
                     {
                         if (!(new_spec.priority== "4 High" || new_spec.priority == "5 Now" || new_spec.priority == "3 Normal" || new_spec.priority == "2 Low" || new_spec.priority == "1 One fine day"))
                         {
                             new_spec.priority = "2 Low";
-                        }
-                        //проверяем заполненность полей фото, если нет, то маркируется как не для АЗТ
-                        string dir_foto_new  = @"\\HOLY-BOX\APTfiles\Photo specimens" + @"\" + combox_project.Text;  //+папка для образца
-                        if (images_paths.Count != 0 && images_paths[0] != "")
-                        {
-                            new_spec.state = 1;
-                            //просто получаем директорию файла
-                            new_spec.foto_before = images_paths[0];
-                            FileInfo fileInf = new FileInfo(new_spec.foto_before);
-                            new_spec.foto_before = fileInf.DirectoryName;
-                        }
-                        else
-                        {
-                            MessageBox.Show("No foto seleted, specimen marked as NOT ready for APT");
-                            new_spec.state = 7;
-                        }                        
+                        }                                             
                         conn.Open();
                         string sqlcom_3 = "INSERT INTO test2base.specimens (id_producer, id_state, date_prep, id_project, id_treatment, " +
                             "id_treat_type, place_foto_bef, place_foto_after, id_material, priority, comments) VALUES (@id_producer,@id_state,@datetime,@id_project,@treatment," +
@@ -1299,16 +1333,14 @@ namespace RSB
                             //comand.Parameters.AddWithValue("@stor_position", new_spec.stor_pos);
                             comand.Parameters.AddWithValue("@priority", new_spec.priority);
                             comand.Parameters.AddWithValue("@comment", rich_txtbox_comments.Text);
-                            //MessageBox.Show(comand.CommandText);
                             comand.ExecuteNonQuery();
                             //проверить выполнен ли запрос
                             conn.Close();
                         }
-                        //Simple_SQL_req("INSERT INTO test2base.responsible_project (id_project, Id_responsible) VALUES ('"+new_spec.project+"', '"+new_spec.resonse+"');");
-
+                        //добавить ответственного
+                        AddResponse(new_spec.project, new_spec.resonse);
                         //получить новый ID                        
                         conn.Open();
-                        //MessageBox.Show("Дата для сравнения"+new_spec.datetime);
                         sqlcom_3 = "SELECT idspecimens FROM test2base.specimens WHERE id_producer=@id_producer AND id_state=@id_state AND date_prep=@datetime AND " +
                             "id_project=@id_project AND id_treatment=@id_treatment AND " +
                             "id_treat_type=@id_treat_type AND id_material=@id_material";
@@ -1338,17 +1370,13 @@ namespace RSB
                                 }
                             }
                         }
-                        //MessageBox.Show("найденный индекс ="+indexx.ToString());
                         conn.Close();
                         if (id_new != -1)
                         {
-                            //записать местоположение в новую базу данных
+                            //записать местоположение в базу данных
                             Ch_or_create_stor_pos(int.Parse(new_spec.storage), int.Parse(new_spec.stor_pos), id_new, false);
-                            //Simple_SQL_req("INSERT INTO test2base.storage_position (id_storage, position, id_specimen) " +
-                            //    "VALUES (" + new_spec.storage + ", " + new_spec.stor_pos + ", " + id_new.ToString() + ");");
                         }
-
-                        new_spec.foto_before = Copy_fotos(new_spec.foto_before, dir_foto_new, 1,id_new);
+                        new_spec.foto_before = Copy_fotos(new_spec.foto_before, new_spec.foto_Forcopy, 1,id_new);
                         //проверяем и добавляем состояние
                         Push_state(conn, new_spec.treatment, new_spec.material, state_name, new_spec.project);
                         //поменять название папки фото до
@@ -1377,6 +1405,7 @@ namespace RSB
             {
                 Log_action(Properties.Settings.Default.default_username, "new specimen", "universe", combox_storage.Text + " " + combox_pos_add.Text, id_new.ToString());
             }
+            return true;
         }
 
         private void Picbox_big_Click(object sender, EventArgs e)
@@ -3074,7 +3103,7 @@ namespace RSB
         {
             //изменение обработки образца
             //проверка - есть ли у вас права (спойлер - нет)
-            if (Check_access_project(txtbox_respon_inf.Text, Properties.Settings.Default.default_username))
+            if (Check_access_project(txtbox_project_inf.Text, Properties.Settings.Default.default_username))
             {
                 //поиск есть ил такая обработка, если нет, то создаем новую
                 string new_treatment = "";
@@ -3884,79 +3913,59 @@ namespace RSB
                     "access level <=2");
             }
         }
-
+        private void LoadNewImages()
+        {
+			//грузим новые картинки
+			DialogResult result = open_dial_im_before.ShowDialog();
+			images_paths.Clear();
+			if (result == DialogResult.OK)
+			{
+				int num = 0;
+				foreach (string image_path in open_dial_im_before.FileNames)
+				{
+					//MessageBox.Show(image_path);
+					string ext_name = Path.GetExtension(image_path);
+					if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff"
+						|| ext_name == ".JPG"
+						|| ext_name == ".PNG"
+						|| ext_name == ".JPEG"
+						|| ext_name == ".BMP"
+						|| ext_name == ".TIF"
+						|| ext_name == ".TIFF"
+						|| ext_name == ".tif")
+					{
+						Image image_new = Image.FromFile(image_path);
+						images_paths.Add(image_path);
+						num++;
+						switch (num)
+						{
+							case 1:
+								picbox_before_big.Image = image_new;
+								break;
+							case 2:
+								picbox_before_sm1.Image = image_new;
+								break;
+							case 3:
+								picbox_before_sm2.Image = image_new;
+								break;
+							case 4:
+								picbox_before_sm3.Image = image_new;
+								break;
+						}
+					}
+					else MessageBox.Show("No images selected");
+				}
+				picbox_before_big.BackgroundImage = null;
+			}
+			else MessageBox.Show("No path or no directory");
+		}
         private void picbox_before_big_DoubleClick(object sender, EventArgs e)
         {
-            if (picbox_before_big.Image != null)
-            {
-                string temp_path = images_paths[0];
-                images_paths.RemoveAt(0);
-                images_paths.Insert(images_paths.Count, temp_path);
-                picbox_before_big.Image.Dispose();
-                picbox_before_big.Image = Image.FromFile(images_paths[0]);
-                if (images_paths.Count > 1)
-                {
-                    picbox_before_sm1.Image.Dispose();
-                    picbox_before_sm1.Image = Image.FromFile(images_paths[1]);
-                    if (images_paths.Count > 2)
-                    {
-                        picbox_before_sm2.Image.Dispose();
-                        picbox_before_sm2.Image = Image.FromFile(images_paths[2]);
-                        if (images_paths.Count > 3)
-                        {
-                            picbox_before_sm3.Image.Dispose();
-                            picbox_before_sm3.Image = Image.FromFile(images_paths[3]);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                //грузим новые картинки
-                DialogResult result = open_dial_im_before.ShowDialog();
-                bool ttt = true;
-                images_paths.Clear();
-                if (result == DialogResult.OK && ttt)
-                {
-                    int num = 0;
-                    foreach (string image_path in open_dial_im_before.FileNames)
-                    {
-                        //MessageBox.Show(image_path);
-                        string ext_name = Path.GetExtension(image_path);
-                        if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff"
-                            || ext_name == ".JPG"
-                            || ext_name == ".PNG"
-                            || ext_name == ".JPEG"
-                            || ext_name == ".BMP"
-                            || ext_name == ".TIF"
-                            || ext_name == ".TIFF"
-                            || ext_name == ".tif")
-                        {
-                            Image image_new = Image.FromFile(image_path);
-                            images_paths.Add(image_path);
-                            num++;
-                            switch (num)
-                            {
-                                case 1:
-                                    picbox_before_big.Image = image_new;
-                                    break;
-                                case 2:
-                                    picbox_before_sm1.Image = image_new;
-                                    break;
-                                case 3:
-                                    picbox_before_sm2.Image = image_new;
-                                    break;
-                                case 4:
-                                    picbox_before_sm3.Image = image_new;
-                                    break;
-                            }
-                        }
-                        else MessageBox.Show("No images selected");
-                    }
-                    picbox_before_big.BackgroundImage = null;
-                }
-                else MessageBox.Show("No path or no directory");
-            }
+			Clear_one_picbox(picbox_before_big);
+			Clear_one_picbox(picbox_before_sm1);
+			Clear_one_picbox(picbox_before_sm2);
+			Clear_one_picbox(picbox_before_sm3);
+            LoadNewImages();
         }
         private void Fill_combox_pr_filt(ComboBox box, string sql)
         {

@@ -36,6 +36,7 @@ namespace RSB
             string _AppName = @"\\RBSSetup.msi";
             //сравнение версий
             var current_ver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
             //новая версия
             string new_ver = "";
             if (File.Exists(pathFrom + "\\Version.txt"))
@@ -55,7 +56,7 @@ namespace RSB
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"erorr in SelfUpdate {ex}");
+                        MessageBox.Show($"erorr in Self Update {ex}");
                     }
                 }
                 else
@@ -490,6 +491,11 @@ namespace RSB
         private void RSBMainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
 
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show($"Current vertion {Assembly.GetExecutingAssembly().GetName().Version}");
         }
     }
     public class UserData

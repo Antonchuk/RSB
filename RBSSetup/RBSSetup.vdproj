@@ -766,12 +766,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1A64AAB85004C6D61252E1D13A7D01B7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_C3CCCAEC398E4F84AEEE7828E7423356"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -991,6 +985,12 @@
         "OwnerKey" = "8:_759A3E64B3F5B1D987B0556E3EBDD61F"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_1A64AAB85004C6D61252E1D13A7D01B7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -1009,6 +1009,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -1025,6 +1041,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -2395,7 +2427,7 @@
             }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_DC03EF95DBF647C5BC7F866C5E19F80A"
             {
-            "DefaultLocation" = "8:[ProgramFiles64Folder][Manufacturer]\\[ProductName]"
+            "DefaultLocation" = "8:[PersonalFolder]\\[Manufacturer]\\[ProductName]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -2432,15 +2464,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:RBS"
-        "ProductCode" = "8:{4D747445-2C2A-4C56-9AA0-B2E4B4D40806}"
-        "PackageCode" = "8:{075459B8-93E6-4FB1-9014-1B795B6394EB}"
+        "ProductCode" = "8:{7671FE36-18C3-4894-A0EA-5ABDD98BE80F}"
+        "PackageCode" = "8:{C600BAC2-7578-4D92-A360-D5791BC3C407}"
         "UpgradeCode" = "8:{8C30B43D-C57C-4FFF-A706-C3CA72F96118}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.1.5"
+        "ProductVersion" = "8:1.1.15"
         "Manufacturer" = "8:Frankenstein inc"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -2982,7 +3014,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C3CCCAEC398E4F84AEEE7828E7423356"
             {
-            "SourcePath" = "8:..\\RSB\\obj\\x64\\Release\\RSB.exe"
+            "SourcePath" = "8:..\\RSB\\obj\\x64\\Debug\\RSB.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_DC03EF95DBF647C5BC7F866C5E19F80A"

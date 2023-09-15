@@ -49,6 +49,7 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.howToBaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbl_status = new System.Windows.Forms.Label();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -260,7 +261,8 @@
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.howToBaseToolStripMenuItem});
+            this.howToBaseToolStripMenuItem,
+            this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
@@ -268,7 +270,7 @@
             // howToBaseToolStripMenuItem
             // 
             this.howToBaseToolStripMenuItem.Name = "howToBaseToolStripMenuItem";
-            this.howToBaseToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.howToBaseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.howToBaseToolStripMenuItem.Text = "HowTo base";
             this.howToBaseToolStripMenuItem.Click += new System.EventHandler(this.howToBaseToolStripMenuItem_Click);
             // 
@@ -280,6 +282,13 @@
             this.lbl_status.Size = new System.Drawing.Size(126, 22);
             this.lbl_status.TabIndex = 4;
             this.lbl_status.Text = "No connection";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // RSBMainForm
             // 
@@ -334,6 +343,7 @@
         private System.Windows.Forms.Button btn_connect;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem howToBaseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 

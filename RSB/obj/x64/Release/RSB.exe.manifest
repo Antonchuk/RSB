@@ -4,7 +4,7 @@
   <description asmv2:iconFile="loss 3.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="RSB" version="1.1.5.0" language="neutral" processorArchitecture="amd64" />
+    <assemblyIdentity name="RSB" version="1.1.13.0" language="neutral" processorArchitecture="amd64" />
     <commandLine file="RSB.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -271,14 +271,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RSB.exe" size="1174016">
-      <assemblyIdentity name="RSB" version="1.1.5.0" language="neutral" processorArchitecture="amd64" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RSB.exe" size="1174528">
+      <assemblyIdentity name="RSB" version="1.1.13.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>6qkEzrbhACH1VrNQqmDWKXYKe5LG6J0+reltgeUu/ok=</dsig:DigestValue>
+        <dsig:DigestValue>fWRtJ7JzpWI6bGTuEOfq0SSNjx2w8Z46vhLjv/sckhk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

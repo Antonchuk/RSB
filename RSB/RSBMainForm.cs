@@ -36,7 +36,6 @@ namespace RSB
             string _AppName = @"\\RBSSetup.msi";
             //сравнение версий
             var current_ver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
             //новая версия
             string new_ver = "";
             if (File.Exists(pathFrom + "\\Version.txt"))
@@ -45,7 +44,7 @@ namespace RSB
             }
             if (current_ver != new_ver)
             {
-                if (MessageBox.Show("A new update is available!", "Demo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show("A new update is available! Upgrade?", "Demo", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     try
                     {
@@ -106,7 +105,7 @@ namespace RSB
                 Properties.Settings.Default.Save();
                 Save_def_json(@"\user.json");
             }
-            GC.Collect();
+            //GC.Collect();
             Close();
         }
 
@@ -175,12 +174,7 @@ namespace RSB
             if (!dirInfo.Exists)
             {
                 dirInfo.Create();
-                //MessageBox.Show("создали");
             }
-
-            //конект к базе 
-            //запрос пользователей SELECT User FROM mys ql.user;
-            //добавление в комбобокс
         }
 
         private void Ch_state_buttons(bool ch_state)

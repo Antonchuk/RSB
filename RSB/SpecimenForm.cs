@@ -1248,7 +1248,8 @@ namespace RSB
                 FileInfo fileInf = new FileInfo(ans.foto_before);
                 ans.foto_before = fileInf.DirectoryName;
                 DirectoryInfo check = new DirectoryInfo(ans.foto_Forcopy);
-                if (!check.Exists)
+                DirectoryInfo check2 = new DirectoryInfo(@"\\HOLY-BOX\APTfiles\Photo specimens");
+                if (!check.Exists && !check2.Exists)
                 {
                     ans.foto_before = "no";
                 }
@@ -1303,7 +1304,7 @@ namespace RSB
                     new_spec = SetPicsPath(new_spec);
                     if (new_spec.foto_before == "no") 
                     {
-                        MessageBox.Show("Check connection with HOLY-BOX");
+                        MessageBox.Show("Check connection with HOLY-BOX and try again");
                         return false;
                     }
                     Check_for_new_data(new_spec, conn);                     
@@ -1376,6 +1377,7 @@ namespace RSB
                             //записать местоположение в базу данных
                             Ch_or_create_stor_pos(int.Parse(new_spec.storage), int.Parse(new_spec.stor_pos), id_new, false);
                         }
+                        //фото
                         new_spec.foto_before = Copy_fotos(new_spec.foto_before, new_spec.foto_Forcopy, 1,id_new);
                         //проверяем и добавляем состояние
                         Push_state(conn, new_spec.treatment, new_spec.material, state_name, new_spec.project);

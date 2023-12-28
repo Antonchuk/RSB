@@ -42,7 +42,7 @@ namespace RSB
             {
                 new_ver = File.ReadAllText(pathFrom + "\\Version.txt");
             }
-            if (current_ver != new_ver)
+            if (current_ver != new_ver && new_ver!="")
             {
                 if (MessageBox.Show("A new update is available! Upgrade?", "Demo", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
@@ -62,6 +62,10 @@ namespace RSB
                 {
                     this.Close();
                 }
+            }
+            else
+            {
+                if (new_ver == "") MessageBox.Show("Check connection to HOLY-BOX");
             }
         }
         /// <summary>
@@ -262,31 +266,7 @@ namespace RSB
         {
             Close();
         }
-        // посылка письма test
 
-        private static void SendMail_test()
-        {
-            MailAddress from = new MailAddress("ant4uk@yandex.ru", "Anton");
-            MailAddress to = new MailAddress("antchuk@gmail.com");
-            MailMessage m = new MailMessage(from, to)
-            {
-                Subject = "Тест письмо",
-                Body = "Письмо-тест 2 работы smtp-клиента"
-                //IsBodyHtml = true
-            };
-            //SmtpClient smtp = new SmtpClient("smtp.yandex.ru", 465) //587 - ошибка в порядке авторизации?
-            SmtpClient smtp = new SmtpClient("smtp.yandex.ru", 465)
-            {
-                //Host= smtpServer,
-                //DeliveryMethod =SmtpDeliveryMethod.Network,
-                EnableSsl = true,
-                Credentials = new NetworkCredential("ant4uk@yandex.ru", "")                
-            };
-            smtp.Send(m);
-            MessageBox.Show("Письмо отправлено");
-            //await smtp.SendMailAsync(m);
-            //Console.WriteLine("Письмо отправлено");
-        }
 
         private void Btn_remind_pass_Click(object sender, EventArgs e)
         {

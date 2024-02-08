@@ -2761,12 +2761,29 @@ namespace RSB
                         DialogResult result = open_dial_im_before.ShowDialog();
                         if (result == DialogResult.OK)
                         {
-                            string path = open_dial_im_before.FileName;
+							images_paths.Clear();
+							foreach (string image_path in open_dial_im_before.FileNames)
+							{
+								string ext_name = Path.GetExtension(image_path);
+								if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff"
+									|| ext_name == ".JPG"
+									|| ext_name == ".PNG"
+									|| ext_name == ".JPEG"
+									|| ext_name == ".BMP"
+									|| ext_name == ".TIF"
+									|| ext_name == ".TIFF"
+									|| ext_name == ".tif")
+								{
+									images_paths.Add(image_path);
+								}
+							}
+							string path = open_dial_im_before.FileName;
                             //MessageBox.Show("Диретокрия + файл" + path);
                             FileInfo fileInf = new FileInfo(path);
                             path = fileInf.DirectoryName;
                             //MessageBox.Show("Диретокрия" + path);
                             string dir_foto_new = @"\\HOLY-BOX\APTfiles\Photo specimens" + @"\" + dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[3].Value.ToString();
+
                             path_TEM = Copy_fotos(path, dir_foto_new, 2,indexx);
                         }
                         if (path_TEM != "")
@@ -2779,7 +2796,8 @@ namespace RSB
                             }
                         }
                         conn.Close();
-                    }
+						images_paths.Clear();
+					}
                 }
                 catch (Exception ex)
                 {
@@ -2812,9 +2830,20 @@ namespace RSB
                             images_paths.Clear();
                             foreach (string image_path in open_dial_im_before.FileNames)
                             {
-								images_paths.Add(image_path);
+								string ext_name = Path.GetExtension(image_path);
+                                if (ext_name == ".jpg" || ext_name == ".jpeg" || ext_name == ".png" || ext_name == ".bmp" || ext_name == ".tiff"
+                                    || ext_name == ".JPG"
+                                    || ext_name == ".PNG"
+                                    || ext_name == ".JPEG"
+                                    || ext_name == ".BMP"
+                                    || ext_name == ".TIF"
+                                    || ext_name == ".TIFF"
+                                    || ext_name == ".tif")
+                                {
+                                    images_paths.Add(image_path);
+                                }
 							}
-								string path = open_dial_im_before.FileName;
+							string path = open_dial_im_before.FileName;
                             //MessageBox.Show("Диретокрия + файл" + path);
                             FileInfo fileInf = new FileInfo(path);
                             path = fileInf.DirectoryName;

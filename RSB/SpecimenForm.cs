@@ -1133,6 +1133,7 @@ namespace RSB
                 DirectoryInfo dirInfo = new DirectoryInfo(directory_new);
                 dirInfo.Create();                
             }
+            //MessageBox.Show($"old dir = {old_directory}, new = {directory_new}");
             directory_new += @"\" + spec_id.ToString();
             switch (type)
             {
@@ -2808,7 +2809,12 @@ namespace RSB
                         DialogResult result = open_dial_im_before.ShowDialog();
                         if (result == DialogResult.OK)
                         {
-                            string path = open_dial_im_before.FileName;
+                            images_paths.Clear();
+                            foreach (string image_path in open_dial_im_before.FileNames)
+                            {
+								images_paths.Add(image_path);
+							}
+								string path = open_dial_im_before.FileName;
                             //MessageBox.Show("Диретокрия + файл" + path);
                             FileInfo fileInf = new FileInfo(path);
                             path = fileInf.DirectoryName;
@@ -2823,6 +2829,7 @@ namespace RSB
                                 comand.ExecuteNonQuery();
                             }
                             conn.Close();
+                            images_paths.Clear();
                         }
                     }
                     Refresh_datagrid();

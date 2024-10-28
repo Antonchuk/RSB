@@ -46,10 +46,11 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.switchDiscordOnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.howToBaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lbl_status = new System.Windows.Forms.Label();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lbl_status = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -246,7 +247,8 @@
             // connectionToolStripMenuItem
             // 
             this.connectionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.propertiesToolStripMenuItem});
+            this.propertiesToolStripMenuItem,
+            this.switchDiscordOnToolStripMenuItem});
             this.connectionToolStripMenuItem.Name = "connectionToolStripMenuItem";
             this.connectionToolStripMenuItem.Size = new System.Drawing.Size(81, 20);
             this.connectionToolStripMenuItem.Text = "Connection";
@@ -254,9 +256,17 @@
             // propertiesToolStripMenuItem
             // 
             this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
-            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.propertiesToolStripMenuItem.Text = "Properties";
             this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.PropertiesToolStripMenuItem_Click);
+            // 
+            // switchDiscordOnToolStripMenuItem
+            // 
+            this.switchDiscordOnToolStripMenuItem.CheckOnClick = true;
+            this.switchDiscordOnToolStripMenuItem.Name = "switchDiscordOnToolStripMenuItem";
+            this.switchDiscordOnToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.switchDiscordOnToolStripMenuItem.Text = "Discord";
+            this.switchDiscordOnToolStripMenuItem.CheckedChanged += new System.EventHandler(this.switchDiscordOnToolStripMenuItem_CheckedChanged);
             // 
             // helpToolStripMenuItem
             // 
@@ -270,9 +280,16 @@
             // howToBaseToolStripMenuItem
             // 
             this.howToBaseToolStripMenuItem.Name = "howToBaseToolStripMenuItem";
-            this.howToBaseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.howToBaseToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.howToBaseToolStripMenuItem.Text = "HowTo base";
             this.howToBaseToolStripMenuItem.Click += new System.EventHandler(this.howToBaseToolStripMenuItem_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // lbl_status
             // 
@@ -282,13 +299,6 @@
             this.lbl_status.Size = new System.Drawing.Size(126, 22);
             this.lbl_status.TabIndex = 4;
             this.lbl_status.Text = "No connection";
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // RSBMainForm
             // 
@@ -344,6 +354,7 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem howToBaseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem switchDiscordOnToolStripMenuItem;
     }
 }
 

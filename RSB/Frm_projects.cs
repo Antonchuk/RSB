@@ -211,7 +211,8 @@ namespace RSB
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error in calc atoms count\n"+ex.ToString());
+                    //MessageBox.Show($"путь {one_path}");
+                    //MessageBox.Show("Error in calc atoms count\n"+ex.ToString());
                 }
             }
             return ans;
@@ -245,7 +246,6 @@ namespace RSB
         /// <summary>
         /// расчет числа атомов для состояния
         /// </summary>
-        /// <param name="projectID"></param>
         /// <param name="material"></param>
         /// <param name="treatment"></param>
         /// <returns></returns>

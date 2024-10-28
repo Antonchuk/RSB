@@ -68,7 +68,6 @@
             <summary>
             расчет числа атомов для состояния
             </summary>
-            <param name="projectID"></param>
             <param name="material"></param>
             <param name="treatment"></param>
             <returns></returns>
@@ -396,6 +395,12 @@
             <summary>
             Заполняем лист бокс галочками
             </summary>
+        </member>
+        <member name="M:RSB.Form_specimens.Fill_lblStorgaeFilling(System.Int32)">
+            <summary>
+            заполняем поле загруженности хранилища
+            </summary>
+            <param name="specimenId"></param>
         </member>
         <member name="M:RSB.Form_specimens.Check_for_exist(System.String,MySql.Data.MySqlClient.MySqlConnection,System.String,System.String,System.String)">
             <summary>

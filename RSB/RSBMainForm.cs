@@ -105,7 +105,13 @@ namespace RSB
             if (btn_research.Enabled)
             {
                 Properties.Settings.Default.default_username = cbox_username.Text;
-                Properties.Settings.Default.default_pass = txtbox_pass.Text;
+                Properties.Settings.Default.default_pass = txtbox_pass.Text;                
+                bool _disc = false;
+                if (switchDiscordOnToolStripMenuItem.Checked)
+                {
+                    _disc = true;
+                }
+                Properties.Settings.Default.discord_notification = _disc;
                 Properties.Settings.Default.Save();
                 Save_def_json(@"\user.json");
             }
@@ -166,7 +172,17 @@ namespace RSB
             cbox_username.Items.Add(Properties.Settings.Default.default_username);
             //ЗАГЛУШКА
             txtbox_pass.Text = Properties.Settings.Default.default_pass;
-            cbox_username.Text = Properties.Settings.Default.default_username;            
+            cbox_username.Text = Properties.Settings.Default.default_username;   
+            bool _discord= Properties.Settings.Default.discord_notification;
+            if (_discord)
+            {
+                switchDiscordOnToolStripMenuItem.Checked = true;
+            }
+            else
+            {
+                switchDiscordOnToolStripMenuItem.Checked = false;
+            }
+            
             if (txtbox_pass.Text == "" || cbox_username.Text == "testadmin")
             {
                 Load_json(@"\user.json");
@@ -264,6 +280,7 @@ namespace RSB
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Close_all();
             Close();
         }
 
@@ -470,6 +487,13 @@ namespace RSB
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show($"Current vertion {Assembly.GetExecutingAssembly().GetName().Version}");
+        }
+
+        private void switchDiscordOnToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            //MessageBox.Show("test checked changed");
+            Properties.Settings.Default.discord_notification = switchDiscordOnToolStripMenuItem.Checked;
+            Properties.Settings.Default.Save();
         }
     }
     public class UserData

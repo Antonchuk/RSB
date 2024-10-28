@@ -15,6 +15,8 @@ using Excel = Microsoft.Office.Interop.Excel;
 using MihaZupan;
 using Newtonsoft.Json;
 using Discord.WebSocket;
+using Microsoft.Office.Interop.Word;
+using System.Reflection;
 
 namespace RSB
 {
@@ -803,6 +805,28 @@ namespace RSB
                     //"\n [0] строка равна = "+dataGrid_specimens.CurrentCell.Value.ToString());
                 int Sel_index = dataGrid_specimens.SelectedRows[0].Index;
                 Fill_info_text(Sel_index);
+                // заполняем lblStorageFilling
+                Fill_lblStorgaeFilling(Sel_index);
+            }
+        }
+        /// <summary>
+        /// заполняем поле загруженности хранилища
+        /// </summary>
+        /// <param name="specimenId"></param>
+        private void Fill_lblStorgaeFilling(int specimenIndex)
+        {
+            if (dataGrid_specimens.Rows[specimenIndex].Cells[0].Value != null)
+            {
+                int specimenId = Convert.ToInt32(dataGrid_specimens.Rows[specimenIndex].Cells[0].Value);
+                List<string> capacity = SQL_List_querry("SELECT storage.capacity FROM test2base.storage " +
+                    "WHERE (storage.id_storage = (SELECT id_storage FROM test2base.storage_position WHERE (id_specimen = '" + specimenId.ToString() + "')));");
+
+                List<string> now_filling = SQL_List_querry("SELECT  COUNT(DISTINCT position) FROM test2base.storage_position " +
+                    "WHERE (id_storage = (SELECT id_storage FROM test2base.storage_position WHERE (id_specimen = '" + specimenId.ToString() + "')) AND (id_specimen > 0));");
+                if (capacity.Count > 0 && now_filling.Count > 0)
+                {
+                    lblStorageFilling.Text = $"Storage filling: {now_filling[0]}/{capacity[0]}";
+                }
             }
         }
         private void Form_specimens_Load(object sender, EventArgs e)
@@ -874,6 +898,7 @@ namespace RSB
             dateTimePicker_start.Value = tem_dat.AddYears(-20);
             if (Properties.Settings.Default.ini_split_inf!=0) split_inf.SplitterDistance = Properties.Settings.Default.ini_split_inf;
             if (Properties.Settings.Default.ini_split_add_new != 0) splitContainer_add_new.SplitterDistance = Properties.Settings.Default.ini_split_add_new;
+            if (Properties.Settings.Default.specimens_split_datagrid != 0) splitContainer1.SplitterDistance = Properties.Settings.Default.specimens_split_datagrid;
             //грузим фильтры из json
             filt_master.common_filters = new List<string>();
             Load_def_json(@"\Settings\test_json.json");
@@ -885,6 +910,11 @@ namespace RSB
             on_load = false;
             //запуск таймера на циклическое обновление
             timer_for_refresh.Start();
+            //if (System.Runtime.InteropServices.RuntimeInformation.OSDescription.ToString().Contains("Microsoft Windows 10."))
+            //{
+                //MessageBox.Show($"OS version = {System.Runtime.InteropServices.RuntimeInformation.OSDescription}");
+            //}
+            //
         }
 
         private void Btn_refresh_Click(object sender, EventArgs e)
@@ -1445,6 +1475,7 @@ namespace RSB
             Properties.Settings.Default.font_config = this.Font.ToString();
             Properties.Settings.Default.ini_split_add_new = splitContainer_add_new.SplitterDistance;
             Properties.Settings.Default.ini_split_inf = split_inf.SplitterDistance;
+            Properties.Settings.Default.specimens_split_datagrid = splitContainer1.SplitterDistance;
             //MessageBox.Show("ssave: \n " + Properties.Settings.Default.font_config);
             if (combox_showonly.Text=="All")
             {
@@ -2954,37 +2985,43 @@ namespace RSB
         }
         private async void Send_discord(bool voice, string actor, string action_t, string id_spec, string new_place)
         {
-            List<string> actors = new List<string>();
-            //пробуем получить кто
-            string actor_id = SQL_List_querry("SELECT producers.discord_id FROM test2base.producers WHERE (user_name = '"+actor+"')")[0];
-            if (actor_id == "")
+            //если уведомления выключены, что не шлем ничего
+            if (Properties.Settings.Default.discord_notification)
             {
-                actors.Add("author " + actor + ",");
+                List<string> actors = new List<string>();
+                //пробуем получить кто
+                string actor_id = SQL_List_querry("SELECT producers.discord_id FROM test2base.producers WHERE (user_name = '" + actor + "')")[0];
+                if (actor_id == "")
+                {
+                    actors.Add("author " + actor + ",");
+                }
+                else
+                {
+                    actors.Add("author " + actor_id + ",");
+                }
+                //получаем зависимые
+                actors.AddRange(Get_related(action_t, id_spec));
+                string hook;
+                if (action_t == "research was made")
+                {
+                    hook = SQL_List_querry("SELECT token FROM test2base.producers WHERE (user_name = 'res')")[0];
+                }
+                else
+                {
+                    hook = SQL_List_querry("SELECT token FROM test2base.producers WHERE (user_name = 'move')")[0];
+                }
+                //название материала и обработку
+                string _material = SQL_List_querry("SELECT materials.name FROM test2base.materials WHERE (id_material = (SELECT id_material FROM test2base.specimens WHERE (idspecimens = '" + id_spec + "')))")[0];
+                string _treat = SQL_List_querry("SELECT treatment.name FROM test2base.treatment WHERE (id_treatment = (SELECT id_treatment FROM test2base.specimens WHERE (idspecimens = '" + id_spec + "')))")[0];
+                //новое место перемещения
+                if (System.Runtime.InteropServices.RuntimeInformation.OSDescription.ToString().Contains("Microsoft Windows 10."))
+                {
+                    Discord.Webhook.DiscordWebhookClient disc_client = new Discord.Webhook.DiscordWebhookClient(hook);
+                    string message = id_spec + " " + _material + " " + _treat + " " + action_t + ", moved to '" + new_place + "'" + String.Join(" ", actors.ToArray());
+                    await disc_client.SendMessageAsync(message, voice, null, "RSB", null, null, Discord.AllowedMentions.All);
+                    disc_client.Dispose();
+                }
             }
-            else
-            {
-                actors.Add("author " + actor_id + ",");
-            }
-            //получаем зависимые
-            actors.AddRange(Get_related(action_t, id_spec));
-            string hook;
-            if (action_t == "research was made")
-            {
-                hook = SQL_List_querry("SELECT token FROM test2base.producers WHERE (user_name = 'res')")[0];
-            }
-            else
-            {
-                hook = SQL_List_querry("SELECT token FROM test2base.producers WHERE (user_name = 'move')")[0];
-            }
-            //название материала и обработку
-            string _material = SQL_List_querry("SELECT materials.name FROM test2base.materials WHERE (id_material = (SELECT id_material FROM test2base.specimens WHERE (idspecimens = '"+ id_spec + "')))")[0];
-            string _treat = SQL_List_querry("SELECT treatment.name FROM test2base.treatment WHERE (id_treatment = (SELECT id_treatment FROM test2base.specimens WHERE (idspecimens = '" + id_spec + "')))")[0];
-            //новое место перемещения
-
-            Discord.Webhook.DiscordWebhookClient disc_client = new Discord.Webhook.DiscordWebhookClient(hook);
-            string message = id_spec + " " +_material + " " +_treat + " " + action_t + ", moved to '"+new_place+"'" + String.Join(" ", actors.ToArray());
-            await disc_client.SendMessageAsync(message, voice, null, "RSB", null, null, Discord.AllowedMentions.All);
-            disc_client.Dispose();
         }
         private string Show_history(int spec_id)
         {
@@ -3086,7 +3123,7 @@ namespace RSB
             {
                 try
                 {
-                    this.Font = new Font(FontDial_specim.Font, this.Font.Style);
+                    this.Font = new System.Drawing.Font(FontDial_specim.Font, this.Font.Style);
                     //сохраним выбранный стиль
                     //Properties.Settings.Default.font_config = this.Font.ToString();
                     //Properties.Settings.Default.Save();
@@ -3294,14 +3331,14 @@ namespace RSB
             MessageBoxDefaultButton.Button1);
             }
         }
-        private async Task test_D_message(string mess)
+        private async System.Threading.Tasks.Task test_D_message(string mess)
         {
             _client = new DiscordSocketClient();
             //получаем токен бота
             var token = SQL_List_querry("SELECT producers.token FROM test2base.producers WHERE (user_name = 'chuk')")[0];
             await _client.LoginAsync(Discord.TokenType.Bot, token);
             await _client.StartAsync();
-            await Task.Delay(-1);
+            await System.Threading.Tasks.Task.Delay(-1);
         }
         private async void btn_test_Click(object sender, EventArgs e)
         {
@@ -4019,7 +4056,7 @@ namespace RSB
         /// <param name="sql_next"></param>
         /// <param name="ch_box"></param>
         /// <param name="ProjectName"></param>
-        private void Fill_clever_combo(ComboBox box, string sql_first, string sql_next, CheckBox ch_box, string ProjectName)
+        private void Fill_clever_combo(ComboBox box, string sql_first, string sql_next, System.Windows.Forms.CheckBox ch_box, string ProjectName)
         {
             string _sql_material;
             if (Check_access_project(ProjectName, Properties.Settings.Default.default_username) && ch_box.Checked)

@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using Discord.WebSocket;
 using Microsoft.Office.Interop.Word;
 using System.Reflection;
+using Org.BouncyCastle.Asn1;
 
 namespace RSB
 {
@@ -795,6 +796,103 @@ namespace RSB
                 }
             }
         }
+        private string GetStringSpecimenQuality(int gen, int att, int frag, int etch, int section)
+        {
+            string ans = "";
+            if (gen==0)
+            {
+                ans += "General characteristic - easy\n";
+            }
+            else
+            {
+                ans += "General characteristic - hard\n";
+            }
+            if (att == 0)
+            {
+                ans += "Attempts count - 1-3\n";
+            }
+            else
+            {
+                ans += "Attempts count - >3\n";
+            }
+            if (frag == 0)
+            {
+                ans += "Fragile - No\n";
+            }
+            else
+            {
+                ans += "Fragile - Yes\n";
+            }
+            if (etch == 0)
+            {
+                ans += "Selective etching - No\n";
+            }
+            else
+            {
+                ans += "Selective etching - Yes\n";
+            }
+            if (section == 0)
+            {
+                ans += "Has long section - Yes\n";
+            }
+            else
+            {
+                ans += "Has long section - No\n";
+            }
+            return ans;
+        }
+        /// <summary>
+        /// заполняем доп информацию о качестве образца
+        /// </summary>
+        /// <param name="index"></param>
+        private void Fill_lblSpecimenQuality(int index)
+        {
+            if (dataGrid_specimens.Rows[index].Cells[0].Value != null)
+            {
+                int specimenId = Convert.ToInt32(dataGrid_specimens.Rows[index].Cells[0].Value);
+                using (MySqlConnection conn = New_connection(conn_str))
+                {
+                    try
+                    {
+                        conn.Open();
+                        string sql_comand = "SELECT general_characteristic, attempts, fragile, selective_etching, has_long_section " +
+                            "FROM test2base.specimens WHERE (idspecimens = '"+specimenId.ToString()+"');";
+                        using (MySqlCommand comand = new MySqlCommand(sql_comand, conn))
+                        {
+                            using (MySqlDataReader reader = comand.ExecuteReader())
+                            {
+                                if (reader.HasRows)
+                                {
+                                    while (reader.Read())
+                                    {
+                                        //reader.
+                                        if (int.TryParse(reader[0].ToString(), out int gen) &&
+                                            int.TryParse(reader[1].ToString(), out int att) &&
+                                            int.TryParse(reader[2].ToString(), out int frag) &&
+                                            int.TryParse(reader[3].ToString(), out int etch) &&
+                                            int.TryParse(reader[4].ToString(), out int sect))
+                                        {
+                                            lblSpeciemQuality.Text = GetStringSpecimenQuality(gen, att, frag, etch, sect);
+                                        }
+                                        else
+                                        {
+                                            lblSpeciemQuality.Text = "";
+                                        }
+                                    }
+                                    reader.Close();
+                                }
+                            }
+                        }
+                        conn.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Ошибка в блоке \n"+ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                        MessageBoxDefaultButton.Button1);
+                    }
+                }
+            }
+        }
         private void Fill_information()
         {
             //заполняем информацию
@@ -807,12 +905,14 @@ namespace RSB
                 Fill_info_text(Sel_index);
                 // заполняем lblStorageFilling
                 Fill_lblStorgaeFilling(Sel_index);
+                //заполняем инфу о качестве образца
+                Fill_lblSpecimenQuality(Sel_index);
             }
         }
         /// <summary>
         /// заполняем поле загруженности хранилища
         /// </summary>
-        /// <param name="specimenId"></param>
+        /// <param name="specimenIndex"></param>
         private void Fill_lblStorgaeFilling(int specimenIndex)
         {
             if (dataGrid_specimens.Rows[specimenIndex].Cells[0].Value != null)
@@ -1300,6 +1400,16 @@ namespace RSB
                 Simple_SQL_req("INSERT INTO test2base.responsible_project (id_project, Id_responsible) VALUES ('" + id_project + "', '" + id_resp + "');");
             }
         }
+        private void ShowQuestionnaire()
+        {
+            Form frmQuestionnaire = new SpecimenProperties();
+            //frmQuestionnaire.ShowDialog();
+            if (frmQuestionnaire.ShowDialog() != DialogResult.OK)
+            {
+                ShowQuestionnaire();
+                //MessageBox.Show("no result");
+            }
+        }
         private bool New_specimen()
         {
             conn_str = Get_conn_string(Properties.Settings.Default.server, Properties.Settings.Default.port,
@@ -1338,7 +1448,10 @@ namespace RSB
                         MessageBox.Show("Check connection with HOLY-BOX and try again");
                         return false;
                     }
-                    Check_for_new_data(new_spec, conn);                     
+                    Check_for_new_data(new_spec, conn);
+                    //опросник для пользователся
+                    ShowQuestionnaire();
+                    //опросник для пользователя
                     if (specimen_new_accepted)
                     {
                         if (!(new_spec.priority== "4 High" || new_spec.priority == "5 Now" || new_spec.priority == "3 Normal" || new_spec.priority == "2 Low" || new_spec.priority == "1 One fine day"))
@@ -1347,8 +1460,10 @@ namespace RSB
                         }                                             
                         conn.Open();
                         string sqlcom_3 = "INSERT INTO test2base.specimens (id_producer, id_state, date_prep, id_project, id_treatment, " +
-                            "id_treat_type, place_foto_bef, place_foto_after, id_material, priority, comments) VALUES (@id_producer,@id_state,@datetime,@id_project,@treatment," +
-                        "@id_treat_type,@foto_before,@foro_after,@id_material,@priority, @comment)";
+                            "id_treat_type, place_foto_bef, place_foto_after, id_material, priority, comments, general_characteristic, " +
+                            "attempts, fragile, selective_etching, has_long_section)" +
+                            " VALUES (@id_producer,@id_state,@datetime,@id_project,@treatment," +
+                        "@id_treat_type,@foto_before,@foro_after,@id_material,@priority, @comment, @general_characteristic, @attempts, @fragile, @selective_etching, @has_long_section)";
                         using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conn))
                         {
                             comand.Parameters.AddWithValue("@id_producer", new_spec.producer);
@@ -1365,6 +1480,11 @@ namespace RSB
                             //comand.Parameters.AddWithValue("@stor_position", new_spec.stor_pos);
                             comand.Parameters.AddWithValue("@priority", new_spec.priority);
                             comand.Parameters.AddWithValue("@comment", rich_txtbox_comments.Text);
+                            comand.Parameters.AddWithValue("@general_characteristic", Properties.Settings.Default.SpecPropGeneral);
+                            comand.Parameters.AddWithValue("@attempts", Properties.Settings.Default.SpecPropAttempts);
+                            comand.Parameters.AddWithValue("@fragile", Properties.Settings.Default.SpecPropFragile);
+                            comand.Parameters.AddWithValue("@selective_etching", Properties.Settings.Default.SpecPropEtching);
+                            comand.Parameters.AddWithValue("@has_long_section", Properties.Settings.Default.SpecPropLongSection);
                             comand.ExecuteNonQuery();
                             //проверить выполнен ли запрос
                             conn.Close();
@@ -3343,7 +3463,8 @@ namespace RSB
         private async void btn_test_Click(object sender, EventArgs e)
         {
             //кнопка для разных тестов
-            MessageBox.Show("test discord bot");
+            MessageBox.Show("test questionnaire");
+            ShowQuestionnaire();
             //шлем сообщение            
            /* Discord.Webhook.DiscordWebhookClient cl = new Discord.Webhook.DiscordWebhookClient(Properties.Settings.Default.disc_hook_research);
             await cl.SendMessageAsync("Тридцать три корабля лавировали-лавировали, лавировали-лавировали, " +
@@ -4157,5 +4278,6 @@ namespace RSB
                 comboxTreatInfo.Text = "";
             }
         }
+
     }
 }

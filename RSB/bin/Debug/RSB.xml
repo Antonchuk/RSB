@@ -396,11 +396,17 @@
             Заполняем лист бокс галочками
             </summary>
         </member>
+        <member name="M:RSB.Form_specimens.Fill_lblSpecimenQuality(System.Int32)">
+            <summary>
+            заполняем доп информацию о качестве образца
+            </summary>
+            <param name="index"></param>
+        </member>
         <member name="M:RSB.Form_specimens.Fill_lblStorgaeFilling(System.Int32)">
             <summary>
             заполняем поле загруженности хранилища
             </summary>
-            <param name="specimenId"></param>
+            <param name="specimenIndex"></param>
         </member>
         <member name="M:RSB.Form_specimens.Check_for_exist(System.String,MySql.Data.MySqlClient.MySqlConnection,System.String,System.String,System.String)">
             <summary>
@@ -679,6 +685,23 @@
             Главная точка входа для приложения.
             </summary>
         </member>
+        <member name="F:RSB.SpecimenProperties.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:RSB.SpecimenProperties.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:RSB.SpecimenProperties.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
         <member name="T:RSB.Properties.Resources">
             <summary>
               Класс ресурса со строгой типизацией для поиска локализованных строк и т.д.
@@ -693,6 +716,11 @@
             <summary>
               Перезаписывает свойство CurrentUICulture текущего потока для всех
               обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
+            </summary>
+        </member>
+        <member name="P:RSB.Properties.Resources._2024_11_08_17_45_12">
+            <summary>
+              Поиск локализованного ресурса типа System.Drawing.Bitmap.
             </summary>
         </member>
         <member name="P:RSB.Properties.Resources.Backimage">

@@ -887,7 +887,7 @@ namespace RSB
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Ошибка в блоке \n"+ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                        MessageBox.Show("Ошибка в блоке Fill_lblSpecimenQuality\n" + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error,
                         MessageBoxDefaultButton.Button1);
                     }
                 }
@@ -1284,23 +1284,21 @@ namespace RSB
             }
             if (old_directory != "")
             {
-                //string[] pic_list = Directory.GetFiles(old_directory);
-                // Copy picture files.
-                //test
-                foreach (string path in images_paths)
+                try
                 {
-					string fName = path.Substring(old_directory.Length + 1);
-					File.Copy(Path.Combine(old_directory, fName), Path.Combine(directory_new, fName), true);
-				}
-                //test
-                /*foreach (string f in pic_list)
+
+                    foreach (string path in images_paths)
+                    {
+                        string fName = path.Substring(old_directory.Length + 1);
+                        File.Copy(Path.Combine(old_directory, fName), Path.Combine(directory_new, fName), true);
+                    }
+                }
+                catch (Exception ex)
                 {
-                    // Remove path from the file name.
-                    string fName = f.Substring(old_directory.Length + 1);
-                    // Use the Path.Combine method to safely append the file name to the path.
-                    // Will overwrite if the destination file already exists.
-                    File.Copy(Path.Combine(old_directory, fName), Path.Combine(directory_new, fName), true);
-                }*/
+                    MessageBox.Show(ex.Message + ",\nсообщите администратору номер проблемного бразца, можно вручную скопировать файлы в дирректорию\n" + directory_new, "Ошибка в копировании фото", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                MessageBoxDefaultButton.Button1);
+                }
+
             }
             return directory_new;
         }
@@ -1403,11 +1401,9 @@ namespace RSB
         private void ShowQuestionnaire()
         {
             Form frmQuestionnaire = new SpecimenProperties();
-            //frmQuestionnaire.ShowDialog();
             if (frmQuestionnaire.ShowDialog() != DialogResult.OK)
             {
                 ShowQuestionnaire();
-                //MessageBox.Show("no result");
             }
         }
         private bool New_specimen()
@@ -1835,13 +1831,16 @@ namespace RSB
                             {
                                 //если нет, то добавляем новые
                                 //MessageBox.Show(date_time_add_edit.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                                //опросник по качеству исследования
+                                ShowQuestionnaireResearch();
                                 string id_researcher = Check_for_exist(combox_researcher.Text, conn, "producers", "id_producer", "surname");
                                 
                                 string id_setup_str = Check_for_exist(combox_setup.Text, conn, "setups", "id_setups", "name");
                                 conn.Open();
                                 string sqlcom_3 = "INSERT INTO test2base.researches (id_specimen, res_date, temperature, power_laser, comments, success, " +
-                                    "data_dir, id_researcher, duration, id_setup) VALUES (@id_specimen,@res_date,@temperature,@power_laser,@comments,@success," +
-                                "@data_dir,@id_researcher,@duration,@id_setup)";
+                                    "data_dir, id_researcher, duration, id_setup, prop_good_bad, prop_cryst, prop_phase, prop_ragged) " +
+                                    "VALUES (@id_specimen,@res_date,@temperature,@power_laser,@comments,@success," +
+                                "@data_dir,@id_researcher,@duration,@id_setup,@prop_good_bad,@prop_cryst,@prop_phase,@prop_ragged)";
 
 
                                 string duration = txtbox_duration.Text;
@@ -1859,6 +1858,10 @@ namespace RSB
                                     comand.Parameters.AddWithValue("@id_researcher", id_researcher);
                                     comand.Parameters.AddWithValue("@duration", duration);                                    
                                     comand.Parameters.AddWithValue("@id_setup", id_setup_str);
+                                    comand.Parameters.AddWithValue("@prop_good_bad", Properties.Settings.Default.ResPropGood);
+                                    comand.Parameters.AddWithValue("@prop_cryst", Properties.Settings.Default.ResPropCryst);
+                                    comand.Parameters.AddWithValue("@prop_phase", Properties.Settings.Default.ResPropPhase);
+                                    comand.Parameters.AddWithValue("@prop_ragged", Properties.Settings.Default.ResPropRagged);
                                     comand.ExecuteNonQuery();
                                     //проверить выполнен ли запрос
                                     conn.Close();
@@ -1866,13 +1869,13 @@ namespace RSB
                                 //изменяем состояние образца
                                 // 2 -  по умолчанию сделано АЗТ, не нужен ПЭМ
                                 // 3 - сделано АЗТ, нужен ПЭМ
-                                DialogResult result = MessageBox.Show("Need TEM control?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
-                        MessageBoxDefaultButton.Button1);
+                                //DialogResult result = MessageBox.Show("Need TEM control?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+                        //MessageBoxDefaultButton.Button1);
 
 
                                 conn.Open();
                                 int state;
-                                if (result == DialogResult.Yes)
+                                if (Properties.Settings.Default.ResPropTEM)
                                 {
                                     state = 3;
                                 }
@@ -1885,7 +1888,7 @@ namespace RSB
                                 }
                                 conn.Close();
                             }
-                            Log_action(Properties.Settings.Default.default_username, "research was made", "", "", indexx.ToString());
+                            Log_action(Properties.Settings.Default.default_username, "research was made", "", "", indexx.ToString());                            
                         }
                         catch (Exception ex)
                         {
@@ -3463,8 +3466,8 @@ namespace RSB
         private async void btn_test_Click(object sender, EventArgs e)
         {
             //кнопка для разных тестов
-            MessageBox.Show("test questionnaire");
-            ShowQuestionnaire();
+            MessageBox.Show("test questionnaire for research");
+            ShowQuestionnaireResearch();
             //шлем сообщение            
            /* Discord.Webhook.DiscordWebhookClient cl = new Discord.Webhook.DiscordWebhookClient(Properties.Settings.Default.disc_hook_research);
             await cl.SendMessageAsync("Тридцать три корабля лавировали-лавировали, лавировали-лавировали, " +
@@ -3472,7 +3475,17 @@ namespace RSB
             //cl.Dispose();
             //cl.
         }
-
+        /// <summary>
+        /// опросник по результатам исследования
+        /// </summary>
+        private void ShowQuestionnaireResearch()
+        {
+            Form frmQuestResearch = new ResearchProperties();
+            if (frmQuestResearch.ShowDialog() != DialogResult.OK)
+            {
+                ShowQuestionnaireResearch();
+            }
+        }
         private void btn_clr_storage_Click(object sender, EventArgs e)
         {
             //очистка фильтра storage

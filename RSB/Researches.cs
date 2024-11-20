@@ -484,6 +484,8 @@ namespace RSB
                 int Sel_index = datagrid_researches.CurrentRow.Index;
                 //MessageBox.Show("Индекс =" +Sel_index.ToString());
                 Fill_info_text(Sel_index);
+                //заполняем информацию о исследовании
+                Fill_lblResearchQuality(Sel_index);
             }
         }
         /// <summary>
@@ -1251,6 +1253,8 @@ namespace RSB
             if (!on_load)
             {                
                 Fill_information();
+                //заполнить инфу о исследовании
+
             }
         }
         private void Save_settings_res()
@@ -1467,6 +1471,83 @@ namespace RSB
                 }
                 Refresh_data_researches();
             }
+        }
+        /// <summary>
+        /// заполняем доп информацию о качестве образца
+        /// </summary>
+        /// <param name="index"></param>
+        private void Fill_lblResearchQuality(int index)
+        {
+            if (datagrid_researches.Rows[index].Cells[0].Value != null)
+            {
+                int researchId = Convert.ToInt32(datagrid_researches.Rows[index].Cells[0].Value);
+                using (MySqlConnection conn = New_connection(conn_str))
+                {
+                    try
+                    {
+                        conn.Open();
+                        string sql_comand = "SELECT prop_good_bad, prop_cryst, prop_phase, prop_ragged " +
+                            "FROM test2base.researches WHERE (id_research = '" + researchId.ToString() + "');";
+                        using (MySqlCommand comand = new MySqlCommand(sql_comand, conn))
+                        {
+                            using (MySqlDataReader reader = comand.ExecuteReader())
+                            {
+                                if (reader.HasRows)
+                                {
+                                    while (reader.Read())
+                                    {
+                                        //reader.
+                                        if (int.TryParse(reader[0].ToString(), out int good) &&
+                                            int.TryParse(reader[1].ToString(), out int cryst) &&
+                                            int.TryParse(reader[2].ToString(), out int phase) &&
+                                            int.TryParse(reader[3].ToString(), out int ragged))
+                                        {
+                                            lblResearchInfo.Text = GetStringResearchQuality(good, cryst, phase, ragged);
+                                        }
+                                        else
+                                        {
+                                            lblResearchInfo.Text = "";
+                                        }
+                                    }
+                                    reader.Close();
+                                }
+                            }
+                        }
+                        conn.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Ошибка в блоке Fill_lblResearchQuality\n" + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                        MessageBoxDefaultButton.Button1);
+                    }
+                }
+            }
+        }
+
+        private string GetStringResearchQuality(int goodBad, int cryst, int phase, int ragged)
+        {
+            string ans = "";
+            if (goodBad == 1)
+            {
+                ans += "General characteristics - Good\n";
+            }
+            else
+            {
+                ans += "General characteristic - Bad or Ugly\n";
+            }
+            if (cryst == 1)
+            {
+                ans += "Crystallography\n";
+            }
+            if (phase == 1)
+            {
+                ans += "Clusters or phases\n";
+            }
+            if (ragged == 1)
+            {
+                ans += "Ragged evaporation";
+            }
+            return ans;
         }
     }
 }

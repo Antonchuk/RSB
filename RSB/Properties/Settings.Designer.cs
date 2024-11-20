@@ -562,5 +562,65 @@ namespace RSB.Properties {
                 this["SpecPropLongSection"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ResPropGood {
+            get {
+                return ((bool)(this["ResPropGood"]));
+            }
+            set {
+                this["ResPropGood"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ResPropCryst {
+            get {
+                return ((bool)(this["ResPropCryst"]));
+            }
+            set {
+                this["ResPropCryst"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ResPropPhase {
+            get {
+                return ((bool)(this["ResPropPhase"]));
+            }
+            set {
+                this["ResPropPhase"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ResPropRagged {
+            get {
+                return ((bool)(this["ResPropRagged"]));
+            }
+            set {
+                this["ResPropRagged"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ResPropTEM {
+            get {
+                return ((bool)(this["ResPropTEM"]));
+            }
+            set {
+                this["ResPropTEM"] = value;
+            }
+        }
     }
 }

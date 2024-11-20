@@ -65,6 +65,7 @@
             this.btn_refresh = new System.Windows.Forms.Button();
             this.combox_setup_filter = new System.Windows.Forms.ComboBox();
             this.lbl_select_setup = new System.Windows.Forms.Label();
+            this.lblResearchInfo = new System.Windows.Forms.Label();
             this.tab_support = new System.Windows.Forms.TabPage();
             this.tableLayout_support = new System.Windows.Forms.TableLayoutPanel();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
@@ -305,6 +306,7 @@
             this.tableLayoutPanel1.Controls.Add(this.btn_refresh, 2, 4);
             this.tableLayoutPanel1.Controls.Add(this.combox_setup_filter, 1, 7);
             this.tableLayoutPanel1.Controls.Add(this.lbl_select_setup, 0, 7);
+            this.tableLayoutPanel1.Controls.Add(this.lblResearchInfo, 1, 8);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -564,13 +566,23 @@
             this.lbl_select_setup.Text = "Setup";
             this.lbl_select_setup.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // lblResearchInfo
+            // 
+            this.lblResearchInfo.AutoSize = true;
+            this.lblResearchInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblResearchInfo.Location = new System.Drawing.Point(103, 491);
+            this.lblResearchInfo.Name = "lblResearchInfo";
+            this.lblResearchInfo.Size = new System.Drawing.Size(208, 45);
+            this.lblResearchInfo.TabIndex = 22;
+            this.lblResearchInfo.Text = "Research info";
+            // 
             // tab_support
             // 
             this.tab_support.BackColor = System.Drawing.Color.PaleGreen;
             this.tab_support.Controls.Add(this.tableLayout_support);
-            this.tab_support.Location = new System.Drawing.Point(4, 31);
+            this.tab_support.Location = new System.Drawing.Point(4, 22);
             this.tab_support.Name = "tab_support";
-            this.tab_support.Size = new System.Drawing.Size(573, 542);
+            this.tab_support.Size = new System.Drawing.Size(573, 551);
             this.tab_support.TabIndex = 3;
             this.tab_support.Text = "Support";
             // 
@@ -603,7 +615,7 @@
             this.tableLayout_support.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayout_support.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayout_support.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayout_support.Size = new System.Drawing.Size(573, 542);
+            this.tableLayout_support.Size = new System.Drawing.Size(573, 551);
             this.tableLayout_support.TabIndex = 0;
             // 
             // dateTimePicker1
@@ -719,9 +731,9 @@
             // 
             this.tab_inf.BackColor = System.Drawing.Color.PaleGreen;
             this.tab_inf.Controls.Add(this.tableLayout_inform);
-            this.tab_inf.Location = new System.Drawing.Point(4, 31);
+            this.tab_inf.Location = new System.Drawing.Point(4, 22);
             this.tab_inf.Name = "tab_inf";
-            this.tab_inf.Size = new System.Drawing.Size(573, 542);
+            this.tab_inf.Size = new System.Drawing.Size(573, 551);
             this.tab_inf.TabIndex = 2;
             this.tab_inf.Text = "Information";
             // 
@@ -749,7 +761,7 @@
             this.tableLayout_inform.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayout_inform.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayout_inform.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayout_inform.Size = new System.Drawing.Size(573, 542);
+            this.tableLayout_inform.Size = new System.Drawing.Size(573, 551);
             this.tableLayout_inform.TabIndex = 0;
             // 
             // lbl_comments
@@ -758,7 +770,7 @@
             this.lbl_comments.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbl_comments.Location = new System.Drawing.Point(3, 0);
             this.lbl_comments.Name = "lbl_comments";
-            this.lbl_comments.Size = new System.Drawing.Size(132, 22);
+            this.lbl_comments.Size = new System.Drawing.Size(133, 22);
             this.lbl_comments.TabIndex = 0;
             this.lbl_comments.Text = "Comments";
             this.lbl_comments.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -767,9 +779,9 @@
             // 
             this.Lbl_inf_comments.AutoSize = true;
             this.Lbl_inf_comments.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Lbl_inf_comments.Location = new System.Drawing.Point(141, 0);
+            this.Lbl_inf_comments.Location = new System.Drawing.Point(142, 0);
             this.Lbl_inf_comments.Name = "Lbl_inf_comments";
-            this.Lbl_inf_comments.Size = new System.Drawing.Size(429, 22);
+            this.Lbl_inf_comments.Size = new System.Drawing.Size(428, 22);
             this.Lbl_inf_comments.TabIndex = 1;
             this.Lbl_inf_comments.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -779,7 +791,7 @@
             this.lbl_inf_duration.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbl_inf_duration.Location = new System.Drawing.Point(3, 22);
             this.lbl_inf_duration.Name = "lbl_inf_duration";
-            this.lbl_inf_duration.Size = new System.Drawing.Size(132, 36);
+            this.lbl_inf_duration.Size = new System.Drawing.Size(133, 36);
             this.lbl_inf_duration.TabIndex = 2;
             this.lbl_inf_duration.Text = "Duration, days";
             this.lbl_inf_duration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -790,7 +802,7 @@
             this.lbl_inf_data_dir.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbl_inf_data_dir.Location = new System.Drawing.Point(3, 58);
             this.lbl_inf_data_dir.Name = "lbl_inf_data_dir";
-            this.lbl_inf_data_dir.Size = new System.Drawing.Size(132, 36);
+            this.lbl_inf_data_dir.Size = new System.Drawing.Size(133, 36);
             this.lbl_inf_data_dir.TabIndex = 3;
             this.lbl_inf_data_dir.Text = "Data directory";
             this.lbl_inf_data_dir.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -798,20 +810,20 @@
             // txtbox_inf_data_dir
             // 
             this.txtbox_inf_data_dir.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txtbox_inf_data_dir.Location = new System.Drawing.Point(141, 61);
+            this.txtbox_inf_data_dir.Location = new System.Drawing.Point(142, 61);
             this.txtbox_inf_data_dir.Name = "txtbox_inf_data_dir";
             this.txtbox_inf_data_dir.ReadOnly = true;
-            this.txtbox_inf_data_dir.Size = new System.Drawing.Size(429, 30);
+            this.txtbox_inf_data_dir.Size = new System.Drawing.Size(428, 30);
             this.txtbox_inf_data_dir.TabIndex = 4;
             this.txtbox_inf_data_dir.DoubleClick += new System.EventHandler(this.txtbox_inf_data_dir_DoubleClick);
             // 
             // txtbox_inf_dur_days
             // 
             this.txtbox_inf_dur_days.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txtbox_inf_dur_days.Location = new System.Drawing.Point(141, 25);
+            this.txtbox_inf_dur_days.Location = new System.Drawing.Point(142, 25);
             this.txtbox_inf_dur_days.Name = "txtbox_inf_dur_days";
             this.txtbox_inf_dur_days.ReadOnly = true;
-            this.txtbox_inf_dur_days.Size = new System.Drawing.Size(429, 30);
+            this.txtbox_inf_dur_days.Size = new System.Drawing.Size(428, 30);
             this.txtbox_inf_dur_days.TabIndex = 5;
             // 
             // label3
@@ -820,7 +832,7 @@
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label3.Location = new System.Drawing.Point(3, 94);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(132, 36);
+            this.label3.Size = new System.Drawing.Size(133, 36);
             this.label3.TabIndex = 6;
             this.label3.Text = "Spec treatment";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -828,9 +840,9 @@
             // txtbox_spec_treatment
             // 
             this.txtbox_spec_treatment.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txtbox_spec_treatment.Location = new System.Drawing.Point(141, 97);
+            this.txtbox_spec_treatment.Location = new System.Drawing.Point(142, 97);
             this.txtbox_spec_treatment.Name = "txtbox_spec_treatment";
-            this.txtbox_spec_treatment.Size = new System.Drawing.Size(429, 30);
+            this.txtbox_spec_treatment.Size = new System.Drawing.Size(428, 30);
             this.txtbox_spec_treatment.TabIndex = 7;
             // 
             // lbl_tech_inf
@@ -839,7 +851,7 @@
             this.lbl_tech_inf.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbl_tech_inf.Location = new System.Drawing.Point(3, 130);
             this.lbl_tech_inf.Name = "lbl_tech_inf";
-            this.lbl_tech_inf.Size = new System.Drawing.Size(132, 412);
+            this.lbl_tech_inf.Size = new System.Drawing.Size(133, 421);
             this.lbl_tech_inf.TabIndex = 8;
             this.lbl_tech_inf.Text = "Technical inf";
             this.lbl_tech_inf.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -847,10 +859,10 @@
             // rich_txtbox_tech_inf
             // 
             this.rich_txtbox_tech_inf.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rich_txtbox_tech_inf.Location = new System.Drawing.Point(141, 133);
+            this.rich_txtbox_tech_inf.Location = new System.Drawing.Point(142, 133);
             this.rich_txtbox_tech_inf.Name = "rich_txtbox_tech_inf";
             this.rich_txtbox_tech_inf.ReadOnly = true;
-            this.rich_txtbox_tech_inf.Size = new System.Drawing.Size(429, 406);
+            this.rich_txtbox_tech_inf.Size = new System.Drawing.Size(428, 415);
             this.rich_txtbox_tech_inf.TabIndex = 9;
             this.rich_txtbox_tech_inf.Text = "";
             // 
@@ -866,6 +878,7 @@
             // 
             // tableLayoutPanel2
             // 
+            this.tableLayoutPanel2.AutoScroll = true;
             this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -1234,5 +1247,6 @@
         private System.Windows.Forms.SaveFileDialog saveFileDial_for_report;
         private System.Windows.Forms.ComboBox combox_setup_filter;
         private System.Windows.Forms.Label lbl_select_setup;
+        private System.Windows.Forms.Label lblResearchInfo;
     }
 }

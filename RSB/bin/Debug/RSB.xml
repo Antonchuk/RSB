@@ -277,6 +277,12 @@
             <param name="sender"></param>
             <param name="e"></param>
         </member>
+        <member name="M:RSB.Researches.Fill_lblResearchQuality(System.Int32)">
+            <summary>
+            заполняем доп информацию о качестве образца
+            </summary>
+            <param name="index"></param>
+        </member>
         <member name="F:RSB.Researches.components">
             <summary>
             Required designer variable.
@@ -289,6 +295,23 @@
             <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         </member>
         <member name="M:RSB.Researches.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:RSB.ResearchProperties.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:RSB.ResearchProperties.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:RSB.ResearchProperties.InitializeComponent">
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
@@ -488,6 +511,11 @@
             </summary>
             <param name="sqlreq"></param>
             <param name="data"></param>
+        </member>
+        <member name="M:RSB.Form_specimens.ShowQuestionnaireResearch">
+            <summary>
+            опросник по результатам исследования
+            </summary>
         </member>
         <member name="M:RSB.Form_specimens.Load_def_json(System.String)">
             <summary>

@@ -65,8 +65,14 @@
             this.btn_ch_composotion = new System.Windows.Forms.Button();
             this.comboxTreatInfo = new System.Windows.Forms.ComboBox();
             this.table_layout_foto_inf = new System.Windows.Forms.TableLayoutPanel();
+            this.picbox_inf_bef_1 = new System.Windows.Forms.PictureBox();
+            this.picbox_inf_bef_2 = new System.Windows.Forms.PictureBox();
+            this.picbox_inf_bef_3 = new System.Windows.Forms.PictureBox();
             this.lbl_TEM_before = new System.Windows.Forms.Label();
             this.lbl_TEM_after = new System.Windows.Forms.Label();
+            this.picbox_inf_aft_1 = new System.Windows.Forms.PictureBox();
+            this.picbox_inf_aft_2 = new System.Windows.Forms.PictureBox();
+            this.picbox_inf_aft_3 = new System.Windows.Forms.PictureBox();
             this.lblSpeciemQuality = new System.Windows.Forms.Label();
             this.tab_page_research = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
@@ -173,6 +179,10 @@
             this.ch_box_all_materials = new System.Windows.Forms.CheckBox();
             this.ch_box_all_treats = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.picbox_before_big = new System.Windows.Forms.PictureBox();
+            this.picbox_before_sm1 = new System.Windows.Forms.PictureBox();
+            this.picbox_before_sm2 = new System.Windows.Forms.PictureBox();
+            this.picbox_before_sm3 = new System.Windows.Forms.PictureBox();
             this.open_dial_im_before = new System.Windows.Forms.OpenFileDialog();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayout_datagrid = new System.Windows.Forms.TableLayoutPanel();
@@ -202,16 +212,6 @@
             this.fontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer_for_refresh = new System.Windows.Forms.Timer(this.components);
             this.folderBrowserDialog_for_json = new System.Windows.Forms.FolderBrowserDialog();
-            this.picbox_inf_bef_1 = new System.Windows.Forms.PictureBox();
-            this.picbox_inf_bef_2 = new System.Windows.Forms.PictureBox();
-            this.picbox_inf_bef_3 = new System.Windows.Forms.PictureBox();
-            this.picbox_inf_aft_1 = new System.Windows.Forms.PictureBox();
-            this.picbox_inf_aft_2 = new System.Windows.Forms.PictureBox();
-            this.picbox_inf_aft_3 = new System.Windows.Forms.PictureBox();
-            this.picbox_before_big = new System.Windows.Forms.PictureBox();
-            this.picbox_before_sm1 = new System.Windows.Forms.PictureBox();
-            this.picbox_before_sm2 = new System.Windows.Forms.PictureBox();
-            this.picbox_before_sm3 = new System.Windows.Forms.PictureBox();
             this.tabcontrol_add_inf.SuspendLayout();
             this.tab_page_info.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.split_inf)).BeginInit();
@@ -220,6 +220,12 @@
             this.split_inf.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.table_layout_foto_inf.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_bef_1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_bef_2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_bef_3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_aft_1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_aft_2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_aft_3)).BeginInit();
             this.tab_page_research.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -236,6 +242,10 @@
             this.splitContainer_add_new.SuspendLayout();
             this.tbllay_add_edit.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_before_big)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_before_sm1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_before_sm2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_before_sm3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -243,16 +253,6 @@
             this.tableLayout_datagrid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_specimens)).BeginInit();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_bef_1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_bef_2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_bef_3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_aft_1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_aft_2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_aft_3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_before_big)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_before_sm1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_before_sm2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_before_sm3)).BeginInit();
             this.SuspendLayout();
             // 
             // tabcontrol_add_inf
@@ -706,6 +706,40 @@
             this.table_layout_foto_inf.Size = new System.Drawing.Size(779, 482);
             this.table_layout_foto_inf.TabIndex = 0;
             // 
+            // picbox_inf_bef_1
+            // 
+            this.picbox_inf_bef_1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picbox_inf_bef_1.Location = new System.Drawing.Point(262, 33);
+            this.picbox_inf_bef_1.Name = "picbox_inf_bef_1";
+            this.picbox_inf_bef_1.Size = new System.Drawing.Size(253, 144);
+            this.picbox_inf_bef_1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picbox_inf_bef_1.TabIndex = 0;
+            this.picbox_inf_bef_1.TabStop = false;
+            this.picbox_inf_bef_1.Click += new System.EventHandler(this.Picbox_1_Click);
+            this.picbox_inf_bef_1.DoubleClick += new System.EventHandler(this.Picbox_1_DoubleClick);
+            // 
+            // picbox_inf_bef_2
+            // 
+            this.picbox_inf_bef_2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picbox_inf_bef_2.Location = new System.Drawing.Point(262, 183);
+            this.picbox_inf_bef_2.Name = "picbox_inf_bef_2";
+            this.picbox_inf_bef_2.Size = new System.Drawing.Size(253, 144);
+            this.picbox_inf_bef_2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picbox_inf_bef_2.TabIndex = 1;
+            this.picbox_inf_bef_2.TabStop = false;
+            this.picbox_inf_bef_2.DoubleClick += new System.EventHandler(this.Picbox_2_DoubleClick);
+            // 
+            // picbox_inf_bef_3
+            // 
+            this.picbox_inf_bef_3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picbox_inf_bef_3.Location = new System.Drawing.Point(262, 333);
+            this.picbox_inf_bef_3.Name = "picbox_inf_bef_3";
+            this.picbox_inf_bef_3.Size = new System.Drawing.Size(253, 146);
+            this.picbox_inf_bef_3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picbox_inf_bef_3.TabIndex = 2;
+            this.picbox_inf_bef_3.TabStop = false;
+            this.picbox_inf_bef_3.DoubleClick += new System.EventHandler(this.Picbox_3_DoubleClick);
+            // 
             // lbl_TEM_before
             // 
             this.lbl_TEM_before.AutoSize = true;
@@ -725,6 +759,39 @@
             this.lbl_TEM_after.Size = new System.Drawing.Size(255, 30);
             this.lbl_TEM_after.TabIndex = 7;
             this.lbl_TEM_after.Text = "TEM After";
+            // 
+            // picbox_inf_aft_1
+            // 
+            this.picbox_inf_aft_1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picbox_inf_aft_1.Location = new System.Drawing.Point(521, 33);
+            this.picbox_inf_aft_1.Name = "picbox_inf_aft_1";
+            this.picbox_inf_aft_1.Size = new System.Drawing.Size(255, 144);
+            this.picbox_inf_aft_1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picbox_inf_aft_1.TabIndex = 8;
+            this.picbox_inf_aft_1.TabStop = false;
+            this.picbox_inf_aft_1.DoubleClick += new System.EventHandler(this.Picbox_inf_aft_1_DoubleClick);
+            // 
+            // picbox_inf_aft_2
+            // 
+            this.picbox_inf_aft_2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picbox_inf_aft_2.Location = new System.Drawing.Point(521, 183);
+            this.picbox_inf_aft_2.Name = "picbox_inf_aft_2";
+            this.picbox_inf_aft_2.Size = new System.Drawing.Size(255, 144);
+            this.picbox_inf_aft_2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picbox_inf_aft_2.TabIndex = 9;
+            this.picbox_inf_aft_2.TabStop = false;
+            this.picbox_inf_aft_2.DoubleClick += new System.EventHandler(this.Picbox_inf_aft_2_DoubleClick);
+            // 
+            // picbox_inf_aft_3
+            // 
+            this.picbox_inf_aft_3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picbox_inf_aft_3.Location = new System.Drawing.Point(521, 333);
+            this.picbox_inf_aft_3.Name = "picbox_inf_aft_3";
+            this.picbox_inf_aft_3.Size = new System.Drawing.Size(255, 146);
+            this.picbox_inf_aft_3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picbox_inf_aft_3.TabIndex = 10;
+            this.picbox_inf_aft_3.TabStop = false;
+            this.picbox_inf_aft_3.DoubleClick += new System.EventHandler(this.Picbox_inf_aft_3_DoubleClick);
             // 
             // lblSpeciemQuality
             // 
@@ -1132,9 +1199,9 @@
             // 
             this.tabPage_filters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.tabPage_filters.Controls.Add(this.tableLayoutPanel7);
-            this.tabPage_filters.Location = new System.Drawing.Point(4, 31);
+            this.tabPage_filters.Location = new System.Drawing.Point(4, 22);
             this.tabPage_filters.Name = "tabPage_filters";
-            this.tabPage_filters.Size = new System.Drawing.Size(785, 1002);
+            this.tabPage_filters.Size = new System.Drawing.Size(785, 1011);
             this.tabPage_filters.TabIndex = 3;
             this.tabPage_filters.Text = "Filters";
             // 
@@ -1460,9 +1527,9 @@
             // 
             this.tabPage_sql_special.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.tabPage_sql_special.Controls.Add(this.flowLayoutPanel_sql);
-            this.tabPage_sql_special.Location = new System.Drawing.Point(4, 31);
+            this.tabPage_sql_special.Location = new System.Drawing.Point(4, 22);
             this.tabPage_sql_special.Name = "tabPage_sql_special";
-            this.tabPage_sql_special.Size = new System.Drawing.Size(785, 1002);
+            this.tabPage_sql_special.Size = new System.Drawing.Size(785, 1011);
             this.tabPage_sql_special.TabIndex = 4;
             this.tabPage_sql_special.Text = "Sp. filters";
             // 
@@ -2016,6 +2083,54 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(779, 500);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
+            // picbox_before_big
+            // 
+            this.picbox_before_big.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.picbox_before_big.BackgroundImage = global::RSB.Properties.Resources.Backimage;
+            this.picbox_before_big.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picbox_before_big.Location = new System.Drawing.Point(3, 3);
+            this.picbox_before_big.Name = "picbox_before_big";
+            this.tableLayoutPanel1.SetRowSpan(this.picbox_before_big, 3);
+            this.picbox_before_big.Size = new System.Drawing.Size(293, 494);
+            this.picbox_before_big.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picbox_before_big.TabIndex = 2;
+            this.picbox_before_big.TabStop = false;
+            this.picbox_before_big.Click += new System.EventHandler(this.Picbox_big_Click);
+            this.picbox_before_big.DoubleClick += new System.EventHandler(this.picbox_before_big_DoubleClick);
+            // 
+            // picbox_before_sm1
+            // 
+            this.picbox_before_sm1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.picbox_before_sm1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picbox_before_sm1.Location = new System.Drawing.Point(302, 3);
+            this.picbox_before_sm1.Name = "picbox_before_sm1";
+            this.picbox_before_sm1.Size = new System.Drawing.Size(474, 160);
+            this.picbox_before_sm1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picbox_before_sm1.TabIndex = 3;
+            this.picbox_before_sm1.TabStop = false;
+            // 
+            // picbox_before_sm2
+            // 
+            this.picbox_before_sm2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.picbox_before_sm2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picbox_before_sm2.Location = new System.Drawing.Point(302, 169);
+            this.picbox_before_sm2.Name = "picbox_before_sm2";
+            this.picbox_before_sm2.Size = new System.Drawing.Size(474, 160);
+            this.picbox_before_sm2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picbox_before_sm2.TabIndex = 4;
+            this.picbox_before_sm2.TabStop = false;
+            // 
+            // picbox_before_sm3
+            // 
+            this.picbox_before_sm3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.picbox_before_sm3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picbox_before_sm3.Location = new System.Drawing.Point(302, 335);
+            this.picbox_before_sm3.Name = "picbox_before_sm3";
+            this.picbox_before_sm3.Size = new System.Drawing.Size(474, 162);
+            this.picbox_before_sm3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picbox_before_sm3.TabIndex = 5;
+            this.picbox_before_sm3.TabStop = false;
+            // 
             // open_dial_im_before
             // 
             this.open_dial_im_before.FileName = "openFileDialog1";
@@ -2312,121 +2427,6 @@
             this.timer_for_refresh.Interval = 300000;
             this.timer_for_refresh.Tick += new System.EventHandler(this.Timer_for_refresh_Tick);
             // 
-            // picbox_inf_bef_1
-            // 
-            this.picbox_inf_bef_1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_inf_bef_1.Location = new System.Drawing.Point(262, 33);
-            this.picbox_inf_bef_1.Name = "picbox_inf_bef_1";
-            this.picbox_inf_bef_1.Size = new System.Drawing.Size(253, 144);
-            this.picbox_inf_bef_1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picbox_inf_bef_1.TabIndex = 0;
-            this.picbox_inf_bef_1.TabStop = false;
-            this.picbox_inf_bef_1.Click += new System.EventHandler(this.Picbox_1_Click);
-            this.picbox_inf_bef_1.DoubleClick += new System.EventHandler(this.Picbox_1_DoubleClick);
-            // 
-            // picbox_inf_bef_2
-            // 
-            this.picbox_inf_bef_2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_inf_bef_2.Location = new System.Drawing.Point(262, 183);
-            this.picbox_inf_bef_2.Name = "picbox_inf_bef_2";
-            this.picbox_inf_bef_2.Size = new System.Drawing.Size(253, 144);
-            this.picbox_inf_bef_2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picbox_inf_bef_2.TabIndex = 1;
-            this.picbox_inf_bef_2.TabStop = false;
-            this.picbox_inf_bef_2.DoubleClick += new System.EventHandler(this.Picbox_2_DoubleClick);
-            // 
-            // picbox_inf_bef_3
-            // 
-            this.picbox_inf_bef_3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_inf_bef_3.Location = new System.Drawing.Point(262, 333);
-            this.picbox_inf_bef_3.Name = "picbox_inf_bef_3";
-            this.picbox_inf_bef_3.Size = new System.Drawing.Size(253, 146);
-            this.picbox_inf_bef_3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picbox_inf_bef_3.TabIndex = 2;
-            this.picbox_inf_bef_3.TabStop = false;
-            this.picbox_inf_bef_3.DoubleClick += new System.EventHandler(this.Picbox_3_DoubleClick);
-            // 
-            // picbox_inf_aft_1
-            // 
-            this.picbox_inf_aft_1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_inf_aft_1.Location = new System.Drawing.Point(521, 33);
-            this.picbox_inf_aft_1.Name = "picbox_inf_aft_1";
-            this.picbox_inf_aft_1.Size = new System.Drawing.Size(255, 144);
-            this.picbox_inf_aft_1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picbox_inf_aft_1.TabIndex = 8;
-            this.picbox_inf_aft_1.TabStop = false;
-            this.picbox_inf_aft_1.DoubleClick += new System.EventHandler(this.Picbox_inf_aft_1_DoubleClick);
-            // 
-            // picbox_inf_aft_2
-            // 
-            this.picbox_inf_aft_2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_inf_aft_2.Location = new System.Drawing.Point(521, 183);
-            this.picbox_inf_aft_2.Name = "picbox_inf_aft_2";
-            this.picbox_inf_aft_2.Size = new System.Drawing.Size(255, 144);
-            this.picbox_inf_aft_2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picbox_inf_aft_2.TabIndex = 9;
-            this.picbox_inf_aft_2.TabStop = false;
-            this.picbox_inf_aft_2.DoubleClick += new System.EventHandler(this.Picbox_inf_aft_2_DoubleClick);
-            // 
-            // picbox_inf_aft_3
-            // 
-            this.picbox_inf_aft_3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_inf_aft_3.Location = new System.Drawing.Point(521, 333);
-            this.picbox_inf_aft_3.Name = "picbox_inf_aft_3";
-            this.picbox_inf_aft_3.Size = new System.Drawing.Size(255, 146);
-            this.picbox_inf_aft_3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picbox_inf_aft_3.TabIndex = 10;
-            this.picbox_inf_aft_3.TabStop = false;
-            this.picbox_inf_aft_3.DoubleClick += new System.EventHandler(this.Picbox_inf_aft_3_DoubleClick);
-            // 
-            // picbox_before_big
-            // 
-            this.picbox_before_big.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.picbox_before_big.BackgroundImage = global::RSB.Properties.Resources.Backimage;
-            this.picbox_before_big.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_before_big.Location = new System.Drawing.Point(3, 3);
-            this.picbox_before_big.Name = "picbox_before_big";
-            this.tableLayoutPanel1.SetRowSpan(this.picbox_before_big, 3);
-            this.picbox_before_big.Size = new System.Drawing.Size(293, 494);
-            this.picbox_before_big.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picbox_before_big.TabIndex = 2;
-            this.picbox_before_big.TabStop = false;
-            this.picbox_before_big.Click += new System.EventHandler(this.Picbox_big_Click);
-            this.picbox_before_big.DoubleClick += new System.EventHandler(this.picbox_before_big_DoubleClick);
-            // 
-            // picbox_before_sm1
-            // 
-            this.picbox_before_sm1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.picbox_before_sm1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_before_sm1.Location = new System.Drawing.Point(302, 3);
-            this.picbox_before_sm1.Name = "picbox_before_sm1";
-            this.picbox_before_sm1.Size = new System.Drawing.Size(474, 160);
-            this.picbox_before_sm1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picbox_before_sm1.TabIndex = 3;
-            this.picbox_before_sm1.TabStop = false;
-            // 
-            // picbox_before_sm2
-            // 
-            this.picbox_before_sm2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.picbox_before_sm2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_before_sm2.Location = new System.Drawing.Point(302, 169);
-            this.picbox_before_sm2.Name = "picbox_before_sm2";
-            this.picbox_before_sm2.Size = new System.Drawing.Size(474, 160);
-            this.picbox_before_sm2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picbox_before_sm2.TabIndex = 4;
-            this.picbox_before_sm2.TabStop = false;
-            // 
-            // picbox_before_sm3
-            // 
-            this.picbox_before_sm3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.picbox_before_sm3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_before_sm3.Location = new System.Drawing.Point(302, 335);
-            this.picbox_before_sm3.Name = "picbox_before_sm3";
-            this.picbox_before_sm3.Size = new System.Drawing.Size(474, 162);
-            this.picbox_before_sm3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picbox_before_sm3.TabIndex = 5;
-            this.picbox_before_sm3.TabStop = false;
-            // 
             // Form_specimens
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -2457,6 +2457,12 @@
             this.tableLayoutPanel3.PerformLayout();
             this.table_layout_foto_inf.ResumeLayout(false);
             this.table_layout_foto_inf.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_bef_1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_bef_2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_bef_3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_aft_1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_aft_2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_aft_3)).EndInit();
             this.tab_page_research.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
@@ -2478,6 +2484,10 @@
             this.tbllay_add_edit.ResumeLayout(false);
             this.tbllay_add_edit.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_before_big)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_before_sm1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_before_sm2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picbox_before_sm3)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -2487,16 +2497,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_specimens)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_bef_1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_bef_2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_bef_3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_aft_1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_aft_2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_inf_aft_3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_before_big)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_before_sm1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_before_sm2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picbox_before_sm3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

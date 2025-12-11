@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="RSB.exe" version="1.0.1.74" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
+  <asmv1:assemblyIdentity name="RSB.exe" version="1.1.19.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
   <description asmv2:iconFile="loss 3.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="RSB" version="1.0.1.54" language="neutral" processorArchitecture="amd64" />
+    <assemblyIdentity name="RSB" version="1.1.25.0" language="neutral" processorArchitecture="amd64" />
     <commandLine file="RSB.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -43,74 +43,194 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BouncyCastle.Crypto.dll" size="3316968">
-      <assemblyIdentity name="BouncyCastle.Crypto" version="1.9.0.0" publicKeyToken="0E99375E54769942" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BouncyCastle.Cryptography.dll" size="4694688">
+      <assemblyIdentity name="BouncyCastle.Cryptography" version="2.0.0.0" publicKeyToken="072EDCF4A5328938" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>5Rch3AZH9IOLGrxZK9lf2MuSRxbopk+D1LlHgh+h+kI=</dsig:DigestValue>
+        <dsig:DigestValue>2aWMhLqlWhJoTNI4G8oDyPKpy64hpr8enr1l9JVilyE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Google.Protobuf.dll" size="410904">
-      <assemblyIdentity name="Google.Protobuf" version="3.21.8.0" publicKeyToken="A7D26565BAC4D604" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Discord.Net.Commands.dll" size="136192">
+      <assemblyIdentity name="Discord.Net.Commands" version="3.18.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>gqExOPcELM25kCdL3a+G30QPKcsqGbsuxS00M1vEMMw=</dsig:DigestValue>
+        <dsig:DigestValue>ntqHXDw2ETYJXbDV5Jf39Pfggx9IAwSmU9C4UE2lgRw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="K4os.Compression.LZ4.dll" size="65536">
-      <assemblyIdentity name="K4os.Compression.LZ4" version="1.2.16.0" publicKeyToken="2186FA9121EF231D" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Discord.Net.Core.dll" size="908800">
+      <assemblyIdentity name="Discord.Net.Core" version="3.18.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>8vDrpI108t+4W/PTRN0W93Ou9qHY8Wolw8LbRDNKxOQ=</dsig:DigestValue>
+        <dsig:DigestValue>JD2jew0z9vJLHkWvx14takJPosBMFxsjRKY/ZsGnoSI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="K4os.Compression.LZ4.Streams.dll" size="33280">
-      <assemblyIdentity name="K4os.Compression.LZ4.Streams" version="1.2.16.0" publicKeyToken="2186FA9121EF231D" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Discord.Net.Interactions.dll" size="238592">
+      <assemblyIdentity name="Discord.Net.Interactions" version="3.18.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>HB/CPW+DfLem+H//h6Nwmca1gygjotCyK62UTDnWC+c=</dsig:DigestValue>
+        <dsig:DigestValue>HhgG+T1H4wg2kozEXuapvBfLc9jOLSAGGaJ9dpVTiZ8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="K4os.Hash.xxHash.dll" size="12288">
-      <assemblyIdentity name="K4os.Hash.xxHash" version="1.0.7.0" publicKeyToken="32CD54395057CEC3" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Discord.Net.Rest.dll" size="1479680">
+      <assemblyIdentity name="Discord.Net.Rest" version="3.18.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>EOS8gDKg8D5LEucp+tPnykmkuGrm30RZ3GmGvWUc4r4=</dsig:DigestValue>
+        <dsig:DigestValue>Q1LL5r2HVqx2Va89B+ODbH/IbdWnpLVViz6HoQ0nU6s=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MailKit.dll" size="871936">
-      <assemblyIdentity name="MailKit" version="3.4.0.0" publicKeyToken="4E064FE7C44A8F1B" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Discord.Net.Webhook.dll" size="31744">
+      <assemblyIdentity name="Discord.Net.Webhook" version="3.18.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>g7KX9wNKOCmL//Th0X7t1bhWlZLB6QcMyOBeC07Mi8o=</dsig:DigestValue>
+        <dsig:DigestValue>kye3u6jHl0LL8y2kUJEe0iyGRCGXoMlYppctYcKF+zY=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Discord.Net.WebSocket.dll" size="936960">
+      <assemblyIdentity name="Discord.Net.WebSocket" version="3.18.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>r5gLJK2mEwSGuDzyIDhiaZCA1v9KXwgEXv4eGe2ZxeA=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Google.Protobuf.dll" size="497304">
+      <assemblyIdentity name="Google.Protobuf" version="3.33.2.0" publicKeyToken="A7D26565BAC4D604" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>H6bOpJ95WYjTdv0We8Krn7F7WKythoEepsI5iDlNE50=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="K4os.Compression.LZ4.dll" size="75264">
+      <assemblyIdentity name="K4os.Compression.LZ4" version="1.3.8.0" publicKeyToken="2186FA9121EF231D" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>ba3nlmT0ihY9aGTISgpsXFW4Vr3680uhh8h/GPkWcjg=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="K4os.Compression.LZ4.Streams.dll" size="83456">
+      <assemblyIdentity name="K4os.Compression.LZ4.Streams" version="1.3.8.0" publicKeyToken="2186FA9121EF231D" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>NvHKAfElIqDFD4/kjNBq3CRXHuKg/ySDFbOIuL0A9IQ=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="K4os.Hash.xxHash.dll" size="13312">
+      <assemblyIdentity name="K4os.Hash.xxHash" version="1.0.8.0" publicKeyToken="32CD54395057CEC3" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>/V++r7OuWbRdvGrGuGfs2+tLS3Fa3rxdF2bhVeY5yvM=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MailKit.dll" size="934912">
+      <assemblyIdentity name="MailKit" version="4.14.0.0" publicKeyToken="4E064FE7C44A8F1B" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>kuyeH6NF0e6rk+xdsjms24wRjrvfZ1opjPDPg2Hbpjk=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Microsoft.Bcl.AsyncInterfaces.dll" size="28432">
+      <assemblyIdentity name="Microsoft.Bcl.AsyncInterfaces" version="10.0.0.1" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>sOOEa5ic4ZDTRyVnBUGHZptki5YtqyBHL1Sjv9ofsgc=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Microsoft.Bcl.Memory.dll" size="78136">
+      <assemblyIdentity name="Microsoft.Bcl.Memory" version="10.0.0.0" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>fuKLhohl8/8809bDw7vuzYI5Its5os4fieIzXXHzZdA=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Microsoft.Extensions.DependencyInjection.Abstractions.dll" size="66320">
+      <assemblyIdentity name="Microsoft.Extensions.DependencyInjection.Abstractions" version="10.0.0.1" publicKeyToken="ADB9793829DDAE60" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>aN0Ea15VemC2KG7eIQpQmTEAVpIW+r+P4khuPB5vMPo=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Microsoft.Extensions.Logging.Abstractions.dll" size="67856">
+      <assemblyIdentity name="Microsoft.Extensions.Logging.Abstractions" version="8.0.0.3" publicKeyToken="ADB9793829DDAE60" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>tODneK/cdkA3kjkLBW9o3gztdC0WxbA0fZzKaTD0dhs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -127,74 +247,86 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MimeKit.dll" size="1170944">
-      <assemblyIdentity name="MimeKit" version="3.4.0.0" publicKeyToken="BEDE1C8A46C66814" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MimeKit.dll" size="1270272">
+      <assemblyIdentity name="MimeKit" version="4.14.0.0" publicKeyToken="BEDE1C8A46C66814" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>N3/MyEA9V2qH5fF3eVN+fdUvwRNo9vn1jpOY7+W9gg8=</dsig:DigestValue>
+        <dsig:DigestValue>3IBCRI8t/2vXYxOYAjcSEKgyXE5tp9vvoM/dUvpXI58=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MySql.Data.dll" size="1441792">
-      <assemblyIdentity name="MySql.Data" version="8.0.31.0" publicKeyToken="C5687FC88969C44D" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MySql.Data.dll" size="1189000">
+      <assemblyIdentity name="MySql.Data" version="9.5.0.0" publicKeyToken="C5687FC88969C44D" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>2eerXK+TvUV82iftHYAobz82CKnL+SaNL7bhQP3xLzQ=</dsig:DigestValue>
+        <dsig:DigestValue>CIbWCl0C8rJ+FBws6qFvd5VLBf/qIM03W5Xhx13geN4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Newtonsoft.Json.dll" size="701992">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Newtonsoft.Json.dll" size="721320">
       <assemblyIdentity name="Newtonsoft.Json" version="13.0.0.0" publicKeyToken="30AD4FE6B2A6AEED" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>tiSUnfiw46YVP9+3MKfG9JkLZZLuDZIuF4hDPSdmEPM=</dsig:DigestValue>
+        <dsig:DigestValue>8MB68OhNTdTaS9eCO6RTW8BIGzv2I+1Atlm2gUemu3U=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Renci.SshNet.dll" size="804352">
-      <assemblyIdentity name="Renci.SshNet" version="2020.0.2.0" publicKeyToken="1CEE9F8BDE3DB106" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Renci.SshNet.dll" size="525312">
+      <assemblyIdentity name="Renci.SshNet" version="2025.1.0.1" publicKeyToken="1CEE9F8BDE3DB106" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>9qS+KnYv/VofjUfA3rNMMBXUeb1AnQHMlvHS0L5VyqI=</dsig:DigestValue>
+        <dsig:DigestValue>dIppbdb7J25APAcQYfNcdeeZtCjqhT4LYJapIEE2RmQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RSB.exe" size="517632">
-      <assemblyIdentity name="RSB" version="1.0.1.54" language="neutral" processorArchitecture="amd64" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RSB.exe" size="1424384">
+      <assemblyIdentity name="RSB" version="1.1.25.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>OhpjbzVBEzEO2tkpf6BXSwTbygptSRjKWw2kU8S4vHk=</dsig:DigestValue>
+        <dsig:DigestValue>fhEPjT8Kg07lmrmhDfj8vSQNS+nXXFvWX4KkcnQXPJQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Buffers.dll" size="20856">
-      <assemblyIdentity name="System.Buffers" version="4.0.3.0" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Buffers.dll" size="23816">
+      <assemblyIdentity name="System.Buffers" version="4.0.5.0" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>rMzPvkXZ8I/+7ZkW43sz6YxlvgEs//bn+ntnIQzh/vs=</dsig:DigestValue>
+        <dsig:DigestValue>LXjXcMnLmXGZFUrowBi58dHvvIZyn3Jk3ebbrSoSysM=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Collections.Immutable.dll" size="253192">
+      <assemblyIdentity name="System.Collections.Immutable" version="10.0.0.1" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>W6oRclLuaE4mkDYDWWhUtkm8Je3csM3vOxAGWPw8M0w=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -211,252 +343,336 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Memory.dll" size="142240">
-      <assemblyIdentity name="System.Memory" version="4.0.1.2" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Configuration.ConfigurationManager.dll" size="95504">
+      <assemblyIdentity name="System.Configuration.ConfigurationManager" version="10.0.0.1" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>vz+4RmT0CX8aipvHGlHc+M8akF1AgKTSkNoXMIZuhW8=</dsig:DigestValue>
+        <dsig:DigestValue>CdMmZCKMYkje1HhvOy4zJmzIb1qm/4HgbyrjAACdKEc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Numerics.Vectors.dll" size="115856">
-      <assemblyIdentity name="System.Numerics.Vectors" version="4.1.4.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Diagnostics.DiagnosticSource.dll" size="223496">
+      <assemblyIdentity name="System.Diagnostics.DiagnosticSource" version="10.0.0.1" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>HT74aYKB589zcdFVSv71hys5+Wwm2nciEKM9oEG6EYM=</dsig:DigestValue>
+        <dsig:DigestValue>K2VO+99zc6R+UQYDELamusiXAg9yNFdVCOdeyy8R7PU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Runtime.CompilerServices.Unsafe.dll" size="18024">
-      <assemblyIdentity name="System.Runtime.CompilerServices.Unsafe" version="6.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Formats.Asn1.dll" size="109840">
+      <assemblyIdentity name="System.Formats.Asn1" version="10.0.0.1" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>N3aEiOjvRXKbx9miZ3YzxkUAQpdbuWUW4YbabLnNDc8=</dsig:DigestValue>
+        <dsig:DigestValue>xnQ9RxE7Y7/y1UGMjHMqwcr2NWvgb3cRBARdfHemgCs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Threading.Tasks.Extensions.dll" size="25984">
-      <assemblyIdentity name="System.Threading.Tasks.Extensions" version="4.2.0.1" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Interactive.Async.dll" size="368080">
+      <assemblyIdentity name="System.Interactive.Async" version="7.0.0.0" publicKeyToken="94BC3704CDDFC263" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>T4H/0NxyBNt1r8NepCkXabB8RAWS8oiUJg7qdmJqI8Y=</dsig:DigestValue>
+        <dsig:DigestValue>TuRfMjMMhFEyYxLJKlvCER+/KM4xNfGuibhbKBINju4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Telegram.Bot.dll" size="341504">
-      <assemblyIdentity name="Telegram.Bot" version="18.0.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.IO.Pipelines.dll" size="85816">
+      <assemblyIdentity name="System.IO.Pipelines" version="10.0.0.1" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>9ClphJobkcaCw2RlDQaMxnxV2JIXJ5B5vixkIfg1ME0=</dsig:DigestValue>
+        <dsig:DigestValue>Iqy4k5T0pVfuW0YuZYHnUnSPYreDv2vLEY0z3tLro8w=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ZedGraph.dll" size="295424">
-      <assemblyIdentity name="ZedGraph" version="5.1.7.430" publicKeyToken="02A83CBD123FCD60" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Linq.Async.dll" size="1189840">
+      <assemblyIdentity name="System.Linq.Async" version="7.0.0.0" publicKeyToken="94BC3704CDDFC263" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Jfyd7xG7d3csutdRpZ2lpp7u/9uR/8QPs2OOd1lcJjo=</dsig:DigestValue>
+        <dsig:DigestValue>5o61teU5B2StVLfiz9dBFMYvnhYtevsUDIEsxUpg3PQ=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Linq.AsyncEnumerable.dll" size="461072">
+      <assemblyIdentity name="System.Linq.AsyncEnumerable" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>wxv34gJ2uxxOtBYKm7WSD9Bcj3QJQh/2Hx2PQ3SEy5Q=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Memory.dll" size="145200">
+      <assemblyIdentity name="System.Memory" version="4.0.5.0" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>1ejkhm+c+mb3dlZg+EshAZiJPlUzVIev5evaNCwOkT0=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Numerics.Vectors.dll" size="110344">
+      <assemblyIdentity name="System.Numerics.Vectors" version="4.1.6.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>IML6gbjHDWUQmddilU8oX9T5QuY7LXIXwUXauNSy9Mk=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Reactive.dll" size="1364432">
+      <assemblyIdentity name="System.Reactive" version="6.1.0.0" publicKeyToken="94BC3704CDDFC263" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>59owl/1sOQGMOLncTf6FAFveA2ywG+xLO/ywB9ZNt6A=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Runtime.CompilerServices.Unsafe.dll" size="19256">
+      <assemblyIdentity name="System.Runtime.CompilerServices.Unsafe" version="6.0.3.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>CMvXJ4tm8eaEJagtS5cYGkEw2T492RgxQHq6chLM2s8=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Threading.Tasks.Extensions.dll" size="27960">
+      <assemblyIdentity name="System.Threading.Tasks.Extensions" version="4.2.4.0" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>r04T70GP2JtDLeIM0d+3+hCnF5yN0EnJhWMW5QxZSco=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ZedGraph.dll" size="295936">
+      <assemblyIdentity name="ZedGraph" version="5.2.1.437" publicKeyToken="02A83CBD123FCD60" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>hmnBof42K2PnNufl8FuXEgh8SCAYRkfsIzQbFirwOXg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="de\ZedGraph.resources.dll" size="4608">
-      <assemblyIdentity name="ZedGraph.resources" version="5.1.7.430" publicKeyToken="02A83CBD123FCD60" language="de" processorArchitecture="msil" />
+      <assemblyIdentity name="ZedGraph.resources" version="5.2.1.437" publicKeyToken="02A83CBD123FCD60" language="de" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>w/URT+Q5R5Fhb/mrDyNk0fJK4XJiG8NYgcnP+cFeV+k=</dsig:DigestValue>
+        <dsig:DigestValue>VSi2OWLUTRqV0RQ5i86OkWRcV5DxPnLTIA1SFSCB7do=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="es\ZedGraph.resources.dll" size="4608">
-      <assemblyIdentity name="ZedGraph.resources" version="5.1.7.430" publicKeyToken="02A83CBD123FCD60" language="es" processorArchitecture="msil" />
+      <assemblyIdentity name="ZedGraph.resources" version="5.2.1.437" publicKeyToken="02A83CBD123FCD60" language="es" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>tKYvaxQHrwee34Dt3MUSknwcJq+0t8hkf3bo1O4N3vY=</dsig:DigestValue>
+        <dsig:DigestValue>xv2a1aP66jukzdQIpC2V2FIrZE5aNJXbozAPp/L7Ftk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="fr\ZedGraph.resources.dll" size="4608">
-      <assemblyIdentity name="ZedGraph.resources" version="5.1.7.430" publicKeyToken="02A83CBD123FCD60" language="fr" processorArchitecture="msil" />
+      <assemblyIdentity name="ZedGraph.resources" version="5.2.1.437" publicKeyToken="02A83CBD123FCD60" language="fr" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>6WCldKuxV8VFzbL488NkCUkuPGhGZzQ/xjKBJGcdLLM=</dsig:DigestValue>
+        <dsig:DigestValue>bdu9lmNegMyW+1DvYUhH+MqlFwY4Ihy10CENbHs6c8M=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="hu\ZedGraph.resources.dll" size="4608">
-      <assemblyIdentity name="ZedGraph.resources" version="5.1.7.430" publicKeyToken="02A83CBD123FCD60" language="hu" processorArchitecture="msil" />
+      <assemblyIdentity name="ZedGraph.resources" version="5.2.1.437" publicKeyToken="02A83CBD123FCD60" language="hu" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>3a8pHzTX1bz//frCoFJIDxlA8VuL3+4atVf2LaL95xg=</dsig:DigestValue>
+        <dsig:DigestValue>c+I+/eqyUrUHHVK4i6IXWyI337HxS4GYoRLg2V8Mt4A=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="it\ZedGraph.resources.dll" size="4608">
-      <assemblyIdentity name="ZedGraph.resources" version="5.1.7.430" publicKeyToken="02A83CBD123FCD60" language="it" processorArchitecture="msil" />
+      <assemblyIdentity name="ZedGraph.resources" version="5.2.1.437" publicKeyToken="02A83CBD123FCD60" language="it" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>wqFXQycC7jMuokc9OQEmuu+/CrvUqW5MoMUbQ+dbbkE=</dsig:DigestValue>
+        <dsig:DigestValue>1hSq0HoOD35+WYw3E32mWen8AxpSuarA9laoesY9HRM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ja\ZedGraph.resources.dll" size="4608">
-      <assemblyIdentity name="ZedGraph.resources" version="5.1.7.430" publicKeyToken="02A83CBD123FCD60" language="ja" processorArchitecture="msil" />
+      <assemblyIdentity name="ZedGraph.resources" version="5.2.1.437" publicKeyToken="02A83CBD123FCD60" language="ja" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>GtZEzNloB8Fh9pEVnsfxeHO8NGBYUAtRI9c0K1Q8ivg=</dsig:DigestValue>
+        <dsig:DigestValue>umA/1yb/sA5sSjpuj3knz0sUOQUrKPAp2bzyaBfSYS0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="pt\ZedGraph.resources.dll" size="4608">
-      <assemblyIdentity name="ZedGraph.resources" version="5.1.7.430" publicKeyToken="02A83CBD123FCD60" language="pt" processorArchitecture="msil" />
+      <assemblyIdentity name="ZedGraph.resources" version="5.2.1.437" publicKeyToken="02A83CBD123FCD60" language="pt" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>6oGz5dt+hL0ZLEUTBsT4lfAiqUJ+bcKdtrx8+fl+bNs=</dsig:DigestValue>
+        <dsig:DigestValue>JOL7a6WYgGMrkMhgwRjGAy+iWl7fKSkIB4yWy6QJW/Q=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ru\ZedGraph.resources.dll" size="4608">
-      <assemblyIdentity name="ZedGraph.resources" version="5.1.7.430" publicKeyToken="02A83CBD123FCD60" language="ru" processorArchitecture="msil" />
+      <assemblyIdentity name="ZedGraph.resources" version="5.2.1.437" publicKeyToken="02A83CBD123FCD60" language="ru" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>c+fn/LknpTxH0l2L9j6E7Vq30RrlxeE3CGw0jeevR6A=</dsig:DigestValue>
+        <dsig:DigestValue>17Nn4qVZmE36toMQAK5jEtY7nLVqbZi22j0vwubg3+E=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="sk\ZedGraph.resources.dll" size="4608">
-      <assemblyIdentity name="ZedGraph.resources" version="5.1.7.430" publicKeyToken="02A83CBD123FCD60" language="sk" processorArchitecture="msil" />
+      <assemblyIdentity name="ZedGraph.resources" version="5.2.1.437" publicKeyToken="02A83CBD123FCD60" language="sk" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>YnuRRnT/mFjqDzn1KSRtUfx2v6mPCA7UMPQd9alw7ys=</dsig:DigestValue>
+        <dsig:DigestValue>BUlCky1isMFh1g9nhdRfoeJJ803RtAddtnljhsmPDE8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="sv\ZedGraph.resources.dll" size="4096">
-      <assemblyIdentity name="ZedGraph.resources" version="5.1.7.430" publicKeyToken="02A83CBD123FCD60" language="sv" processorArchitecture="msil" />
+      <assemblyIdentity name="ZedGraph.resources" version="5.2.1.437" publicKeyToken="02A83CBD123FCD60" language="sv" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>tda6PMRnbW3R40dKPAu9h3DNH6cJ996wp6OlwOj0v+E=</dsig:DigestValue>
+        <dsig:DigestValue>BIMPpOo7GCslap5zPSiSuIeSRmSJB41tz169S0HE5oc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="tr\ZedGraph.resources.dll" size="4608">
-      <assemblyIdentity name="ZedGraph.resources" version="5.1.7.430" publicKeyToken="02A83CBD123FCD60" language="tr" processorArchitecture="msil" />
+      <assemblyIdentity name="ZedGraph.resources" version="5.2.1.437" publicKeyToken="02A83CBD123FCD60" language="tr" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>uNEYSDFraZSAH6mDi0btoIVBrhqOf/pO8OtzpXmrWjw=</dsig:DigestValue>
+        <dsig:DigestValue>siH4xR05uhUO/1Tn8ReJr+MPRY2KnQ9v28ltN3+H1PU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="zh-CN\ZedGraph.resources.dll" size="4096">
-      <assemblyIdentity name="ZedGraph.resources" version="5.1.7.430" publicKeyToken="02A83CBD123FCD60" language="zh-cn" processorArchitecture="msil" />
+      <assemblyIdentity name="ZedGraph.resources" version="5.2.1.437" publicKeyToken="02A83CBD123FCD60" language="zh-CN" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>A0R50RmYmpOZSzGFXBwjdrUyESNEr9inIAS95cbzixg=</dsig:DigestValue>
+        <dsig:DigestValue>NRw9imq6ZCR4vSkZBQSZAECoDDhGJde4tYW5fhaVixI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="zh-TW\ZedGraph.resources.dll" size="4608">
-      <assemblyIdentity name="ZedGraph.resources" version="5.1.7.430" publicKeyToken="02A83CBD123FCD60" language="zh-tw" processorArchitecture="msil" />
+      <assemblyIdentity name="ZedGraph.resources" version="5.2.1.437" publicKeyToken="02A83CBD123FCD60" language="zh-TW" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>BNjYSWawhLcRVvLnzhw9Vq2qC1dlankOXnaL974hCnU=</dsig:DigestValue>
+        <dsig:DigestValue>VdMU27HexKfccJNOTFAiAcnY+2Kgor2fkVLPCb2jcHE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ZstdNet.dll" size="28672">
-      <assemblyIdentity name="ZstdNet" version="1.4.5.0" publicKeyToken="C5687FC88969C44D" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ZstdSharp.dll" size="428032">
+      <assemblyIdentity name="ZstdSharp" version="0.8.6.0" publicKeyToken="8D151AF33A4AD5CF" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>5rrHKgOqMPqN1beBJzpCDZqXH9jaD2Uf7MolVellyt4=</dsig:DigestValue>
+        <dsig:DigestValue>ZUqifI9wyCHS2EAtuVwxOoRRsqImS/Udf/yeGVvv4io=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="License-LGPL.txt" size="26929">
+  <file name="License-LGPL.txt" size="26423">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>iRL7QXHiwgsVa4v7NiBCs2EsyLPNa+AsIWSrkpApH1A=</dsig:DigestValue>
+      <dsig:DigestValue>oqjJYhaAjQO20xcfZuzoDiRY2bMRWjLe9nkQQ/wGpm8=</dsig:DigestValue>
     </hash>
   </file>
   <file name="loss 2.ico" size="227390">
@@ -477,13 +693,13 @@
       <dsig:DigestValue>v/N46JjENhc+y5jsGMv+eHr5fRfCKAbHaVVV0s11b1s=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="RSB.exe.config" size="8406">
+  <file name="RSB.exe.config" size="12202">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>xlmyqEhD1qvCoPnuv5woIzLQ9p84tolU2i6yMxCdKtU=</dsig:DigestValue>
+      <dsig:DigestValue>PIt8fsNyS0pRKwwq0XMZTdk/Uv6lXT3Ptybqbw0L9MU=</dsig:DigestValue>
     </hash>
   </file>
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">

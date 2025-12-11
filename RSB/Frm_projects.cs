@@ -1595,7 +1595,7 @@ namespace RSB
                 //загрузка отчета
                 //получить файл(ы)            
                 //res =  saveFileDialog_report.ShowDialog();
-                openFileDialog_report.Filter = "Report files (*.txt;*doc;*.docx;*pdf)|*.txt;*doc;*.docx;*pdf)";
+                //openFileDialog_report.Filter = "Report files (*.txt;*.doc;*.docx;*.pdf;*.xls)|*.txt;*.doc;*.docx;*.pdf;*.xls)";
                 if (openFileDialog_report.ShowDialog() == DialogResult.OK)
                 {
                     string[] _files = openFileDialog_report.FileNames;

@@ -4468,6 +4468,24 @@
             </remarks>
             <value><see langword="true" /> if the engine is connected; otherwise, <see langword="false" />.</value>
         </member>
+        <member name="P:MailKit.Net.Imap.ImapEngine.IsIdle">
+            <summary>
+            Get whether or not the client is currently in the IDLE state.
+            </summary>
+            <remarks>
+            Gets whether or not the client is currently in the IDLE state.
+            </remarks>
+            <value><see langword="true" /> if an IDLE command is active; otherwise, <see langword="false" />.</value>
+        </member>
+        <member name="P:MailKit.Net.Imap.ImapEngine.IsSecure">
+            <summary>
+            Get whether or not the connection is secure (typically via SSL or TLS).
+            </summary>
+            <remarks>
+            Gets whether or not the connection is secure (typically via SSL or TLS).
+            </remarks>
+            <value><see langword="true" /> if the connection is secure; otherwise, <see langword="false" />.</value>
+        </member>
         <member name="P:MailKit.Net.Imap.ImapEngine.PersonalNamespaces">
             <summary>
             Gets the personal folder namespaces.
@@ -4817,6 +4835,15 @@
             An IMAP protocol error occurred.
             </exception>
         </member>
+        <member name="M:MailKit.Net.Imap.ImapEngine.UngetToken(MailKit.Net.Imap.ImapToken)">
+            <summary>
+            Unget a token.
+            </summary>
+            <remarks>
+            Ungets a token.
+            </remarks>
+            <param name="token">The token.</param>
+        </member>
         <member name="M:MailKit.Net.Imap.ImapEngine.ReadLiteral(System.Threading.CancellationToken)">
             <summary>
             Reads the literal as a string.
@@ -4865,19 +4892,32 @@
             <param name="isTagged">Whether or not the resp-code is tagged vs untagged.</param>
             <param name="cancellationToken">The cancellation token.</param>
         </member>
-        <member name="M:MailKit.Net.Imap.ImapEngine.ProcessUntaggedResponse(System.Threading.CancellationToken)">
+        <member name="M:MailKit.Net.Imap.ImapEngine.ProcessUntaggedResponse(MailKit.Net.Imap.ImapCommand,System.Threading.CancellationToken)">
             <summary>
             Processes an untagged response.
             </summary>
             <returns>The untagged response.</returns>
+            <param name="ic">The IMAP command that is currently being processed.</param>
             <param name="cancellationToken">The cancellation token.</param>
         </member>
-        <member name="M:MailKit.Net.Imap.ImapEngine.ProcessUntaggedResponseAsync(System.Threading.CancellationToken)">
+        <member name="M:MailKit.Net.Imap.ImapEngine.ProcessUntaggedResponseAsync(MailKit.Net.Imap.ImapCommand,System.Threading.CancellationToken)">
             <summary>
             Processes an untagged response.
             </summary>
             <returns>The untagged response.</returns>
+            <param name="ic">The IMAP command that is currently being processed.</param>
             <param name="cancellationToken">The cancellation token.</param>
+        </member>
+        <member name="M:MailKit.Net.Imap.ImapEngine.OnImapProtocolException(MailKit.Net.Imap.ImapCommand,MailKit.Net.Imap.ImapProtocolException)">
+            <summary>
+            Handles an IMAP protocol exception by disconnecting and then potentially throwing a replacement exception.
+            </summary>
+            <param name="ic">The current <see cref="T:MailKit.Net.Imap.ImapCommand"/> being processed.</param>
+            <param name="ex">THe <see cref="T:MailKit.Net.Imap.ImapProtocolException"/> that was thrown.</param>
+            <exception cref="T:MailKit.Net.Imap.ImapProtocolException">
+            An ALERT or some resp-text was found that would enhance the exception message
+            of the <paramref name="ex"/> provided.
+            </exception>
         </member>
         <member name="M:MailKit.Net.Imap.ImapEngine.Iterate">
             <summary>
@@ -13038,6 +13078,16 @@
             </remarks>
             <value><see langword="true" /> if an unexpected token was encountered; otherwise, <see langword="false" />.</value>
         </member>
+        <member name="M:MailKit.Net.Imap.ImapProtocolException.Create(MailKit.Net.Imap.ImapCommand)">
+            <summary>
+            Create a new <see cref="T:MailKit.Net.Imap.ImapProtocolException"/> based on the <see cref="T:MailKit.Net.Imap.ImapCommand"/> state.
+            </summary>
+            <remarks>
+            Create a new <see cref="T:MailKit.Net.Imap.ImapProtocolException"/> based on the <see cref="T:MailKit.Net.Imap.ImapCommand"/> state.
+            </remarks>
+            <returns>A new protocol exception.</returns>
+            <param name="ic">The command state.</param>
+        </member>
         <member name="T:MailKit.Net.Imap.ImapStreamMode">
             <summary>
             An enumeration of the possible IMAP streaming modes.
@@ -13070,10 +13120,10 @@
         </member>
         <member name="P:MailKit.Net.Imap.ImapStream.Stream">
             <summary>
-            Get or sets the underlying network stream.
+            Get the underlying network stream.
             </summary>
             <remarks>
-            Gets or sets the underlying network stream.
+            Gets the underlying network stream.
             </remarks>
             <value>The underlying network stream.</value>
         </member>
@@ -13359,8 +13409,11 @@
         </member>
         <member name="M:MailKit.Net.Imap.ImapStream.UngetToken(MailKit.Net.Imap.ImapToken)">
             <summary>
-            Ungets a token.
+            Unget a token.
             </summary>
+            <remarks>
+            Ungets a token.
+            </remarks>
             <param name="token">The token.</param>
         </member>
         <member name="M:MailKit.Net.Imap.ImapStream.ReadLine(MailKit.ByteArrayBuilder,System.Threading.CancellationToken)">
@@ -13713,6 +13766,26 @@
             </summary>
             <returns><see langword="true" /> if the specified mailbox name is the Inbox; otherwise, <see langword="false" />.</returns>
             <param name="mailboxName">The mailbox name.</param>
+        </member>
+        <member name="M:MailKit.Net.Imap.ImapUtils.ReadFolderName(MailKit.Net.Imap.ImapEngine,System.String,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Reads a folder name.
+            </summary>
+            <param name="engine">The IMAP engine</param>
+            <param name="format">The exception format string.</param>
+            <param name="isList">Whether or not this is a LIST (or LSUB) response.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>The folder name.</returns>
+        </member>
+        <member name="M:MailKit.Net.Imap.ImapUtils.ReadFolderNameAsync(MailKit.Net.Imap.ImapEngine,System.String,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously reads a folder name.
+            </summary>
+            <param name="engine">The IMAP engine</param>
+            <param name="format">The exception format string.</param>
+            <param name="isList">Whether or not this is a LIST (or LSUB) response.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>The folder name.</returns>
         </member>
         <member name="M:MailKit.Net.Imap.ImapUtils.ParseFolderList(MailKit.Net.Imap.ImapEngine,System.Collections.Generic.List{MailKit.Net.Imap.ImapFolder},System.Boolean,System.Boolean,System.Threading.CancellationToken)">
             <summary>
@@ -17267,6 +17340,15 @@
             </remarks>
             <value><see langword="true" /> if the engine is connected; otherwise, <see langword="false" />.</value>
         </member>
+        <member name="P:MailKit.Net.Pop3.Pop3Engine.IsSecure">
+            <summary>
+            Get whether or not the connection is secure (typically via SSL or TLS).
+            </summary>
+            <remarks>
+            Gets whether or not the connection is secure (typically via SSL or TLS).
+            </remarks>
+            <value><see langword="true" /> if the connection is secure; otherwise, <see langword="false" />.</value>
+        </member>
         <member name="P:MailKit.Net.Pop3.Pop3Engine.ApopToken">
             <summary>
             Gets the APOP authentication token.
@@ -17513,10 +17595,10 @@
         </member>
         <member name="P:MailKit.Net.Pop3.Pop3Stream.Stream">
             <summary>
-            Get or sets the underlying network stream.
+            Get the underlying network stream.
             </summary>
             <remarks>
-            Gets or sets the underlying network stream.
+            Gets the underlying network stream.
             </remarks>
             <value>The underlying network stream.</value>
         </member>
@@ -21540,10 +21622,10 @@
         </member>
         <member name="P:MailKit.Net.Smtp.SmtpStream.Stream">
             <summary>
-            Get or sets the underlying network stream.
+            Get the underlying network stream.
             </summary>
             <remarks>
-            Gets or sets the underlying network stream.
+            Gets the underlying network stream.
             </remarks>
             <value>The underlying network stream.</value>
         </member>
@@ -22101,6 +22183,28 @@
             Only the headers should be included in any failed delivery status notification issued by the server.
             </summary>
         </member>
+        <member name="M:MailKit.Net.ExtendedSslStream.TryGetChannelBinding(System.Security.Authentication.ExtendedProtection.ChannelBindingKind,System.Security.Authentication.ExtendedProtection.ChannelBinding@)">
+            <summary>
+            Try to get a channel-binding.
+            </summary>
+            <remarks>
+            Tries to get the specified channel-binding.
+            </remarks>
+            <param name="kind">The kind of channel-binding desired.</param>
+            <param name="channelBinding">The channel-binding.</param>
+            <returns><see langword="true" /> if the channel-binding token was acquired; otherwise, <see langword="false" />.</returns>
+        </member>
+        <member name="M:MailKit.Net.ExtendedSslStream.TryGetChannelBindingToken(System.Security.Authentication.ExtendedProtection.ChannelBindingKind,System.Byte[]@)">
+            <summary>
+            Try to get a channel-binding token.
+            </summary>
+            <remarks>
+            Tries to get the specified channel-binding.
+            </remarks>
+            <param name="kind">The kind of channel-binding desired.</param>
+            <param name="token">The channel-binding token.</param>
+            <returns><see langword="true" /> if the channel-binding token was acquired; otherwise, <see langword="false" />.</returns>
+        </member>
         <member name="T:MailKit.Net.IChannelBindingContext">
             <summary>
             An interface for resources that support acquiring channel-binding tokens.
@@ -22126,28 +22230,6 @@
             </summary>
             <remarks>
             Tries to get the specified channel-binding token.
-            </remarks>
-            <param name="kind">The kind of channel-binding desired.</param>
-            <param name="token">The channel-binding token.</param>
-            <returns><see langword="true" /> if the channel-binding token was acquired; otherwise, <see langword="false" />.</returns>
-        </member>
-        <member name="M:MailKit.Net.SslStream.TryGetChannelBinding(System.Security.Authentication.ExtendedProtection.ChannelBindingKind,System.Security.Authentication.ExtendedProtection.ChannelBinding@)">
-            <summary>
-            Try to get a channel-binding.
-            </summary>
-            <remarks>
-            Tries to get the specified channel-binding.
-            </remarks>
-            <param name="kind">The kind of channel-binding desired.</param>
-            <param name="channelBinding">The channel-binding.</param>
-            <returns><see langword="true" /> if the channel-binding token was acquired; otherwise, <see langword="false" />.</returns>
-        </member>
-        <member name="M:MailKit.Net.SslStream.TryGetChannelBindingToken(System.Security.Authentication.ExtendedProtection.ChannelBindingKind,System.Byte[]@)">
-            <summary>
-            Try to get a channel-binding token.
-            </summary>
-            <remarks>
-            Tries to get the specified channel-binding.
             </remarks>
             <param name="kind">The kind of channel-binding desired.</param>
             <param name="token">The channel-binding token.</param>
@@ -27789,15 +27871,6 @@
             Event args used when an annotation changes.
             </remarks>
         </member>
-        <member name="M:MailKit.AnnotationsChangedEventArgs.#ctor(System.Int32)">
-            <summary>
-            Initializes a new instance of the <see cref="T:MailKit.AnnotationsChangedEventArgs"/> class.
-            </summary>
-            <remarks>
-            Creates a new <see cref="T:MailKit.AnnotationsChangedEventArgs"/>.
-            </remarks>
-            <param name="index">The message index.</param>
-        </member>
         <member name="M:MailKit.AnnotationsChangedEventArgs.#ctor(System.Int32,System.Collections.Generic.IEnumerable{MailKit.Annotation})">
             <summary>
             Initializes a new instance of the <see cref="T:MailKit.AnnotationsChangedEventArgs"/> class.
@@ -28037,6 +28110,21 @@
             Creates a new <see cref="T:MailKit.BodyPart"/>.
             </remarks>
         </member>
+        <member name="M:MailKit.BodyPart.#ctor(MimeKit.ContentType,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MailKit.BodyPart"/> class.
+            </summary>
+            <remarks>
+            Creates a new <see cref="T:MailKit.BodyPart"/>.
+            </remarks>
+            <param name="contentType">The content type.</param>
+            <param name="partSpecifier">The part specifier.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <para><paramref name="contentType"/> is <see langword="null" />.</para>
+            <para>-or-</para>
+            <para><paramref name="partSpecifier"/> is <see langword="null" />.</para>
+            </exception>
+        </member>
         <member name="P:MailKit.BodyPart.ContentType">
             <summary>
             Gets the Content-Type of the body part.
@@ -28130,6 +28218,21 @@
             <remarks>
             Creates a new <see cref="T:MailKit.BodyPartBasic"/>.
             </remarks>
+        </member>
+        <member name="M:MailKit.BodyPartBasic.#ctor(MimeKit.ContentType,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MailKit.BodyPartBasic"/> class.
+            </summary>
+            <remarks>
+            Creates a new <see cref="T:MailKit.BodyPartBasic"/>.
+            </remarks>
+            <param name="contentType">The content type.</param>
+            <param name="partSpecifier">The part specifier.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <para><paramref name="contentType"/> is <see langword="null" />.</para>
+            <para>-or-</para>
+            <para><paramref name="partSpecifier"/> is <see langword="null" />.</para>
+            </exception>
         </member>
         <member name="P:MailKit.BodyPartBasic.ContentId">
             <summary>
@@ -28431,6 +28534,21 @@
             Creates a new <see cref="T:MailKit.BodyPartMessage"/>.
             </remarks>
         </member>
+        <member name="M:MailKit.BodyPartMessage.#ctor(MimeKit.ContentType,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MailKit.BodyPartMessage"/> class.
+            </summary>
+            <remarks>
+            Creates a new <see cref="T:MailKit.BodyPartMessage"/>.
+            </remarks>
+            <param name="contentType">The content type.</param>
+            <param name="partSpecifier">The part specifier.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <para><paramref name="contentType"/> is <see langword="null" />.</para>
+            <para>-or-</para>
+            <para><paramref name="partSpecifier"/> is <see langword="null" />.</para>
+            </exception>
+        </member>
         <member name="P:MailKit.BodyPartMessage.Envelope">
             <summary>
             Gets the envelope of the message, if available.
@@ -28499,6 +28617,39 @@
             <remarks>
             Creates a new <see cref="T:MailKit.BodyPartMultipart"/>.
             </remarks>
+        </member>
+        <member name="M:MailKit.BodyPartMultipart.#ctor(MimeKit.ContentType,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MailKit.BodyPartMultipart"/> class.
+            </summary>
+            <remarks>
+            Creates a new <see cref="T:MailKit.BodyPartMultipart"/>.
+            </remarks>
+            <param name="contentType">The content type.</param>
+            <param name="partSpecifier">The part specifier.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <para><paramref name="contentType"/> is <see langword="null" />.</para>
+            <para>-or-</para>
+            <para><paramref name="partSpecifier"/> is <see langword="null" />.</para>
+            </exception>
+        </member>
+        <member name="M:MailKit.BodyPartMultipart.#ctor(MimeKit.ContentType,System.String,MailKit.BodyPartCollection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MailKit.BodyPartMultipart"/> class.
+            </summary>
+            <remarks>
+            Creates a new <see cref="T:MailKit.BodyPartMultipart"/>.
+            </remarks>
+            <param name="contentType">The content type.</param>
+            <param name="partSpecifier">The part specifier.</param>
+            <param name="bodyParts">The child body parts of the multipart.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <para><paramref name="contentType"/> is <see langword="null" />.</para>
+            <para>-or-</para>
+            <para><paramref name="partSpecifier"/> is <see langword="null" />.</para>
+            <para>-or-</para>
+            <para><paramref name="bodyParts"/> is <see langword="null" />.</para>
+            </exception>
         </member>
         <member name="P:MailKit.BodyPartMultipart.BodyParts">
             <summary>
@@ -28580,6 +28731,21 @@
             <remarks>
             Creates a new <see cref="T:MailKit.BodyPartText"/>.
             </remarks>
+        </member>
+        <member name="M:MailKit.BodyPartText.#ctor(MimeKit.ContentType,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MailKit.BodyPartText"/> class.
+            </summary>
+            <remarks>
+            Creates a new <see cref="T:MailKit.BodyPartText"/>.
+            </remarks>
+            <param name="contentType">The content type.</param>
+            <param name="partSpecifier">The part specifier.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <para><paramref name="contentType"/> is <see langword="null" />.</para>
+            <para>-or-</para>
+            <para><paramref name="partSpecifier"/> is <see langword="null" />.</para>
+            </exception>
         </member>
         <member name="P:MailKit.BodyPartText.IsPlain">
             <summary>
@@ -51590,6 +51756,20 @@
             Initializes a new instance of the <see cref="T:MailKit.MailFolder"/> class.
             </remarks>
         </member>
+        <member name="M:MailKit.MailFolder.#ctor(System.String,System.Char,MailKit.FolderAttributes)">
+            <summary>
+            Initialize a new instance of the <see cref="T:MailKit.MailFolder"/> class.
+            </summary>
+            <remarks>
+            Initializes a new instance of the <see cref="T:MailKit.MailFolder"/> class.
+            </remarks>
+            <param name="fullName">The full name (path) of the folder.</param>
+            <param name="directorySeparator">The directory separator used by the folder.</param>
+            <param name="attributes">The attributes of the folder.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <paramref name="fullName"/> is <see langword="null"/>.
+            </exception>
+        </member>
         <member name="P:MailKit.MailFolder.SyncRoot">
             <summary>
             Get an object that can be used to synchronize access to the folder.
@@ -61201,9 +61381,7 @@
             The default server certificate validation callback used when connecting via SSL or TLS.
             </summary>
             <remarks>
-            <para>The default server certificate validation callback recognizes and accepts the certificates
-            for a list of commonly used mail servers such as gmail.com, outlook.com, mail.me.com, yahoo.com,
-            and gmx.net.</para>
+            The default server certificate validation callback only succeeds if there are no SSL/TLS certificate validation errors.
             </remarks>
             <returns><see langword="true" /> if the certificate is deemed valid; otherwise, <see langword="false" />.</returns>
             <param name="sender">The object that is connecting via SSL or TLS.</param>
@@ -65319,18 +65497,6 @@
             Event args for the <see cref="E:MailKit.IMailFolder.MessageLabelsChanged"/> event.
             </remarks>
         </member>
-        <member name="M:MailKit.MessageLabelsChangedEventArgs.#ctor(System.Int32)">
-            <summary>
-            Initializes a new instance of the <see cref="T:MailKit.MessageLabelsChangedEventArgs"/> class.
-            </summary>
-            <remarks>
-            Creates a new <see cref="T:MailKit.MessageLabelsChangedEventArgs"/>.
-            </remarks>
-            <param name="index">The message index.</param>
-            <exception cref="T:System.ArgumentOutOfRangeException">
-            <paramref name="index"/> is out of range.
-            </exception>
-        </member>
         <member name="M:MailKit.MessageLabelsChangedEventArgs.#ctor(System.Int32,System.Collections.Generic.IList{System.String})">
             <summary>
             Initializes a new instance of the <see cref="T:MailKit.MessageLabelsChangedEventArgs"/> class.
@@ -66621,15 +66787,6 @@
             <remarks>
             Event args for the <see cref="E:MailKit.IMailFolder.ModSeqChanged"/> event.
             </remarks>
-        </member>
-        <member name="M:MailKit.ModSeqChangedEventArgs.#ctor(System.Int32)">
-            <summary>
-            Initializes a new instance of the <see cref="T:MailKit.ModSeqChangedEventArgs"/> class.
-            </summary>
-            <remarks>
-            Creates a new <see cref="T:MailKit.ModSeqChangedEventArgs"/>.
-            </remarks>
-            <param name="index">The message index.</param>
         </member>
         <member name="M:MailKit.ModSeqChangedEventArgs.#ctor(System.Int32,System.UInt64)">
             <summary>

@@ -1948,10 +1948,10 @@
         </member>
         <member name="M:MimeKit.AttachmentCollection.CopyTo(MimeKit.MimeEntity[],System.Int32)">
             <summary>
-            Copy all the attachments in the collection to an array.
+            Copy all of the attachments in the collection to an array.
             </summary>
             <remarks>
-            Copies all the attachments within the <see cref="T:MimeKit.AttachmentCollection"/> into the array,
+            Copies all of the attachments within the <see cref="T:MimeKit.AttachmentCollection"/> into the array,
             starting at the specified array index.
             </remarks>
             <param name="array">The array to copy the attachments to.</param>
@@ -2977,9 +2977,6 @@
             <returns><see langword="true" /> if the content type was successfully parsed; otherwise, <see langword="false" />.</returns>
             <param name="text">The text to parse.</param>
             <param name="type">The parsed content type.</param>
-            <exception cref="T:System.ArgumentNullException">
-            <paramref name="text"/> is <see langword="null"/>.
-            </exception>
         </member>
         <member name="M:MimeKit.ContentType.Parse(MimeKit.ParserOptions,System.Byte[],System.Int32,System.Int32)">
             <summary>
@@ -3760,7 +3757,7 @@
             <exception cref="T:System.OperationCanceledException">
             The operation was canceled via the cancellation token.
             </exception>
-            <exception cref="T:Org.BouncyCastle.Cms.CmsException">
+            <exception cref="T:MimeKit.Cryptography.CmsEnvelopeException">
             An error occurred in the cryptographic message syntax subsystem.
             </exception>
         </member>
@@ -3789,7 +3786,7 @@
             <exception cref="T:System.OperationCanceledException">
             The operation was canceled via the cancellation token.
             </exception>
-            <exception cref="T:Org.BouncyCastle.Cms.CmsException">
+            <exception cref="T:MimeKit.Cryptography.CmsEnvelopeException">
             An error occurred in the cryptographic message syntax subsystem.
             </exception>
         </member>
@@ -3815,7 +3812,7 @@
             <exception cref="T:System.OperationCanceledException">
             The operation was canceled via the cancellation token.
             </exception>
-            <exception cref="T:Org.BouncyCastle.Cms.CmsException">
+            <exception cref="T:MimeKit.Cryptography.CmsEnvelopeException">
             An error occurred in the cryptographic message syntax subsystem.
             </exception>
         </member>
@@ -3841,7 +3838,7 @@
             <exception cref="T:System.OperationCanceledException">
             The operation was canceled via the cancellation token.
             </exception>
-            <exception cref="T:Org.BouncyCastle.Cms.CmsException">
+            <exception cref="T:MimeKit.Cryptography.CmsEnvelopeException">
             An error occurred in the cryptographic message syntax subsystem.
             </exception>
         </member>
@@ -3876,7 +3873,7 @@
             <exception cref="T:MimeKit.Cryptography.CertificateNotFoundException">
             A certificate could not be found for one or more of the <paramref name="recipients"/>.
             </exception>
-            <exception cref="T:Org.BouncyCastle.Cms.CmsException">
+            <exception cref="T:MimeKit.Cryptography.CmsEnvelopeException">
             An error occurred in the cryptographic message syntax subsystem.
             </exception>
         </member>
@@ -3911,7 +3908,7 @@
             <exception cref="T:MimeKit.Cryptography.CertificateNotFoundException">
             A certificate could not be found for one or more of the <paramref name="recipients"/>.
             </exception>
-            <exception cref="T:Org.BouncyCastle.Cms.CmsException">
+            <exception cref="T:MimeKit.Cryptography.CmsEnvelopeException">
             An error occurred in the cryptographic message syntax subsystem.
             </exception>
         </member>
@@ -3943,7 +3940,7 @@
             <exception cref="T:MimeKit.Cryptography.CertificateNotFoundException">
             A certificate could not be found for one or more of the <paramref name="recipients"/>.
             </exception>
-            <exception cref="T:Org.BouncyCastle.Cms.CmsException">
+            <exception cref="T:MimeKit.Cryptography.CmsEnvelopeException">
             An error occurred in the cryptographic message syntax subsystem.
             </exception>
         </member>
@@ -3975,7 +3972,7 @@
             <exception cref="T:MimeKit.Cryptography.CertificateNotFoundException">
             A certificate could not be found for one or more of the <paramref name="recipients"/>.
             </exception>
-            <exception cref="T:Org.BouncyCastle.Cms.CmsException">
+            <exception cref="T:MimeKit.Cryptography.CmsEnvelopeException">
             An error occurred in the cryptographic message syntax subsystem.
             </exception>
         </member>
@@ -4605,10 +4602,8 @@
             <param name="domain">The domain that the signer represents.</param>
             <param name="selector">The selector subdividing the domain.</param>
             <param name="algorithm">The signature algorithm.</param>
-            <exception cref="T:System.ArgumentNullException">
-            <para><paramref name="domain"/> is <see langword="null"/>.</para>
-            <para>-or-</para>
-            <para><paramref name="selector"/> is <see langword="null"/>.</para>
+            <exception cref="T:System.NotImplementedException">
+            This constructor is no longer supported. Use one of the other constructors.
             </exception>
         </member>
         <member name="M:MimeKit.Cryptography.ArcSigner.#ctor(Org.BouncyCastle.Crypto.AsymmetricKeyParameter,System.String,System.String,MimeKit.Cryptography.DkimSignatureAlgorithm)">
@@ -5544,10 +5539,10 @@
         </member>
         <member name="T:MimeKit.Cryptography.AuthenticationMethodResult">
             <summary>
-            An authentication method results.
+            Represents an authentication method and its result.
             </summary>
             <remarks>
-            An authentication method results.
+            The results for an authentication method.
             </remarks>
         </member>
         <member name="M:MimeKit.Cryptography.AuthenticationMethodResult.#ctor(System.String)">
@@ -6569,7 +6564,7 @@
             <exception cref="T:System.OperationCanceledException">
             The operation was canceled via the cancellation token.
             </exception>
-            <exception cref="T:Org.BouncyCastle.Cms.CmsException">
+            <exception cref="T:MimeKit.Cryptography.CmsEnvelopeException">
             An error occurred in the cryptographic message syntax subsystem.
             </exception>
         </member>
@@ -6596,7 +6591,7 @@
             <exception cref="T:System.OperationCanceledException">
             The operation was canceled via the cancellation token.
             </exception>
-            <exception cref="T:Org.BouncyCastle.Cms.CmsException">
+            <exception cref="T:MimeKit.Cryptography.CmsEnvelopeException">
             An error occurred in the cryptographic message syntax subsystem.
             </exception>
         </member>
@@ -6626,7 +6621,7 @@
             <exception cref="T:MimeKit.Cryptography.CertificateNotFoundException">
             A certificate could not be found for one or more of the <paramref name="recipients"/>.
             </exception>
-            <exception cref="T:Org.BouncyCastle.Cms.CmsException">
+            <exception cref="T:MimeKit.Cryptography.CmsEnvelopeException">
             An error occurred in the cryptographic message syntax subsystem.
             </exception>
         </member>
@@ -6656,7 +6651,7 @@
             <exception cref="T:MimeKit.Cryptography.CertificateNotFoundException">
             A certificate could not be found for one or more of the <paramref name="recipients"/>.
             </exception>
-            <exception cref="T:Org.BouncyCastle.Cms.CmsException">
+            <exception cref="T:MimeKit.Cryptography.CmsEnvelopeException">
             An error occurred in the cryptographic message syntax subsystem.
             </exception>
         </member>
@@ -6847,12 +6842,49 @@
         </member>
         <member name="P:MimeKit.Cryptography.CertificateNotFoundException.Mailbox">
             <summary>
-            Gets the mailbox address that could not be resolved to a certificate.
+            Get the mailbox address that could not be resolved to a certificate.
             </summary>
             <remarks>
             Gets the mailbox address that could not be resolved to a certificate.
             </remarks>
             <value>The mailbox address.</value>
+        </member>
+        <member name="T:MimeKit.Cryptography.CmsEnvelopeException">
+            <summary>
+            The exception that is thrown if an error occurs while generating a CMS envelope.
+            </summary>
+            <remarks>
+            <para>This exception is thrown by the
+            <a href="Overload_MimeKit_Cryptography_BouncyCastleSecureMimeContext_Encrypt.htm">BouncyCastleSecureMimeContext.Encrypt</a>
+            and
+            <a href="Overload_MimeKit_Cryptography_BouncyCastleSecureMimeContext_EncryptAsync.htm">BouncyCastleSecureMimeContext.EncryptAsync</a>
+            methods when an error occurs while generating a CMS envelope.</para>
+            <para>The <see cref="P:System.Exception.InnerException"/> will typically be one of the following types:</para>
+            <list type="number">
+            <item>
+            <para><see cref="T:System.AggregateException"/>: One or more of the recipient certificates failed validation.</para>
+            <para>In this scenario, callers may iterate over each of the <see cref="P:System.AggregateException.InnerExceptions"/>
+            for exceptions of type <see cref="T:MimeKit.Cryptography.CmsRecipientException"/>. These exceptions can be used to remove the failed
+            recipients before retrying the encryption operation.</para>
+            </item>
+            <item>
+            <para><see cref="T:Org.BouncyCastle.Cms.CmsException"/>: An error within BouncyCastle occurred.</para>
+            </item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:MimeKit.Cryptography.CmsEnvelopeException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initialize a new instance of the <see cref="T:MimeKit.Cryptography.CmsEnvelopeException"/> class.
+            </summary>
+            <remarks>
+            Creates a new <see cref="T:MimeKit.Cryptography.CmsEnvelopeException"/>.
+            </remarks>
+            <param name="message">A message explaining the error.</param>
+            <param name="innerException">The exception that is the cause of the current exception.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <paramref name="innerException"/> is <see langword="null"/>.
+            </exception>
         </member>
         <member name="T:MimeKit.Cryptography.CmsRecipient">
             <summary>
@@ -6964,16 +6996,25 @@
         </member>
         <member name="P:MimeKit.Cryptography.CmsRecipient.Certificate">
             <summary>
-            Gets the recipient's certificate.
+            Get the recipient's certificate.
             </summary>
             <remarks>
             The certificate is used for the purpose of encrypting data.
             </remarks>
             <value>The certificate.</value>
         </member>
+        <member name="P:MimeKit.Cryptography.CmsRecipient.Mailbox">
+            <summary>
+            Get or set the mailbox address of the recipient.
+            </summary>
+            <remarks>
+            Gets or sets the mailbox address of the recipient, if available.
+            </remarks>
+            <value>The mailbox address, if available.</value>
+        </member>
         <member name="P:MimeKit.Cryptography.CmsRecipient.RecipientIdentifierType">
             <summary>
-            Gets the recipient identifier type.
+            Get the recipient identifier type.
             </summary>
             <remarks>
             Specifies how the certificate should be looked up on the recipient's end.
@@ -6982,7 +7023,7 @@
         </member>
         <member name="P:MimeKit.Cryptography.CmsRecipient.EncryptionAlgorithms">
             <summary>
-            Gets or sets the known S/MIME encryption capabilities of the
+            Get or set the known S/MIME encryption capabilities of the
             recipient's mail client, in their preferred order.
             </summary>
             <remarks>
@@ -7001,7 +7042,7 @@
             <para>Gets or sets the padding to use for key encryption when
             the <see cref="P:MimeKit.Cryptography.CmsRecipient.Certificate"/>'s public key is an RSA key.</para>
             </remarks>
-            <value>The encryption padding scheme.</value>
+            <value>The encryption padding scheme or <see langword="null"/> if unspecified.</value>
         </member>
         <member name="T:MimeKit.Cryptography.CmsRecipientCollection">
             <summary>
@@ -7024,10 +7065,10 @@
         </member>
         <member name="P:MimeKit.Cryptography.CmsRecipientCollection.Count">
             <summary>
-            Gets the number of recipients in the collection.
+            Get the number of recipients in the collection.
             </summary>
             <remarks>
-            Indicates the number of recipients in the collection.
+            Gets the number of recipients in the collection.
             </remarks>
             <value>The number of recipients in the collection.</value>
         </member>
@@ -7042,7 +7083,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.CmsRecipientCollection.Add(MimeKit.Cryptography.CmsRecipient)">
             <summary>
-            Adds the specified recipient.
+            Add a recipient.
             </summary>
             <remarks>
             Adds the specified recipient.
@@ -7054,7 +7095,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.CmsRecipientCollection.Clear">
             <summary>
-            Clears the recipient collection.
+            Clear the recipient collection.
             </summary>
             <remarks>
             Removes all the recipients from the collection.
@@ -7062,7 +7103,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.CmsRecipientCollection.Contains(MimeKit.Cryptography.CmsRecipient)">
             <summary>
-            Checks if the collection contains the specified recipient.
+            Check if the collection contains a recipient.
             </summary>
             <remarks>
             Determines whether the collection contains the specified recipient.
@@ -7076,10 +7117,10 @@
         </member>
         <member name="M:MimeKit.Cryptography.CmsRecipientCollection.CopyTo(MimeKit.Cryptography.CmsRecipient[],System.Int32)">
             <summary>
-            Copies all the recipients in the <see cref="T:MimeKit.Cryptography.CmsRecipientCollection"/> to the specified array.
+            Copy all of the recipients in the <see cref="T:MimeKit.Cryptography.CmsRecipientCollection"/> to the specified array.
             </summary>
             <remarks>
-            Copies all the recipients within the <see cref="T:MimeKit.Cryptography.CmsRecipientCollection"/> into the array,
+            Copies all of the recipients within the <see cref="T:MimeKit.Cryptography.CmsRecipientCollection"/> into the array,
             starting at the specified array index.
             </remarks>
             <param name="array">The array.</param>
@@ -7093,7 +7134,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.CmsRecipientCollection.Remove(MimeKit.Cryptography.CmsRecipient)">
             <summary>
-            Removes the specified recipient.
+            Remove a recipient.
             </summary>
             <remarks>
             Removes the specified recipient.
@@ -7122,6 +7163,49 @@
             </remarks>
             <returns>The enumerator.</returns>
         </member>
+        <member name="T:MimeKit.Cryptography.CmsRecipientException">
+            <summary>
+            The exception that is thrown when an error occurs while processing a CMS recipient.
+            </summary>
+            <remarks>
+            <para>The exception that is thrown as a result of an error while processing a CMS recipient.</para>
+            <para>The <see cref="P:System.Exception.InnerException"/> should be used to discover more detailed diagnostic
+            information while the <see cref="P:MimeKit.Cryptography.CmsRecipientException.Recipient"/> and
+            <see cref="P:MimeKit.Cryptography.CmsRecipientException.Mailbox"/> properties may be used for additional context.</para>
+            </remarks>
+        </member>
+        <member name="M:MimeKit.Cryptography.CmsRecipientException.#ctor(System.String,MimeKit.Cryptography.CmsRecipient,System.Exception)">
+            <summary>
+            Initialize a new instance of the <see cref="T:MimeKit.Cryptography.CmsRecipientException"/> class.
+            </summary>
+            <remarks>
+            Creates a new <see cref="T:MimeKit.Cryptography.CmsRecipientException"/>.
+            </remarks>
+            <param name="message">A message explaining the error.</param>
+            <param name="recipient">The recipient that caused the error.</param>
+            <param name="innerException">The exception that is the cause of the current exception.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <paramref name="recipient"/> is <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="P:MimeKit.Cryptography.CmsRecipientException.Recipient">
+            <summary>
+            Get the recipient that caused the error.
+            </summary>
+            <remarks>
+            Gets the recipient that caused the error.
+            </remarks>
+            <value>The recipient.</value>
+        </member>
+        <member name="P:MimeKit.Cryptography.CmsRecipientException.Mailbox">
+            <summary>
+            Get the mailbox address associated with the recipient.
+            </summary>
+            <remarks>
+            Gets the mailbox address associated with the recipient, if available.
+            </remarks>
+            <value>The mailbox address of the recipient.</value>
+        </member>
         <member name="T:MimeKit.Cryptography.CmsSigner">
             <summary>
             An S/MIME signer.
@@ -7130,17 +7214,6 @@
             If the X.509 certificate is known for the signer, you may wish to use a
             <see cref="T:MimeKit.Cryptography.CmsSigner"/> as opposed to having the <see cref="T:MimeKit.Cryptography.CryptographyContext"/>
             do its own certificate lookup for the signer's <see cref="T:MimeKit.MailboxAddress"/>.
-            </remarks>
-        </member>
-        <member name="M:MimeKit.Cryptography.CmsSigner.#ctor">
-            <summary>
-            Initialize a new instance of the <see cref="T:MimeKit.Cryptography.CmsSigner"/> class.
-            </summary>
-            <remarks>
-            <para>The initial value of the <see cref="P:MimeKit.Cryptography.CmsSigner.DigestAlgorithm"/> will be set to
-            <see cref="F:MimeKit.Cryptography.DigestAlgorithm.Sha256"/> and both the
-            <see cref="P:MimeKit.Cryptography.CmsSigner.SignedAttributes"/> and <see cref="P:MimeKit.Cryptography.CmsSigner.UnsignedAttributes"/> properties
-            will be initialized to empty tables.</para>
             </remarks>
         </member>
         <member name="M:MimeKit.Cryptography.CmsSigner.#ctor(System.Collections.Generic.IEnumerable{Org.BouncyCastle.X509.X509Certificate},Org.BouncyCastle.Crypto.AsymmetricKeyParameter,MimeKit.Cryptography.SubjectIdentifierType)">
@@ -9351,6 +9424,9 @@
             <para>-or-</para>
             <para><paramref name="selector"/> is <see langword="null"/>.</para>
             </exception>
+            <exception cref="T:System.NotImplementedException">
+            This constructor is no longer supported. Use one of the other constructors.
+            </exception>
         </member>
         <member name="M:MimeKit.Cryptography.DkimSigner.#ctor(Org.BouncyCastle.Crypto.AsymmetricKeyParameter,System.String,System.String,MimeKit.Cryptography.DkimSignatureAlgorithm)">
             <summary>
@@ -9617,6 +9693,9 @@
             <para><paramref name="domain"/> is <see langword="null"/>.</para>
             <para>-or-</para>
             <para><paramref name="selector"/> is <see langword="null"/>.</para>
+            </exception>
+            <exception cref="T:System.NotImplementedException">
+            This constructor is no longer supported. Use one of the other constructors.
             </exception>
         </member>
         <member name="M:MimeKit.Cryptography.DkimSignerBase.#ctor(Org.BouncyCastle.Crypto.AsymmetricKeyParameter,System.String,System.String,MimeKit.Cryptography.DkimSignatureAlgorithm)">
@@ -18039,7 +18118,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.SecureMimeContext.Encrypt(MimeKit.Cryptography.CmsRecipientCollection,System.IO.Stream,System.Threading.CancellationToken)">
             <summary>
-            Encrypts the specified content for the specified recipients.
+            Encrypt the specified content for the specified recipients.
             </summary>
             <remarks>
             Encrypts the specified content for the specified recipients.
@@ -18060,7 +18139,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.SecureMimeContext.EncryptAsync(MimeKit.Cryptography.CmsRecipientCollection,System.IO.Stream,System.Threading.CancellationToken)">
             <summary>
-            Asynchronously encrypts the specified content for the specified recipients.
+            Asynchronously encrypt the specified content for the specified recipients.
             </summary>
             <remarks>
             Asynchronously encrypts the specified content for the specified recipients.
@@ -18081,7 +18160,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.SecureMimeContext.DecryptTo(System.IO.Stream,System.IO.Stream,System.Threading.CancellationToken)">
             <summary>
-            Decrypts the specified encryptedData to an output stream.
+            Decrypt the specified encryptedData to an output stream.
             </summary>
             <remarks>
             Decrypts the specified encryptedData to an output stream.
@@ -18100,7 +18179,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.SecureMimeContext.DecryptToAsync(System.IO.Stream,System.IO.Stream,System.Threading.CancellationToken)">
             <summary>
-            Asynchronously decrypts the specified encryptedData to an output stream.
+            Asynchronously decrypt the specified encryptedData to an output stream.
             </summary>
             <remarks>
             Asynchronously decrypts the specified encryptedData to an output stream.
@@ -18120,7 +18199,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.SecureMimeContext.Import(System.IO.Stream,System.String,System.Threading.CancellationToken)">
             <summary>
-            Imports certificates and keys from a pkcs12-encoded stream.
+            Import certificates and keys from a pkcs12-encoded stream.
             </summary>
             <remarks>
             Imports certificates and keys from a pkcs12-encoded stream.
@@ -18142,7 +18221,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.SecureMimeContext.ImportAsync(System.IO.Stream,System.String,System.Threading.CancellationToken)">
             <summary>
-            Asynchronously imports certificates and keys from a pkcs12-encoded stream.
+            Asynchronously import certificates and keys from a pkcs12-encoded stream.
             </summary>
             <remarks>
             Asynchronously imports certificates and keys from a pkcs12-encoded stream.
@@ -18165,7 +18244,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.SecureMimeContext.Import(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
-            Imports certificates and keys from a pkcs12 file.
+            Import certificates and keys from a pkcs12 file.
             </summary>
             <remarks>
             Imports certificates and keys from a pkcs12 file.
@@ -18207,7 +18286,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.SecureMimeContext.ImportAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
-            Asynchronously imports certificates and keys from a pkcs12 file.
+            Asynchronously import certificates and keys from a pkcs12 file.
             </summary>
             <remarks>
             Asynchronously imports certificates and keys from a pkcs12 file.
@@ -18735,6 +18814,30 @@
             <param name="table">The table.</param>
             <param name="column">The column to add.</param>
         </member>
+        <member name="M:MimeKit.Cryptography.SqlCertificateDatabase.CreateParameterName(System.String)">
+            <summary>
+            Create a parameter name for use in SQL database queries.
+            </summary>
+            <remarks>
+            <para>Creates a parameter name for use in SQL database queries.</para>
+            <para>The <paramref name="variableName"/> string is typically the name of the column being matched,
+            but may also be other variable names such as "NOW", "DATETIME", or "FLAGS".</para>
+            <para>By default, this method creates a parameter name by prefixing <paramref name="variableName"/>
+            with an '@' character.</para>
+            </remarks>
+            <param name="variableName">The name of the variable.</param>
+            <returns>The parameter name to be used in queries and <see cref="P:System.Data.Common.DbParameter.ParameterName"/>.</returns>
+        </member>
+        <member name="M:MimeKit.Cryptography.SqlCertificateDatabase.LimitToOne(System.Text.StringBuilder)">
+            <summary>
+            Limit the query results to a single record.
+            </summary>
+            <remarks>
+            Modifies the SQL <c>SELECT</c> <paramref name="query"/> to limit the query results to a single record.
+            </remarks>
+            <param name="query">A <see cref="T:System.Text.StringBuilder"/> containing an SQL <c>SELECT</c> query.</param>
+            <returns>A modified SQL query that will limit the results to a single record.</returns>
+        </member>
         <member name="M:MimeKit.Cryptography.SqlCertificateDatabase.GetIndexName(System.String,System.String[])">
             <summary>
             Gets the name of an index based on the table and columns that it is built against.
@@ -18770,7 +18873,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.SqlCertificateDatabase.CreateSelectQuery(MimeKit.Cryptography.X509CertificateRecordFields)">
             <summary>
-            Creates a SELECT query string builder for the specified fields of an X.509 certificate record.
+            Create a SELECT query string builder for the specified fields of an X.509 certificate record.
             </summary>
             <remarks>
             Creates a SELECT query string builder for the specified fields of an X.509 certificate record.
@@ -18780,7 +18883,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.SqlCertificateDatabase.CreateSelectQuery(MimeKit.Cryptography.X509CrlRecordFields)">
             <summary>
-            Creates a SELECT query string builder for the specified fields of an X.509 CRL record.
+            Create a SELECT query string builder for the specified fields of an X.509 CRL record.
             </summary>
             <remarks>
             Creates a SELECT query string builder for the specified fields of an X.509 CRL record.
@@ -19176,17 +19279,15 @@
             <param name="tableName">The name of the table.</param>
             <param name="columnNames">The names of the columns that were indexed.</param>
         </member>
-        <member name="M:MimeKit.Cryptography.SQLServerCertificateDatabase.GetSelectCommand(System.Data.Common.DbConnection,Org.BouncyCastle.X509.X509Certificate,MimeKit.Cryptography.X509CertificateRecordFields)">
+        <member name="M:MimeKit.Cryptography.SQLServerCertificateDatabase.LimitToOne(System.Text.StringBuilder)">
             <summary>
-            Gets the database command to select the record matching the specified certificate.
+            Limit the query results to a single record.
             </summary>
             <remarks>
-            Gets the database command to select the record matching the specified certificate.
+            Modifies the SQL <c>SELECT</c> <paramref name="query"/> to limit the query results to a single record.
             </remarks>
-            <returns>The database command.</returns>
-            <param name="connection">The database connection.</param>
-            <param name="certificate">The certificate.</param>
-            <param name="fields">The fields to return.</param>
+            <param name="query">A <see cref="T:System.Text.StringBuilder"/> containing an SQL <c>SELECT</c> query.</param>
+            <returns>A modified SQL query that will limit the results to a single record.</returns>
         </member>
         <member name="M:MimeKit.Cryptography.SQLServerCertificateDatabase.GetInsertCommand(System.Data.Common.DbConnection,MimeKit.Cryptography.X509CertificateRecord)">
             <summary>
@@ -19878,7 +19979,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.WindowsSecureMimeContext.TryGetDigestAlgorithm(System.Security.Cryptography.Oid,MimeKit.Cryptography.DigestAlgorithm@)">
             <summary>
-            Attempts to map a <see cref="T:System.Security.Cryptography.Oid"/>
+            Attempt to map a <see cref="T:System.Security.Cryptography.Oid"/>
             to a <see cref="T:MimeKit.Cryptography.DigestAlgorithm"/>.
             </summary>
             <remarks>
@@ -19985,7 +20086,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.WindowsSecureMimeContext.GetPreferredEncryptionAlgorithm(System.Security.Cryptography.Pkcs.CmsRecipientCollection)">
             <summary>
-            Gets the preferred encryption algorithm to use for encrypting to the specified recipients.
+            Get the preferred encryption algorithm to use for encrypting to the specified recipients.
             </summary>
             <remarks>
             <para>Gets the preferred encryption algorithm to use for encrypting to the specified recipients
@@ -20000,7 +20101,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.WindowsSecureMimeContext.Encrypt(MimeKit.Cryptography.CmsRecipientCollection,System.IO.Stream,System.Threading.CancellationToken)">
             <summary>
-            Encrypts the specified content for the specified recipients.
+            Encrypt the specified content for the specified recipients.
             </summary>
             <remarks>
             Encrypts the specified content for the specified recipients.
@@ -20027,7 +20128,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.WindowsSecureMimeContext.EncryptAsync(MimeKit.Cryptography.CmsRecipientCollection,System.IO.Stream,System.Threading.CancellationToken)">
             <summary>
-            Asynchronously encrypts the specified content for the specified recipients.
+            Asynchronously encrypt the specified content for the specified recipients.
             </summary>
             <remarks>
             Asynchronously encrypts the specified content for the specified recipients.
@@ -20054,7 +20155,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.WindowsSecureMimeContext.Encrypt(System.Collections.Generic.IEnumerable{MimeKit.MailboxAddress},System.IO.Stream,System.Threading.CancellationToken)">
             <summary>
-            Encrypts the specified content for the specified recipients.
+            Encrypt the specified content for the specified recipients.
             </summary>
             <remarks>
             Encrypts the specified content for the specified recipients.
@@ -20086,7 +20187,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.WindowsSecureMimeContext.EncryptAsync(System.Collections.Generic.IEnumerable{MimeKit.MailboxAddress},System.IO.Stream,System.Threading.CancellationToken)">
             <summary>
-            Asynchronously encrypts the specified content for the specified recipients.
+            Asynchronously encrypt the specified content for the specified recipients.
             </summary>
             <remarks>
             Asynchronously encrypts the specified content for the specified recipients.
@@ -20121,7 +20222,7 @@
             Decrypt the encrypted data.
             </summary>
             <remarks>
-            Decrypt the encrypted data.
+            Decrypts the encrypted data.
             </remarks>
             <returns>The decrypted <see cref="T:MimeKit.MimeEntity"/>.</returns>
             <param name="encryptedData">The encrypted data.</param>
@@ -20141,7 +20242,7 @@
             Asynchronously decrypt the encrypted data.
             </summary>
             <remarks>
-            Asynchronously decrypt the encrypted data.
+            Asynchronously decrypts the encrypted data.
             </remarks>
             <returns>The decrypted <see cref="T:MimeKit.MimeEntity"/>.</returns>
             <param name="encryptedData">The encrypted data.</param>
@@ -20158,7 +20259,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.WindowsSecureMimeContext.DecryptTo(System.IO.Stream,System.IO.Stream,System.Threading.CancellationToken)">
             <summary>
-            Decrypts the specified encryptedData to an output stream.
+            Decrypt the specified encryptedData to an output stream.
             </summary>
             <remarks>
             Decrypts the specified encryptedData to an output stream.
@@ -20180,7 +20281,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.WindowsSecureMimeContext.DecryptToAsync(System.IO.Stream,System.IO.Stream,System.Threading.CancellationToken)">
             <summary>
-            Asynchronously decrypts the specified encryptedData to an output stream.
+            Asynchronously decrypt the specified encryptedData to an output stream.
             </summary>
             <remarks>
             Asynchronously decrypts the specified encryptedData to an output stream.
@@ -20206,7 +20307,7 @@
             Import the specified certificate.
             </summary>
             <remarks>
-            Import the specified certificate.
+            Imports the specified certificate.
             </remarks>
             <param name="storeName">The store to import the certificate into.</param>
             <param name="certificate">The certificate.</param>
@@ -20239,7 +20340,7 @@
             Import the specified certificate.
             </summary>
             <remarks>
-            Import the specified certificate.
+            Imports the specified certificate.
             </remarks>
             <param name="storeName">The store to import the certificate into.</param>
             <param name="certificate">The certificate.</param>
@@ -20365,7 +20466,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.WindowsSecureMimeContext.Export(System.Collections.Generic.IEnumerable{MimeKit.MailboxAddress},System.Threading.CancellationToken)">
             <summary>
-            Exports the certificates for the specified mailboxes.
+            Export certificates for the specified mailboxes.
             </summary>
             <remarks>
             Exports the certificates for the specified mailboxes.
@@ -20392,7 +20493,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.WindowsSecureMimeContext.ExportAsync(System.Collections.Generic.IEnumerable{MimeKit.MailboxAddress},System.Threading.CancellationToken)">
             <summary>
-            Asynchronously export the certificates for the specified mailboxes.
+            Asynchronously export certificates for the specified mailboxes.
             </summary>
             <remarks>
             Asynchronously exports the certificates for the specified mailboxes.
@@ -20678,12 +20779,12 @@
         </member>
         <member name="M:MimeKit.Cryptography.X509Certificate2Extensions.GetPrivateKeyAsAsymmetricKeyParameter(System.Security.Cryptography.X509Certificates.X509Certificate2)">
             <summary>
-            Get the PrivateKey property as a BouncyCastle AsymmetricKeyParameter.
+            Get the certificate's private key as a BouncyCastle AsymmetricKeyParameter, if available.
             </summary>
             <remarks>
-            Gets the PrivateKey property as a BouncyCastle AsymmetricKeyParameter.
+            Gets the certificate's private key as a BouncyCastle AsymmetricKeyParameter, if available.
             </remarks>
-            <returns>The asymmetric key parameter.</returns>
+            <returns>The asymmetric key parameter for the certificate's private key, if available; otherwise, <see langword="null"/>.</returns>
             <param name="certificate">The X.509 certificate.</param>
             <exception cref="T:System.ArgumentNullException">
             <paramref name="certificate"/> is <see langword="null"/>.
@@ -20719,7 +20820,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateChain.IndexOf(Org.BouncyCastle.X509.X509Certificate)">
             <summary>
-            Gets the index of the specified certificate within the chain.
+            Get the index of a certificate within the chain.
             </summary>
             <remarks>
             Finds the index of the specified certificate, if it exists.
@@ -20732,7 +20833,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateChain.Insert(System.Int32,Org.BouncyCastle.X509.X509Certificate)">
             <summary>
-            Inserts the certificate at the specified index.
+            Insert a certificate at the specified index.
             </summary>
             <remarks>
             Inserts the certificate at the specified index in the certificates.
@@ -20748,7 +20849,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateChain.RemoveAt(System.Int32)">
             <summary>
-            Removes the certificate at the specified index.
+            Remove a certificate at the specified index.
             </summary>
             <remarks>
             Removes the certificate at the specified index.
@@ -20760,7 +20861,7 @@
         </member>
         <member name="P:MimeKit.Cryptography.X509CertificateChain.Item(System.Int32)">
             <summary>
-            Gets or sets the certificate at the specified index.
+            Get or set the certificate at the specified index.
             </summary>
             <remarks>
             Gets or sets the certificate at the specified index.
@@ -20776,7 +20877,7 @@
         </member>
         <member name="P:MimeKit.Cryptography.X509CertificateChain.Count">
             <summary>
-            Gets the number of certificates in the chain.
+            Get the number of certificates in the chain.
             </summary>
             <remarks>
             Indicates the number of certificates in the chain.
@@ -20794,7 +20895,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateChain.Add(Org.BouncyCastle.X509.X509Certificate)">
             <summary>
-            Adds the specified certificate to the chain.
+            Add a certificate to the chain.
             </summary>
             <remarks>
             Adds the specified certificate to the chain.
@@ -20806,7 +20907,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateChain.AddRange(System.Collections.Generic.IEnumerable{Org.BouncyCastle.X509.X509Certificate})">
             <summary>
-            Adds the specified range of certificates to the chain.
+            Add a range of certificates to the chain.
             </summary>
             <remarks>
             Adds the specified range of certificates to the chain.
@@ -20818,7 +20919,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateChain.Clear">
             <summary>
-            Clears the certificate chain.
+            Clear the certificate chain.
             </summary>
             <remarks>
             Removes all the certificates from the chain.
@@ -20826,7 +20927,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateChain.Contains(Org.BouncyCastle.X509.X509Certificate)">
             <summary>
-            Checks if the chain contains the specified certificate.
+            Check if the chain contains the specified certificate.
             </summary>
             <remarks>
             Determines whether the certificate chain contains the specified certificate.
@@ -20840,10 +20941,10 @@
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateChain.CopyTo(Org.BouncyCastle.X509.X509Certificate[],System.Int32)">
             <summary>
-            Copies all the certificates in the chain to the specified array.
+            Copy all of the certificates in the chain to the specified array.
             </summary>
             <remarks>
-            Copies all the certificates within the chain into the array,
+            Copies all of the certificates within the chain into the array,
             starting at the specified array index.
             </remarks>
             <param name="array">The array to copy the certificates to.</param>
@@ -20857,7 +20958,7 @@
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateChain.Remove(Org.BouncyCastle.X509.X509Certificate)">
             <summary>
-            Removes the specified certificate from the chain.
+            Remove a certificate from the chain.
             </summary>
             <remarks>
             Removes the specified certificate from the chain.
@@ -21255,6 +21356,28 @@
             </remarks>
             <value>The size of the salt.</value>
         </member>
+        <member name="M:MimeKit.Cryptography.X509CertificateDatabase.ExecuteReader(System.Data.Common.DbCommand)">
+            <summary>
+            Execute a database command.
+            </summary>
+            <remarks>
+            <para>Executes the <see cref="M:System.Data.Common.DbCommand.ExecuteReader"/> method.</para>
+            <para>This method is intended to be overridden by subclasses to patch commands before execution or to log them.</para>
+            </remarks>
+            <param name="command">The command to be executed.</param>
+            <returns>The database reader.</returns>
+        </member>
+        <member name="M:MimeKit.Cryptography.X509CertificateDatabase.ExecuteNonQuery(System.Data.Common.DbCommand)">
+            <summary>
+            Execute a non-query database command.
+            </summary>
+            <remarks>
+            <para>Executes the <see cref="M:System.Data.Common.DbCommand.ExecuteNonQuery"/> method.</para>
+            <para>This method is intended to be overridden by subclasses to patch commands before execution or to log them.</para>
+            </remarks>
+            <param name="command">The command to be executed.</param>
+            <returns>The number of rows affected.</returns>
+        </member>
         <member name="M:MimeKit.Cryptography.X509CertificateDatabase.GetColumnNames(MimeKit.Cryptography.X509CertificateRecordFields)">
             <summary>
             Gets the column names for the specified fields.
@@ -21273,6 +21396,9 @@
             Creates a new database command.
             </remarks>
             <returns>A new database command.</returns>
+            <exception cref="T:System.ObjectDisposedException">
+            The <see cref="T:MimeKit.Cryptography.X509CertificateDatabase"/> has been disposed.
+            </exception>
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateDatabase.ExecuteWithinTransaction(System.Action)">
             <summary>
@@ -21281,6 +21407,9 @@
             <remarks>
             All database commands used within the <paramref name="action"/> must be created using <see cref="M:MimeKit.Cryptography.X509CertificateDatabase.CreateCommand"/>.
             </remarks>
+            <exception cref="T:System.ObjectDisposedException">
+            The <see cref="T:MimeKit.Cryptography.X509CertificateDatabase"/> has been disposed.
+            </exception>
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateDatabase.GetSelectCommand(System.Data.Common.DbConnection,Org.BouncyCastle.X509.X509Certificate,MimeKit.Cryptography.X509CertificateRecordFields)">
             <summary>
@@ -21475,6 +21604,9 @@
             <exception cref="T:System.ArgumentNullException">
             <paramref name="certificate"/> is <see langword="null"/>.
             </exception>
+            <exception cref="T:System.ObjectDisposedException">
+            The <see cref="T:MimeKit.Cryptography.X509CertificateDatabase"/> has been disposed.
+            </exception>
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateDatabase.FindCertificates(Org.BouncyCastle.Utilities.Collections.ISelector{Org.BouncyCastle.X509.X509Certificate})">
             <summary>
@@ -21486,6 +21618,9 @@
             </remarks>
             <returns>The matching certificates.</returns>
             <param name="selector">The match selector or <see langword="null"/> to return all certificates.</param>
+            <exception cref="T:System.ObjectDisposedException">
+            The <see cref="T:MimeKit.Cryptography.X509CertificateDatabase"/> has been disposed.
+            </exception>
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateDatabase.FindPrivateKeys(Org.BouncyCastle.Utilities.Collections.ISelector{Org.BouncyCastle.X509.X509Certificate})">
             <summary>
@@ -21495,8 +21630,11 @@
             Searches the database for certificate records matching the selector, returning the
             private keys for each matching record.
             </remarks>
-            <returns>The matching certificates.</returns>
+            <returns>The private keys for the matching certificates.</returns>
             <param name="selector">The match selector or <see langword="null"/> to return all private keys.</param>
+            <exception cref="T:System.ObjectDisposedException">
+            The <see cref="T:MimeKit.Cryptography.X509CertificateDatabase"/> has been disposed.
+            </exception>
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateDatabase.Find(MimeKit.MailboxAddress,System.DateTime,System.Boolean,MimeKit.Cryptography.X509CertificateRecordFields)">
             <summary>
@@ -21515,6 +21653,9 @@
             <exception cref="T:System.ArgumentNullException">
             <paramref name="mailbox"/> is <see langword="null"/>.
             </exception>
+            <exception cref="T:System.ObjectDisposedException">
+            The <see cref="T:MimeKit.Cryptography.X509CertificateDatabase"/> has been disposed.
+            </exception>
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateDatabase.Find(Org.BouncyCastle.Utilities.Collections.ISelector{Org.BouncyCastle.X509.X509Certificate},System.Boolean,MimeKit.Cryptography.X509CertificateRecordFields)">
             <summary>
@@ -21528,6 +21669,9 @@
             <param name="selector">The match selector or <see langword="null"/> to match all certificates.</param>
             <param name="trustedAnchorsOnly"><see langword="true" /> if only trusted anchor certificates should be returned.</param>
             <param name="fields">The desired fields.</param>
+            <exception cref="T:System.ObjectDisposedException">
+            The <see cref="T:MimeKit.Cryptography.X509CertificateDatabase"/> has been disposed.
+            </exception>
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateDatabase.Add(MimeKit.Cryptography.X509CertificateRecord)">
             <summary>
@@ -21539,6 +21683,9 @@
             <param name="record">The certificate record.</param>
             <exception cref="T:System.ArgumentNullException">
             <paramref name="record"/> is <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.ObjectDisposedException">
+            The <see cref="T:MimeKit.Cryptography.X509CertificateDatabase"/> has been disposed.
             </exception>
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateDatabase.Remove(MimeKit.Cryptography.X509CertificateRecord)">
@@ -21552,6 +21699,9 @@
             <exception cref="T:System.ArgumentNullException">
             <paramref name="record"/> is <see langword="null"/>.
             </exception>
+            <exception cref="T:System.ObjectDisposedException">
+            The <see cref="T:MimeKit.Cryptography.X509CertificateDatabase"/> has been disposed.
+            </exception>
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateDatabase.Update(MimeKit.Cryptography.X509CertificateRecord,MimeKit.Cryptography.X509CertificateRecordFields)">
             <summary>
@@ -21564,6 +21714,9 @@
             <param name="fields">The fields to update.</param>
             <exception cref="T:System.ArgumentNullException">
             <paramref name="record"/> is <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.ObjectDisposedException">
+            The <see cref="T:MimeKit.Cryptography.X509CertificateDatabase"/> has been disposed.
             </exception>
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateDatabase.Find(Org.BouncyCastle.Asn1.X509.X509Name,MimeKit.Cryptography.X509CrlRecordFields)">
@@ -21580,6 +21733,9 @@
             <exception cref="T:System.ArgumentNullException">
             <paramref name="issuer"/> is <see langword="null"/>.
             </exception>
+            <exception cref="T:System.ObjectDisposedException">
+            The <see cref="T:MimeKit.Cryptography.X509CertificateDatabase"/> has been disposed.
+            </exception>
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateDatabase.Find(Org.BouncyCastle.X509.X509Crl,MimeKit.Cryptography.X509CrlRecordFields)">
             <summary>
@@ -21595,6 +21751,9 @@
             <exception cref="T:System.ArgumentNullException">
             <paramref name="crl"/> is <see langword="null"/>.
             </exception>
+            <exception cref="T:System.ObjectDisposedException">
+            The <see cref="T:MimeKit.Cryptography.X509CertificateDatabase"/> has been disposed.
+            </exception>
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateDatabase.Add(MimeKit.Cryptography.X509CrlRecord)">
             <summary>
@@ -21606,6 +21765,9 @@
             <param name="record">The CRL record.</param>
             <exception cref="T:System.ArgumentNullException">
             <paramref name="record"/> is <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.ObjectDisposedException">
+            The <see cref="T:MimeKit.Cryptography.X509CertificateDatabase"/> has been disposed.
             </exception>
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateDatabase.Remove(MimeKit.Cryptography.X509CrlRecord)">
@@ -21619,6 +21781,9 @@
             <exception cref="T:System.ArgumentNullException">
             <paramref name="record"/> is <see langword="null"/>.
             </exception>
+            <exception cref="T:System.ObjectDisposedException">
+            The <see cref="T:MimeKit.Cryptography.X509CertificateDatabase"/> has been disposed.
+            </exception>
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateDatabase.Update(MimeKit.Cryptography.X509CrlRecord)">
             <summary>
@@ -21631,6 +21796,9 @@
             <exception cref="T:System.ArgumentNullException">
             <paramref name="record"/> is <see langword="null"/>.
             </exception>
+            <exception cref="T:System.ObjectDisposedException">
+            The <see cref="T:MimeKit.Cryptography.X509CertificateDatabase"/> has been disposed.
+            </exception>
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateDatabase.GetCrlStore">
             <summary>
@@ -21640,6 +21808,9 @@
             Gets a certificate revocation list store.
             </remarks>
             <returns>A certificate revocation list store.</returns>
+            <exception cref="T:System.ObjectDisposedException">
+            The <see cref="T:MimeKit.Cryptography.X509CertificateDatabase"/> has been disposed.
+            </exception>
         </member>
         <member name="M:MimeKit.Cryptography.X509CertificateDatabase.Org#BouncyCastle#Utilities#Collections#IStore{Org#BouncyCastle#X509#X509Certificate}#EnumerateMatches(Org.BouncyCastle.Utilities.Collections.ISelector{Org.BouncyCastle.X509.X509Certificate})">
             <summary>
@@ -21926,8 +22097,7 @@
             Initialize a new instance of the <see cref="T:MimeKit.Cryptography.X509CertificateRecord"/> class.
             </summary>
             <remarks>
-            This constructor is only meant to be used by implementors of <see cref="T:MimeKit.Cryptography.IX509CertificateDatabase"/>
-            when loading records from the database.
+            Creates a new certificate record for storing in a <see cref="T:MimeKit.Cryptography.IX509CertificateDatabase"/>.
             </remarks>
         </member>
         <member name="T:MimeKit.Cryptography.X509CertificateStore">
@@ -22613,10 +22783,10 @@
         </member>
         <member name="M:MimeKit.DomainList.CopyTo(System.String[],System.Int32)">
             <summary>
-            Copy all the domains in the <see cref="T:MimeKit.DomainList"/> to an array.
+            Copy all of the domains in the <see cref="T:MimeKit.DomainList"/> to an array.
             </summary>
             <remarks>
-            Copies all the domains within the <see cref="T:MimeKit.DomainList"/> into the array,
+            Copies all of the domains within the <see cref="T:MimeKit.DomainList"/> into the array,
             starting at the specified array index.
             </remarks>
             <param name="array">The array to copy the domains to.</param>
@@ -22852,12 +23022,25 @@
             intact when sent via 7bit transports such as SMTP.
             </remarks>
         </member>
+        <member name="M:MimeKit.Encodings.Base64Encoder.#ctor(System.Int32,System.Boolean)">
+            <summary>
+            Initialize a new instance of the <see cref="T:MimeKit.Encodings.Base64Encoder"/> class.
+            </summary>
+            <remarks>
+            <para>This constructor defaults is used to override the default line length limits that constrain the
+            base64 encoder to line lengths of between 60 and 76 characters (which are optimal for MIME) and is only
+            used for unit testing and benchmarking.</para>
+            </remarks>
+            <param name="maxLineLength">The maximum number of octets allowed per line (not counting the CRLF).</param>
+            <param name="overrideMaxLineLengthLimits">This parameter is not used and is only here to differentiate the constructor signature.</param>
+        </member>
         <member name="M:MimeKit.Encodings.Base64Encoder.#ctor(System.Int32)">
             <summary>
             Initialize a new instance of the <see cref="T:MimeKit.Encodings.Base64Encoder"/> class.
             </summary>
             <remarks>
-            Creates a new base64 encoder.
+            <para>Creates a new base64 encoder.</para>
+            <note type="note">Specifying a <paramref name="maxLineLength"/> value over 76 octets will be ignored and capped at 76.</note>
             </remarks>
             <param name="maxLineLength">The maximum number of octets allowed per line (not counting the CRLF). Must be between <c>60</c> and <c>998</c> (inclusive).</param>
             <exception cref="T:System.ArgumentOutOfRangeException">
@@ -24080,7 +24263,8 @@
             Initialize a new instance of the <see cref="T:MimeKit.Encodings.QuotedPrintableEncoder"/> class.
             </summary>
             <remarks>
-            Creates a new quoted-printable encoder.
+            <para>Creates a new quoted-printable encoder.</para>
+            <note type="note">Specifying a <paramref name="maxLineLength"/> value over 76 octets will be ignored and capped at 76.</note>
             </remarks>
             <param name="maxLineLength">The maximum number of octets allowed per line (not counting the CRLF). Must be between <c>60</c> and <c>998</c> (inclusive).</param>
             <exception cref="T:System.ArgumentOutOfRangeException">
@@ -26513,7 +26697,7 @@
             An enumeration of common header fields.
             </summary>
             <remarks>
-            Comparing enum  values is not only faster, but less error-prone than
+            Comparing enum values is not only faster, but less error-prone than
             comparing strings.
             </remarks>
         </member>
@@ -27769,10 +27953,10 @@
         </member>
         <member name="M:MimeKit.HeaderList.CopyTo(MimeKit.Header[],System.Int32)">
             <summary>
-            Copy all the headers in the <see cref="T:MimeKit.HeaderList"/> to the specified array.
+            Copy all of the headers in the <see cref="T:MimeKit.HeaderList"/> to the specified array.
             </summary>
             <remarks>
-            Copies all the headers within the <see cref="T:MimeKit.HeaderList"/> into the array,
+            Copies all of the headers within the <see cref="T:MimeKit.HeaderList"/> into the array,
             starting at the specified array index.
             </remarks>
             <param name="array">The array to copy the headers to.</param>
@@ -28190,7 +28374,7 @@
         </member>
         <member name="P:MimeKit.HeaderListCollection.Count">
             <summary>
-            Gets the number of groups in the collection.
+            Get the number of groups in the collection.
             </summary>
             <remarks>
             Gets the number of groups in the collection.
@@ -28199,7 +28383,7 @@
         </member>
         <member name="P:MimeKit.HeaderListCollection.IsReadOnly">
             <summary>
-            Gets whether the header list collection is read only.
+            Get whether the header list collection is read only.
             </summary>
             <remarks>
             A <see cref="T:MimeKit.HeaderListCollection"/> is never read-only.
@@ -28208,7 +28392,7 @@
         </member>
         <member name="P:MimeKit.HeaderListCollection.Item(System.Int32)">
             <summary>
-            Gets or sets the <see cref="T:MimeKit.HeaderList"/> at the specified index.
+            Get or set the <see cref="T:MimeKit.HeaderList"/> at the specified index.
             </summary>
             <remarks>
             Gets or sets the <see cref="T:MimeKit.HeaderList"/> at the specified index.
@@ -28224,7 +28408,7 @@
         </member>
         <member name="M:MimeKit.HeaderListCollection.Add(MimeKit.HeaderList)">
             <summary>
-            Adds the group of headers to the collection.
+            Add a group of headers to the collection.
             </summary>
             <remarks>
             Adds the group of headers to the collection.
@@ -28236,7 +28420,7 @@
         </member>
         <member name="M:MimeKit.HeaderListCollection.Clear">
             <summary>
-            Clears the header list collection.
+            Clear the header list collection.
             </summary>
             <remarks>
             Removes all the groups from the collection.
@@ -28244,7 +28428,7 @@
         </member>
         <member name="M:MimeKit.HeaderListCollection.Contains(MimeKit.HeaderList)">
             <summary>
-            Checks if the collection contains the specified group of headers.
+            Check if the collection contains the specified group of headers.
             </summary>
             <remarks>
             Determines whether the collection contains the specified group of headers.
@@ -28258,10 +28442,10 @@
         </member>
         <member name="M:MimeKit.HeaderListCollection.CopyTo(MimeKit.HeaderList[],System.Int32)">
             <summary>
-            Copies all the header groups in the <see cref="T:MimeKit.HeaderListCollection"/> to the specified array.
+            Copy all of the header groups in the <see cref="T:MimeKit.HeaderListCollection"/> to the specified array.
             </summary>
             <remarks>
-            Copies all the header groups within the <see cref="T:MimeKit.HeaderListCollection"/> into the array,
+            Copies all of the header groups within the <see cref="T:MimeKit.HeaderListCollection"/> into the array,
             starting at the specified array index.
             </remarks>
             <param name="array">The array to copy the headers to.</param>
@@ -28275,7 +28459,7 @@
         </member>
         <member name="M:MimeKit.HeaderListCollection.Remove(MimeKit.HeaderList)">
             <summary>
-            Removes the specified header group.
+            Remove a header group.
             </summary>
             <remarks>
             Removes the specified header group from the collection, if it exists.
@@ -31338,10 +31522,10 @@
         </member>
         <member name="M:MimeKit.InternetAddressList.CopyTo(MimeKit.InternetAddress[],System.Int32)">
             <summary>
-            Copy all the addresses in the <see cref="T:MimeKit.InternetAddressList"/> to the specified array.
+            Copy all of the addresses in the <see cref="T:MimeKit.InternetAddressList"/> to the specified array.
             </summary>
             <remarks>
-            Copies all the addresses within the <see cref="T:MimeKit.InternetAddressList"/> into the array,
+            Copies all of the addresses within the <see cref="T:MimeKit.InternetAddressList"/> into the array,
             starting at the specified array index.
             </remarks>
             <param name="array">The array to copy the addresses to.</param>
@@ -31355,7 +31539,7 @@
         </member>
         <member name="M:MimeKit.InternetAddressList.Remove(MimeKit.InternetAddress)">
             <summary>
-            Remove the specified address from the <see cref="T:MimeKit.InternetAddressList"/>.
+            Remove an address from the <see cref="T:MimeKit.InternetAddressList"/>.
             </summary>
             <remarks>
             Removes the specified address.
@@ -34270,7 +34454,7 @@
             Copy the memory stream into a byte array.
             </summary>
             <remarks>
-            Copies all the stream data into a newly allocated byte array.
+            Copies all of the stream data into a newly allocated byte array.
             </remarks>
             <returns>The array.</returns>
             <exception cref="T:System.ObjectDisposedException">
@@ -35650,10 +35834,10 @@
         </member>
         <member name="M:MimeKit.MessageIdList.CopyTo(System.String[],System.Int32)">
             <summary>
-            Copy all the Message-Ids in the <see cref="T:MimeKit.MessageIdList"/> to the specified array.
+            Copy all of the Message-Ids in the <see cref="T:MimeKit.MessageIdList"/> to the specified array.
             </summary>
             <remarks>
-            Copies all the Message-Ids within the <see cref="T:MimeKit.MessageIdList"/> into the array,
+            Copies all of the Message-Ids within the <see cref="T:MimeKit.MessageIdList"/> into the array,
             starting at the specified array index.
             </remarks>
             <param name="array">The array to copy the Message-Ids to.</param>
@@ -37218,6 +37402,9 @@
             </remarks>
             <param name="action">The type of change.</param>
             <param name="header">The header being added, changed or removed.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <paramref name="header"/> must not be null when <paramref name="action"/> is not <see cref="F:MimeKit.HeaderListChangedAction.Cleared"/>.
+            </exception>
         </member>
         <member name="M:MimeKit.MimeEntity.Dispose(System.Boolean)">
             <summary>
@@ -40068,6 +40255,8 @@
             that does not exist, then the "name" parameter on the Content-Type header is used.</para>
             <para>When setting the filename, both the "filename" parameter on the Content-Disposition
             header and the "name" parameter on the Content-Type header are set.</para>
+            <note type="warning">The filename, by its nature of being provided by an untrusted source,
+            be used with caution. It is recommended that this value be sanitized before use.</note>
             </remarks>
             <example>
             <code language="c#" source="Examples\AttachmentExamples.cs" region="SaveAttachments" />
@@ -41823,7 +42012,7 @@
         </member>
         <member name="M:MimeKit.ParameterList.Remove(System.String)">
             <summary>
-            Remove the specified parameter.
+            Remove a parameter.
             </summary>
             <remarks>
             Removes the parameter with the specified name from the list, if it exists.
@@ -41942,10 +42131,10 @@
         </member>
         <member name="M:MimeKit.ParameterList.CopyTo(MimeKit.Parameter[],System.Int32)">
             <summary>
-            Copy all the parameters in the list to an array.
+            Copy all of the parameters in the list to an array.
             </summary>
             <remarks>
-            Copies all the parameters within the <see cref="T:MimeKit.ParameterList"/> into the array,
+            Copies all of the parameters within the <see cref="T:MimeKit.ParameterList"/> into the array,
             starting at the specified array index.
             </remarks>
             <param name="array">The array to copy the parameters to.</param>
@@ -42314,6 +42503,530 @@
             <para><paramref name="type"/> does not have a constructor that takes
             only a <see cref="T:MimeKit.MimeEntityConstructorArgs"/> argument.</para>
             </exception>
+        </member>
+        <member name="T:MimeKit.ReceivedClauseId">
+            <summary>
+            An enumeration of common Received header clauses.
+            </summary>
+            <remarks>
+            <para>A typical <c>Received</c> header contains several clauses that provide information about the
+            message transfer, including:</para>
+            <list type="bullet">
+            <item><description><c>from</c> - the name of the sending host</description></item>
+            <item><description><c>by</c> - the name of the receiving host</description></item>
+            <item><description><c>via</c> - the physical link or protocol used</description></item>
+            <item><description><c>with</c> - the mail protocol used (e.g., SMTP, ESMTP, etc.)</description></item>
+            <item><description><c>id</c> - a unique identifier for the message</description></item>
+            <item><description><c>for</c> - the recipient address</description></item>
+            </list>
+            <para>For more information, see
+            <a href="https://tools.ietf.org/html/rfc5321#section-4.4">section 4.4 of RFC 5321</a>.</para>
+            </remarks>
+        </member>
+        <member name="F:MimeKit.ReceivedClauseId.None">
+            <summary>
+            Represents any comments that appear before the first keyword in the Received header value.
+            </summary>
+            <remarks>
+            This clause is what preceedes the first keyword in the Received header value.
+            It is used to capture any comments that appear before the first keyword.
+            </remarks>
+        </member>
+        <member name="F:MimeKit.ReceivedClauseId.From">
+            <summary>
+            Represents the "from" clause which identifies the name of the sending host.
+            </summary>
+            <remarks>
+            This clause is used to capture the "from" clause which identifies the name of the sending host.
+            </remarks>
+        </member>
+        <member name="F:MimeKit.ReceivedClauseId.By">
+            <summary>
+            Represents the "by" clause which identifies the name of the receiving host.
+            </summary>
+            <remarks>
+            This clause is used to capture the "by" clause which identifies the name of the receiving host.
+            </remarks>
+        </member>
+        <member name="F:MimeKit.ReceivedClauseId.Via">
+            <summary>
+            Represents the "via" clause which identifies the physical link or protocol used.
+            </summary>
+            <remarks>
+            This clause is used to capture the "via" clause which identifies the physical link or protocol used.
+            </remarks>
+        </member>
+        <member name="F:MimeKit.ReceivedClauseId.With">
+            <summary>
+            Represents the "with" clause which identifies the mail protocol used (e.g., SMTP, ESMTP, etc.).
+            </summary>
+            <remarks>
+            This clause is used to capture the "with" clause which identifies the mail protocol used (e.g., SMTP, ESMTP, etc.).
+            </remarks>
+        </member>
+        <member name="F:MimeKit.ReceivedClauseId.Id">
+            <summary>
+            Represents the "id" clause which identifies a unique identifier for the message.
+            </summary>
+            <remarks>
+            This clause is used to capture the "id" clause which identifies a unique identifier for the message.
+            </remarks>
+        </member>
+        <member name="F:MimeKit.ReceivedClauseId.For">
+            <summary>
+            Represents the "for" clause which identifies the recipient address.
+            </summary>
+            <remarks>
+            This clause is used to capture the "for" clause which identifies the recipient address.
+            </remarks>
+        </member>
+        <member name="F:MimeKit.ReceivedClauseId.Unknown">
+            <summary>
+            Represents an unknown clause which could not be identified.
+            </summary>
+            <remarks>
+            This clause is used to capture any clause that could not be identified.
+            </remarks>
+        </member>
+        <member name="T:MimeKit.Received">
+            <summary>
+            A parsed representation of the <c>Received</c> header.
+            </summary>
+            <remarks>
+            <para>The <c>Received</c> header is used for tracing the path a message has taken through various SMTP servers
+            as it is transmitted from sender to recipient. Each SMTP server that handles the message adds a new
+            <c>Received</c> header to the top of the message, creating a chronological trace of the message's journey
+            through the email infrastructure.</para>
+            <para>A typical <c>Received</c> header contains several clauses that provide information about the
+            message transfer, including:</para>
+            <list type="bullet">
+            <item><description><c>from</c> - the name of the sending host</description></item>
+            <item><description><c>by</c> - the name of the receiving host</description></item>
+            <item><description><c>via</c> - the physical link or protocol used</description></item>
+            <item><description><c>with</c> - the mail protocol used (e.g., SMTP, ESMTP, etc.)</description></item>
+            <item><description><c>id</c> - a unique identifier for the message</description></item>
+            <item><description><c>for</c> - the recipient address</description></item>
+            </list>
+            <para>For more information, see
+            <a href="https://tools.ietf.org/html/rfc5321#section-4.4">section 4.4 of RFC 5321</a>.</para>
+            </remarks>
+        </member>
+        <member name="M:MimeKit.Received.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MimeKit.Received"/> class.
+            </summary>
+            <remarks>
+            Creates a new <see cref="T:MimeKit.Received"/> instance with all properties set to <see langword="null"/>.
+            Properties can be set individually after construction to build up the Received header information.
+            </remarks>
+        </member>
+        <member name="M:MimeKit.Received.#ctor(System.String,System.Net.IPAddress,System.String,System.Net.IPAddress,System.DateTimeOffset)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MimeKit.Received"/> class.
+            </summary>
+            <remarks>
+            Creates a new <see cref="T:MimeKit.Received"/> instance with the specified source and receiving host information,
+            along with the date and time the message was received.
+            </remarks>
+            <param name="from">The name of the source host.</param>
+            <param name="fromTcpInfo">The IP address of the source host.</param>
+            <param name="by">The name of the receiving host.</param>
+            <param name="byTcpInfo">The IP address of the receiving host.</param>
+            <param name="dateTime">The date and time the message was received.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <paramref name="from"/> is <see langword="null"/>.
+            <para>-or-</para>
+            <paramref name="fromTcpInfo"/> is <see langword="null"/>.
+            <para>-or-</para>
+            <paramref name="by"/> is <see langword="null"/>.
+            <para>-or-</para>
+            <paramref name="byTcpInfo"/> is <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            <paramref name="from"/> is not a valid domain name or address literal.
+            <para>-or-</para>
+            <paramref name="by"/> is not a valid domain name or address literal.
+            </exception>
+        </member>
+        <member name="P:MimeKit.Received.Clauses">
+            <summary>
+            Get the collection of clauses that make up the <c>Received</c> header.
+            </summary>
+            <remarks>
+            Gets the collection of clauses that make up the <c>Received</c> header.
+            </remarks>
+            <value>The collection of clauses.</value>
+        </member>
+        <member name="P:MimeKit.Received.DateTime">
+            <summary>
+            Get or set the date and time when the message was received.
+            </summary>
+            <remarks>
+            Gets or sets the date and time that appears after the semicolon in the Received header,
+            indicating when the receiving SMTP server accepted the message for delivery.
+            </remarks>
+            <value>The date and time the message was received if available; otherwise, <see langword="null"/>.</value>
+        </member>
+        <member name="M:MimeKit.Received.ReceivedClauseComparer.Compare(MimeKit.ReceivedClause,MimeKit.ReceivedClause)">
+            <summary>
+            Compare two <see cref="T:MimeKit.ReceivedClause"/> objects.
+            </summary>
+            <remarks>
+            Compares two <see cref="T:MimeKit.ReceivedClause"/> objects and returns an integer that indicates
+            whether the first instance precedes, follows, or occurs in the same position in the sort
+            order as the second object.
+            </remarks>
+            <param name="x">The first <see cref="T:MimeKit.ReceivedClause"/> instance.</param>
+            <param name="y">The second <see cref="T:MimeKit.ReceivedClause"/> instance.</param>
+            <returns>A value less than zero if the first instance precedes the second in the sort order;
+            zero if the first instance occurs in the same position as the second; a value greater than
+            zero if the first instance follows the second in the sort order.</returns>
+        </member>
+        <member name="P:MimeKit.Received.From">
+            <summary>
+            Get or set the name of the source host.
+            </summary>
+            <remarks>
+            Gets or sets the "from" clause which identifies the name of the sending host as presented
+            in the <c>HELO</c> or <c>EHLO</c> SMTP command. This may be a domain name or an address literal
+            (e.g., <c>[192.168.1.1]</c>).
+            </remarks>
+            <value>The name of the source host if available; otherwise, <see langword="null"/>.</value>
+            <exception cref="T:System.ArgumentException">
+            The value is not a valid domain name or address literal.
+            </exception>
+        </member>
+        <member name="P:MimeKit.Received.FromTcpInfo">
+            <summary>
+            Get or set the TCP connection information for the source host.
+            </summary>
+            <remarks>
+            Gets or sets the TCP connection information, typically provided as a comment following the "from" clause.
+            This often contains details such as the IP address and connection details of the sending host.
+            </remarks>
+            <value>The TCP connection information for the source host if available; otherwise, <see langword="null"/>.</value>
+        </member>
+        <member name="P:MimeKit.Received.By">
+            <summary>
+            Get or set the name of the receiving host.
+            </summary>
+            <remarks>
+            Gets or sets the "by" clause which identifies the name of the receiving SMTP server that
+            accepted the message. This may be a domain name or an address literal (e.g., <c>[192.168.1.1]</c>).
+            </remarks>
+            <value>The name of the receiving host if available; otherwise, <see langword="null"/>.</value>
+            <exception cref="T:System.ArgumentException">
+            The value is not a valid domain name or address literal.
+            </exception>
+        </member>
+        <member name="P:MimeKit.Received.ByTcpInfo">
+            <summary>
+            Get or set the TCP connection information for the receiving host.
+            </summary>
+            <remarks>
+            Gets or sets the TCP connection information, typically provided as a comment following the "by" clause.
+            This often contains details such as the IP address and connection details of the receiving host.
+            </remarks>
+            <value>The TCP connection information for the receiving host if available; otherwise, <see langword="null"/>.</value>
+        </member>
+        <member name="P:MimeKit.Received.Via">
+            <summary>
+            Get or set the physical link or protocol used to receive the message.
+            </summary>
+            <remarks>
+            Gets or sets the "via" clause which indicates the physical path or link (e.g., "TCP", "UUCP")
+            through which the message was received.
+            </remarks>
+            <value>The physical link identifier if available; otherwise, <see langword="null"/>.</value>
+            <exception cref="T:System.ArgumentException">
+            The value is not a valid atom token.
+            </exception>
+        </member>
+        <member name="P:MimeKit.Received.With">
+            <summary>
+            Get or set the protocol or mechanism used to receive the message.
+            </summary>
+            <remarks>
+            Gets or sets the "with" clause which indicates the mail protocol (e.g., "SMTP", "ESMTP", etc)
+            used during the message transmission.
+            </remarks>
+            <value>The protocol identifier if available; otherwise, <see langword="null"/>.</value>
+            <exception cref="T:System.ArgumentException">
+            The value is not a valid atom token.
+            </exception>
+        </member>
+        <member name="P:MimeKit.Received.Id">
+            <summary>
+            Get or set the message identifier.
+            </summary>
+            <remarks>
+            Gets or sets the "id" clause which contains a unique identifier for the message. This value is
+            typically the value of the Message-ID header.
+            </remarks>
+            <value>The message identifier if available; otherwise, <see langword="null"/>.</value>
+            <exception cref="T:System.ArgumentException">
+            The value is not a valid message identifier.
+            </exception>
+        </member>
+        <member name="P:MimeKit.Received.For">
+            <summary>
+            Get or set the recipient address for which the message was received.
+            </summary>
+            <remarks>
+            Gets or sets the "for" clause which specifies the recipient mailbox address for which the message
+            was accepted. This is particularly useful when a single message has multiple recipients.
+            </remarks>
+            <value>The recipient address if available; otherwise, <see langword="null"/>.</value>
+            <exception cref="T:System.ArgumentException">
+            The value is not a valid mailbox address.
+            </exception>
+        </member>
+        <member name="M:MimeKit.Received.ToString(MimeKit.FormatOptions)">
+            <summary>
+            Serializes the <see cref="T:MimeKit.Received"/> value to a string.
+            </summary>
+            <remarks>
+            Creates a string-representation of the <see cref="T:MimeKit.Received"/> value using the provided formatting options.
+            </remarks>
+            <returns>The serialized string.</returns>
+            <param name="options">The formatting options.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <paramref name="options"/> is <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:MimeKit.Received.ToString">
+            <summary>
+            Serializes the <see cref="T:MimeKit.Received"/> value to a string.
+            </summary>
+            <remarks>
+            Creates a string-representation of the <see cref="T:MimeKit.Received"/> value.
+            </remarks>
+            <returns>The serialized string.</returns>
+        </member>
+        <member name="M:MimeKit.Received.TryParse(MimeKit.ParserOptions,System.Byte[],System.Int32,System.Int32,MimeKit.Received@)">
+            <summary>
+            Try to parse the given input buffer into a new <see cref="T:MimeKit.Received"/> instance.
+            </summary>
+            <remarks>
+            Parses a Received header value from the supplied buffer starting at the given index
+            and spanning across the specified number of bytes.
+            </remarks>
+            <returns><see langword="true" /> if the Received header value was successfully parsed; otherwise, <see langword="false" />.</returns>
+            <param name="options">The parser options.</param>
+            <param name="buffer">The input buffer.</param>
+            <param name="startIndex">The starting index of the input buffer.</param>
+            <param name="length">The number of bytes in the input buffer to parse.</param>
+            <param name="received">The parsed Received header value.</param>
+        </member>
+        <member name="M:MimeKit.Received.TryParse(System.Byte[],System.Int32,System.Int32,MimeKit.Received@)">
+            <summary>
+            Try to parse the given input buffer into a new <see cref="T:MimeKit.Received"/> instance.
+            </summary>
+            <remarks>
+            Parses a Received header value from the supplied buffer starting at the given index
+            and spanning across the specified number of bytes.
+            </remarks>
+            <returns><see langword="true" /> if the Received header value was successfully parsed; otherwise, <see langword="false" />.</returns>
+            <param name="buffer">The input buffer.</param>
+            <param name="startIndex">The starting index of the input buffer.</param>
+            <param name="length">The number of bytes in the input buffer to parse.</param>
+            <param name="received">The parsed Received header value.</param>
+        </member>
+        <member name="M:MimeKit.Received.TryParse(MimeKit.ParserOptions,System.Byte[],MimeKit.Received@)">
+            <summary>
+            Try to parse the given input buffer into a new <see cref="T:MimeKit.Received"/> instance.
+            </summary>
+            <remarks>
+            Parses a Received header value from the supplied buffer.
+            </remarks>
+            <returns><see langword="true" /> if the Received header value was successfully parsed; otherwise, <see langword="false" />.</returns>
+            <param name="options">The parser options.</param>
+            <param name="buffer">The input buffer.</param>
+            <param name="received">The parsed Received header value.</param>
+        </member>
+        <member name="M:MimeKit.Received.TryParse(System.Byte[],MimeKit.Received@)">
+            <summary>
+            Try to parse the given input buffer into a new <see cref="T:MimeKit.Received"/> instance.
+            </summary>
+            <remarks>
+            Parses a Received header value from the supplied buffer.
+            </remarks>
+            <returns><see langword="true" /> if the Received header value was successfully parsed; otherwise, <see langword="false" />.</returns>
+            <param name="buffer">The input buffer.</param>
+            <param name="received">The parsed Received header value.</param>
+        </member>
+        <member name="M:MimeKit.Received.Parse(MimeKit.ParserOptions,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Parse the specified input buffer into a new <see cref="T:MimeKit.Received"/> instance.
+            </summary>
+            <remarks>
+            Parses a Received header value from the supplied buffer starting at the given index
+            and spanning across the specified number of bytes.
+            </remarks>
+            <returns>The parsed <see cref="T:MimeKit.Received"/> instance.</returns>
+            <param name="options">The parser options.</param>
+            <param name="buffer">The input buffer.</param>
+            <param name="startIndex">The starting index of the input buffer.</param>
+            <param name="length">The number of bytes in the input buffer to parse.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <para><paramref name="options"/> is <see langword="null"/>.</para>
+            <para>-or-</para>
+            <para><paramref name="buffer"/> is <see langword="null"/>.</para>
+            </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            <paramref name="startIndex"/> and <paramref name="length"/> do not specify
+            a valid range in the byte array.
+            </exception>
+            <exception cref="T:MimeKit.ParseException">
+            The <paramref name="buffer"/> could not be parsed.
+            </exception>
+        </member>
+        <member name="M:MimeKit.Received.Parse(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Parse the specified input buffer into a new <see cref="T:MimeKit.Received"/> instance.
+            </summary>
+            <remarks>
+            Parses a Received header value from the supplied buffer starting at the given index
+            and spanning across the specified number of bytes.
+            </remarks>
+            <returns>The parsed <see cref="T:MimeKit.Received"/> instance.</returns>
+            <param name="buffer">The input buffer.</param>
+            <param name="startIndex">The starting index of the input buffer.</param>
+            <param name="length">The number of bytes in the input buffer to parse.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <paramref name="buffer"/> is <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            <paramref name="startIndex"/> and <paramref name="length"/> do not specify
+            a valid range in the byte array.
+            </exception>
+            <exception cref="T:MimeKit.ParseException">
+            The <paramref name="buffer"/> could not be parsed.
+            </exception>
+        </member>
+        <member name="M:MimeKit.Received.Parse(MimeKit.ParserOptions,System.Byte[])">
+            <summary>
+            Parse the specified input buffer into a new <see cref="T:MimeKit.Received"/> instance.
+            </summary>
+            <remarks>
+            Parses a Received header value from the supplied buffer.
+            </remarks>
+            <returns>The parsed <see cref="T:MimeKit.Received"/> instance.</returns>
+            <param name="options">The parser options.</param>
+            <param name="buffer">The input buffer.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <para><paramref name="options"/> is <see langword="null"/>.</para>
+            <para>-or-</para>
+            <para><paramref name="buffer"/> is <see langword="null"/>.</para>
+            </exception>
+            <exception cref="T:MimeKit.ParseException">
+            The <paramref name="buffer"/> could not be parsed.
+            </exception>
+        </member>
+        <member name="M:MimeKit.Received.Parse(System.Byte[])">
+            <summary>
+            Parse the specified input buffer into a new <see cref="T:MimeKit.Received"/> instance.
+            </summary>
+            <remarks>
+            Parses a Received header value from the supplied buffer.
+            </remarks>
+            <returns>The parsed <see cref="T:MimeKit.Received"/> instance.</returns>
+            <param name="buffer">The input buffer.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <paramref name="buffer"/> is <see langword="null"/>.
+            </exception>
+            <exception cref="T:MimeKit.ParseException">
+            The <paramref name="buffer"/> could not be parsed.
+            </exception>
+        </member>
+        <member name="T:MimeKit.ReceivedClause">
+            <summary>
+            A parsed representation of a clause in a <c>Received</c> header.
+            </summary>
+            <remarks>
+            Each clause in a <c>Received</c> header is made up of a keyword (such as "from", "by",
+            "via", "with", "id", or "for") and a corresponding value. A clause may also include a
+            comment (or, as with some non-compliant mail software, a series of comments).
+            </remarks>
+        </member>
+        <member name="M:MimeKit.ReceivedClause.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MimeKit.ReceivedClause"/> class.
+            </summary>
+            <remarks>
+            Creates a new <see cref="T:MimeKit.ReceivedClause"/> instance  with the specified keyword and value.
+            </remarks>
+            <param name="keyword">The keyword that identifies the clause.</param>
+            <param name="value">The value associated with the keyword.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <para><paramref name="keyword"/> is <see langword="null"/>.</para>
+            <para>-or-</para>
+            <para><paramref name="value"/> is <see langword="null"/>.</para>
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            <para><paramref name="keyword"/> is invalid.</para>
+            </exception>
+        </member>
+        <member name="M:MimeKit.ReceivedClause.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MimeKit.ReceivedClause"/> class.
+            </summary>
+            <remarks>
+            Creates a new <see cref="T:MimeKit.ReceivedClause"/> instance  with the specified keyword, value and comment.
+            </remarks>
+            <param name="keyword">The keyword that identifies the clause.</param>
+            <param name="value">The value associated with the keyword.</param>
+            <param name="comment">The comment associated with the value.</param>
+            <exception cref="T:System.ArgumentNullException">
+            <para><paramref name="keyword"/> is <see langword="null"/>.</para>
+            <para>-or-</para>
+            <para><paramref name="value"/> is <see langword="null"/>.</para>
+            <para>-or-</para>
+            <para><paramref name="comment"/> is <see langword="null"/>.</para>
+            </exception>
+        </member>
+        <member name="P:MimeKit.ReceivedClause.Id">
+            <summary>
+            Get the identifier for the clause.
+            </summary>
+            <remarks>
+            <para>Gets the identifier for the clause.</para>
+            <para>This property is mainly used for switch-statements for performance reasons.</para>
+            </remarks>
+            <value>The clause identifier.</value>
+        </member>
+        <member name="P:MimeKit.ReceivedClause.Keyword">
+            <summary>
+            Get the keyword used to identify the clause.
+            </summary>
+            <remarks>
+            Gets the keyword used to identify the clause.
+            </remarks>
+            <value>The keyword used to identify the clause.</value>
+        </member>
+        <member name="P:MimeKit.ReceivedClause.Value">
+            <summary>
+            Get or set the value for the clause.
+            </summary>
+            <remarks>
+            Gets or sets the value for the clause.
+            </remarks>
+            <value>The value for the clause.</value>
+            <exception cref="T:System.ArgumentNullException">
+            The value is <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            The value is invalid.
+            </exception>
+        </member>
+        <member name="P:MimeKit.ReceivedClause.Comments">
+            <summary>
+            Get the collection of comments associated with the clause.
+            </summary>
+            <remarks>
+            Gets the collection of comments associated with the clause.
+            </remarks>
+            <value>The collection of comments.</value>
         </member>
         <member name="T:MimeKit.RfcComplianceMode">
             <summary>
@@ -44826,12 +45539,31 @@
         </member>
         <member name="P:MimeKit.Text.HtmlToHtml.FilterHtml">
             <summary>
-            Get or set whether executable scripts should be stripped from the output.
+            Get or set whether undesirable tags should be stripped from the output.
             </summary>
             <remarks>
-            Gets or sets whether executable scripts should be stripped from the output.
+            <para>Gets or sets whether undesirable tags should be stripped from the output.</para>
+            <note type="warning">
+            <para>This is an incomplete solution for protecting against Cross-Site Scripting (XSS) attacks
+            and should not be relied upon as a comprehensive security measure. This filter only removes
+            certain known dangerous or undesirable HTML tags (such as <c>&lt;applet&gt;</c>, <c>&lt;audio&gt;</c>,
+            <c>&lt;base&gt;</c>, <c>&lt;dialog&gt;</c>, <c>&lt;embed&gt;</c>, <c>&lt;form&gt;</c>, <c>&lt;frame&gt;</c>,
+            <c>&lt;frameset&gt;</c>, <c>&lt;iframe&gt;</c>, <c>&lt;input&gt;</c>, <c>&lt;link&gt;</c>, <c>&lt;object&gt;</c>,
+            <c>&lt;script&gt;</c>, <c>&lt;select&gt;</c>, <c>&lt;source&gt;</c>, <c>&lt;style&gt;</c>, <c>&lt;textarea&gt;</c>,
+            <c>&lt;video&gt;</c>, and any tags without an enum mapping) but does not:</para>
+            <list type="bullet">
+            <item><description>Validate or sanitize attribute values (e.g., <c>javascript:</c>, <c>data:</c>,
+            or <c>vbscript:</c> URI schemes in <c>href</c>, <c>src</c>, or other URL attributes)</description></item>
+            <item><description>Filter event handler attributes (e.g., <c>onclick</c>, <c>onerror</c>, <c>onload</c>, etc.)</description></item>
+            <item><description>Sanitize inline CSS that may contain expressions or imports</description></item>
+            <item><description>Protect against newly discovered XSS attack vectors or techniques</description></item>
+            </list>
+            <para>For robust XSS protection, it is strongly recommended that applications pass the HTML output through
+            a dedicated HTML sanitizer library (such as HtmlSanitizer, Ganss.XSS, or similar) that is actively maintained
+            and updated to address emerging security threats.</para>
+            </note>
             </remarks>
-            <value><see langword="true" /> if executable scripts should be filtered; otherwise, <see langword="false" />.</value>
+            <value><see langword="true" /> if undesirable tags should be filtered; otherwise, <see langword="false" />.</value>
         </member>
         <member name="P:MimeKit.Text.HtmlToHtml.FooterFormat">
             <summary>
@@ -44864,6 +45596,18 @@
             <code language="c#" source="Examples\MimeVisitorExamples.cs" region="HtmlPreviewVisitor" />
             </example>
             <value>The html tag callback.</value>
+        </member>
+        <member name="M:MimeKit.Text.HtmlToHtml.IsUnsafe(MimeKit.Text.HtmlTagId)">
+            <summary>
+            Determines whether the HTML tag is considered unsafe or undesirable in email contexts.
+            </summary>
+            <remarks>
+            <para>Determines whether the HTML tag is considered unsafe or undesirable in email contexts.</para>
+            <para>Some of these tags are known to be abused for Cross-Site Scripting attacks while others are,
+            at best, questionable for use with HTML email due to the fact that they are interactive.</para>
+            </remarks>
+            <returns><see langword="true" /> if the HTML tag is a known XSS attack vector; otherwise, <see langword="false" />.</returns>
+            <param name="id">The HTML tag identifier.</param>
         </member>
         <member name="M:MimeKit.Text.HtmlToHtml.Convert(System.IO.TextReader,System.IO.TextWriter)">
             <summary>
@@ -45440,7 +46184,7 @@
             Creates an HTML character data token.
             </remarks>
             <returns>The HTML character data token.</returns>
-            <param name="data">The character data.</param>
+            <param name="cdata">The character data.</param>
         </member>
         <member name="M:MimeKit.Text.HtmlTokenizer.CreateScriptDataToken(System.String)">
             <summary>
@@ -45450,7 +46194,7 @@
             Creates an HTML script data token.
             </remarks>
             <returns>The HTML script data token.</returns>
-            <param name="data">The script data.</param>
+            <param name="scriptData">The script data.</param>
         </member>
         <member name="M:MimeKit.Text.HtmlTokenizer.CreateTagToken(System.String,System.Boolean)">
             <summary>
@@ -45460,7 +46204,7 @@
             Creates an HTML tag token.
             </remarks>
             <returns>The HTML tag token.</returns>
-            <param name="name">The tag name.</param>
+            <param name="tagName">The tag name.</param>
             <param name="isEndTag"><see langword="true" /> if the tag is an end tag; otherwise, <see langword="false" />.</param>
         </member>
         <member name="M:MimeKit.Text.HtmlTokenizer.CreateAttribute(System.String)">
@@ -45471,7 +46215,7 @@
             Creates an attribute.
             </remarks>
             <returns>The attribute.</returns>
-            <param name="name">The attribute name.</param>
+            <param name="attributeName">The attribute name.</param>
         </member>
         <member name="M:MimeKit.Text.HtmlTokenizer.ReadNextToken(MimeKit.Text.HtmlToken@)">
             <summary>
@@ -48375,7 +49119,7 @@
             Initialize a new instance of the <see cref="T:MimeKit.Tnef.TnefPart"/> class.
             </summary>
             <remarks>
-            Creates a new <see cref="T:MimeKit.Tnef.TnefPart"/> with a Content-Type of application/vnd.ms-tnef
+            Creates a new <see cref="T:MimeKit.Tnef.TnefPart"/> with a Content-Type of application/ms-tnef
             and a Content-Disposition value of "attachment" and a filename paremeter with a
             value of "winmail.dat".
             </remarks>
@@ -58076,6 +58820,15 @@
              <returns>A tokenizer for <paramref name="text"/>.</returns>
              <param name="text">The source <see cref="T:System.String"/> to tokenize.</param>
              <param name="separator">The separator character to use.</param>
+        </member>
+        <member name="M:MimeKit.Utils.ReadOnlySpanExtensions.Equals(System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte},System.StringComparison)">
+            <summary>
+            An equality method that supports <see cref="T:System.StringComparison"/> for <see cref="T:System.ReadOnlySpan`1"/> of bytes.
+            </summary>
+            <param name="self">The source <see cref="T:System.ReadOnlySpan`1"/> to compare.</param>
+            <param name="other">The <see cref="T:System.ReadOnlySpan`1"/> to compare against.</param>
+            <param name="comparisonType">The <see cref="T:System.StringComparison"/> type to use.</param>
+            <returns><c>true</c> if the spans are equal; otherwise, <c>false</c>.</returns>
         </member>
         <member name="T:MimeKit.Utils.ReadOnlySpanTokenizer`1">
             <summary>

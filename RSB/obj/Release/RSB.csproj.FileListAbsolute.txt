@@ -120,12 +120,6 @@ C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\RSB.application
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\RSB.exe
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\RSB.pdb
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\BouncyCastle.Cryptography.dll
-C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\Discord.Net.Commands.dll
-C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\Discord.Net.Core.dll
-C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\Discord.Net.Interactions.dll
-C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\Discord.Net.Rest.dll
-C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\Discord.Net.Webhook.dll
-C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\Discord.Net.WebSocket.dll
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\Google.Protobuf.dll
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\K4os.Compression.LZ4.dll
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\K4os.Compression.LZ4.Streams.dll
@@ -158,12 +152,6 @@ C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\System.Threading.Tasks
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\ZedGraph.dll
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\ZstdSharp.dll
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\BouncyCastle.Cryptography.xml
-C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\Discord.Net.Commands.xml
-C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\Discord.Net.Core.xml
-C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\Discord.Net.Interactions.xml
-C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\Discord.Net.Rest.xml
-C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\Discord.Net.Webhook.xml
-C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\Discord.Net.WebSocket.xml
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\Google.Protobuf.pdb
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\Google.Protobuf.xml
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\K4os.Compression.LZ4.xml
@@ -210,8 +198,6 @@ C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\tr\ZedGraph.resources.
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\zh-CN\ZedGraph.resources.dll
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\bin\Release\zh-TW\ZedGraph.resources.dll
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\obj\Release\RSB.csproj.AssemblyReference.cache
-C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\obj\Release\RSB.csproj.SuggestedBindingRedirects.cache
-C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\obj\Release\RSB.exe.config
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\obj\Release\RSB.Frm_projects.resources
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\obj\Release\RSB.Materials_new.resources
 C:\Users\Anton\source\repos\Antonchuk\RSB\RSB\obj\Release\RSB.New_producer_add.resources

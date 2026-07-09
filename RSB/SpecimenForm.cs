@@ -1,24 +1,23 @@
-﻿//using Discord.WebSocket;
-using Microsoft.Office.Interop.Word;
-using MihaZupan;
-using MySql.Data;
-using MySql.Data.MySqlClient;
-using Mysqlx.Crud;
-using Newtonsoft.Json;
-using Org.BouncyCastle.Asn1;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.Diagnostics;
+using MySql.Data;
+using MySql.Data.MySqlClient;
 using Excel = Microsoft.Office.Interop.Excel;
+using MihaZupan;
+using Newtonsoft.Json;
+using Discord.WebSocket;
+using Microsoft.Office.Interop.Word;
+using System.Reflection;
+using Org.BouncyCastle.Asn1;
 
 namespace RSB
 {
@@ -37,7 +36,7 @@ namespace RSB
         //для картинки на кнопке
         private bool pic_change = true; //true - up, false - down
         private int show_only_spec;
-        //private DiscordSocketClient _client;
+        private DiscordSocketClient _client;
         /// <summary>
         /// класс для хранения фильтров
         /// </summary>
@@ -3138,13 +3137,13 @@ namespace RSB
                 string _material = SQL_List_querry("SELECT materials.name FROM test2base.materials WHERE (id_material = (SELECT id_material FROM test2base.specimens WHERE (idspecimens = '" + id_spec + "')))")[0];
                 string _treat = SQL_List_querry("SELECT treatment.name FROM test2base.treatment WHERE (id_treatment = (SELECT id_treatment FROM test2base.specimens WHERE (idspecimens = '" + id_spec + "')))")[0];
                 //новое место перемещения
-                /*if (System.Runtime.InteropServices.RuntimeInformation.OSDescription.ToString().Contains("Microsoft Windows 10."))
+                if (System.Runtime.InteropServices.RuntimeInformation.OSDescription.ToString().Contains("Microsoft Windows 10."))
                 {
                     Discord.Webhook.DiscordWebhookClient disc_client = new Discord.Webhook.DiscordWebhookClient(hook);
                     string message = id_spec + " " + _material + " " + _treat + " " + action_t + ", moved to '" + new_place + "'" + String.Join(" ", actors.ToArray());
                     await disc_client.SendMessageAsync(message, voice, null, "RSB", null, null, Discord.AllowedMentions.All);
                     disc_client.Dispose();
-                }*/
+                }
             }
         }
         private string Show_history(int spec_id)
@@ -3455,7 +3454,7 @@ namespace RSB
             MessageBoxDefaultButton.Button1);
             }
         }
-        /*private async System.Threading.Tasks.Task test_D_message(string mess)
+        private async System.Threading.Tasks.Task test_D_message(string mess)
         {
             _client = new DiscordSocketClient();
             //получаем токен бота
@@ -3463,7 +3462,7 @@ namespace RSB
             await _client.LoginAsync(Discord.TokenType.Bot, token);
             await _client.StartAsync();
             await System.Threading.Tasks.Task.Delay(-1);
-        }*/
+        }
         private async void btn_test_Click(object sender, EventArgs e)
         {
             //кнопка для разных тестов
@@ -4292,43 +4291,6 @@ namespace RSB
                 comboxTreatInfo.Text = "";
             }
         }
-        /// <summary>
-        /// перевод образца в тип Storage
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btn_MakeStorage_Click(object sender, EventArgs e)
-        {
-            //пометить ,что нужен ПЭМ
-            conn_str = Get_conn_string(Properties.Settings.Default.server, Properties.Settings.Default.port,
-                Properties.Settings.Default.database, Parent_form.cbox_username.Text, Parent_form.txtbox_pass.Text);
-            int indexx = Convert.ToInt32(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[0].Value);
-            using (MySqlConnection conn = New_connection(conn_str))
-            {
-                try
-                {
-                    if (dataGrid_specimens.CurrentRow != null)
-                    {
-                        conn.Open();
-                        string sqlcom_3 = "UPDATE test2base.specimens SET specimens.id_state = 7 WHERE (specimens.idspecimens = '" + indexx.ToString() + "')";
-                        //string sqlcom_3 = "UPDATE test2base.specimens SET specimens.id_state=3 WHERE specimens.idspecimens =" + indexx.ToString();
-                        using (MySqlCommand comand = new MySqlCommand(sqlcom_3, conn))
-                        {
-                            comand.ExecuteNonQuery();
-                        }
-                        conn.Close();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error,
-                    MessageBoxDefaultButton.Button1);
-                }
-            }
-            {
-                Log_action(Properties.Settings.Default.default_username, "mark to storage", "", "", indexx.ToString());
-            }
-            Refresh_datagrid();
-        }
+
     }
 }

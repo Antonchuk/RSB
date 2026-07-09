@@ -212,7 +212,6 @@
             this.fontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer_for_refresh = new System.Windows.Forms.Timer(this.components);
             this.folderBrowserDialog_for_json = new System.Windows.Forms.FolderBrowserDialog();
-            this.btn_MakeStorage = new System.Windows.Forms.Button();
             this.tabcontrol_add_inf.SuspendLayout();
             this.tab_page_info.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.split_inf)).BeginInit();
@@ -960,7 +959,6 @@
             this.tableLayoutPanel5.Controls.Add(this.btn_foto_after_add, 1, 12);
             this.tableLayoutPanel5.Controls.Add(this.lbl_setup, 0, 8);
             this.tableLayoutPanel5.Controls.Add(this.combox_setup, 1, 8);
-            this.tableLayoutPanel5.Controls.Add(this.btn_MakeStorage, 1, 14);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
@@ -1664,10 +1662,10 @@
             // 
             this.tab_page_new_edit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.tab_page_new_edit.Controls.Add(this.splitContainer_add_new);
-            this.tab_page_new_edit.Location = new System.Drawing.Point(4, 22);
+            this.tab_page_new_edit.Location = new System.Drawing.Point(4, 31);
             this.tab_page_new_edit.Name = "tab_page_new_edit";
             this.tab_page_new_edit.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_page_new_edit.Size = new System.Drawing.Size(785, 1011);
+            this.tab_page_new_edit.Size = new System.Drawing.Size(785, 1002);
             this.tab_page_new_edit.TabIndex = 1;
             this.tab_page_new_edit.Text = "Add new";
             this.tab_page_new_edit.Enter += new System.EventHandler(this.Tab_page_new_edit_Enter);
@@ -1686,8 +1684,8 @@
             // splitContainer_add_new.Panel2
             // 
             this.splitContainer_add_new.Panel2.Controls.Add(this.tableLayoutPanel1);
-            this.splitContainer_add_new.Size = new System.Drawing.Size(779, 1005);
-            this.splitContainer_add_new.SplitterDistance = 496;
+            this.splitContainer_add_new.Size = new System.Drawing.Size(779, 996);
+            this.splitContainer_add_new.SplitterDistance = 492;
             this.splitContainer_add_new.TabIndex = 3;
             // 
             // tbllay_add_edit
@@ -1742,7 +1740,7 @@
             this.tbllay_add_edit.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tbllay_add_edit.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tbllay_add_edit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tbllay_add_edit.Size = new System.Drawing.Size(779, 496);
+            this.tbllay_add_edit.Size = new System.Drawing.Size(779, 492);
             this.tbllay_add_edit.TabIndex = 0;
             // 
             // lbl__treat_type
@@ -1891,7 +1889,7 @@
             this.btn_aproove.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btn_aproove.Location = new System.Drawing.Point(3, 463);
             this.btn_aproove.Name = "btn_aproove";
-            this.btn_aproove.Size = new System.Drawing.Size(118, 30);
+            this.btn_aproove.Size = new System.Drawing.Size(118, 26);
             this.btn_aproove.TabIndex = 23;
             this.btn_aproove.Text = "Add new";
             this.btn_aproove.UseVisualStyleBackColor = true;
@@ -1903,7 +1901,7 @@
             this.btn_default_save.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btn_default_save.Location = new System.Drawing.Point(127, 463);
             this.btn_default_save.Name = "btn_default_save";
-            this.btn_default_save.Size = new System.Drawing.Size(130, 30);
+            this.btn_default_save.Size = new System.Drawing.Size(130, 26);
             this.btn_default_save.TabIndex = 24;
             this.btn_default_save.Text = "Save default";
             this.btn_default_save.UseVisualStyleBackColor = true;
@@ -1914,7 +1912,7 @@
             this.btn_foto_clr.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btn_foto_clr.Location = new System.Drawing.Point(408, 463);
             this.btn_foto_clr.Name = "btn_foto_clr";
-            this.btn_foto_clr.Size = new System.Drawing.Size(368, 30);
+            this.btn_foto_clr.Size = new System.Drawing.Size(368, 26);
             this.btn_foto_clr.TabIndex = 25;
             this.btn_foto_clr.Text = "Clear foto";
             this.btn_foto_clr.UseVisualStyleBackColor = true;
@@ -1925,7 +1923,7 @@
             this.btn_delete_selected.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btn_delete_selected.Location = new System.Drawing.Point(263, 463);
             this.btn_delete_selected.Name = "btn_delete_selected";
-            this.btn_delete_selected.Size = new System.Drawing.Size(139, 30);
+            this.btn_delete_selected.Size = new System.Drawing.Size(139, 26);
             this.btn_delete_selected.TabIndex = 26;
             this.btn_delete_selected.Text = "Delete selected";
             this.btn_delete_selected.UseVisualStyleBackColor = true;
@@ -2082,7 +2080,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(779, 505);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(779, 500);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // picbox_before_big
@@ -2093,7 +2091,7 @@
             this.picbox_before_big.Location = new System.Drawing.Point(3, 3);
             this.picbox_before_big.Name = "picbox_before_big";
             this.tableLayoutPanel1.SetRowSpan(this.picbox_before_big, 3);
-            this.picbox_before_big.Size = new System.Drawing.Size(293, 499);
+            this.picbox_before_big.Size = new System.Drawing.Size(293, 494);
             this.picbox_before_big.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbox_before_big.TabIndex = 2;
             this.picbox_before_big.TabStop = false;
@@ -2106,7 +2104,7 @@
             this.picbox_before_sm1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.picbox_before_sm1.Location = new System.Drawing.Point(302, 3);
             this.picbox_before_sm1.Name = "picbox_before_sm1";
-            this.picbox_before_sm1.Size = new System.Drawing.Size(474, 162);
+            this.picbox_before_sm1.Size = new System.Drawing.Size(474, 160);
             this.picbox_before_sm1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbox_before_sm1.TabIndex = 3;
             this.picbox_before_sm1.TabStop = false;
@@ -2115,9 +2113,9 @@
             // 
             this.picbox_before_sm2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.picbox_before_sm2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_before_sm2.Location = new System.Drawing.Point(302, 171);
+            this.picbox_before_sm2.Location = new System.Drawing.Point(302, 169);
             this.picbox_before_sm2.Name = "picbox_before_sm2";
-            this.picbox_before_sm2.Size = new System.Drawing.Size(474, 162);
+            this.picbox_before_sm2.Size = new System.Drawing.Size(474, 160);
             this.picbox_before_sm2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbox_before_sm2.TabIndex = 4;
             this.picbox_before_sm2.TabStop = false;
@@ -2126,9 +2124,9 @@
             // 
             this.picbox_before_sm3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.picbox_before_sm3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbox_before_sm3.Location = new System.Drawing.Point(302, 339);
+            this.picbox_before_sm3.Location = new System.Drawing.Point(302, 335);
             this.picbox_before_sm3.Name = "picbox_before_sm3";
-            this.picbox_before_sm3.Size = new System.Drawing.Size(474, 163);
+            this.picbox_before_sm3.Size = new System.Drawing.Size(474, 162);
             this.picbox_before_sm3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbox_before_sm3.TabIndex = 5;
             this.picbox_before_sm3.TabStop = false;
@@ -2429,17 +2427,6 @@
             this.timer_for_refresh.Interval = 300000;
             this.timer_for_refresh.Tick += new System.EventHandler(this.Timer_for_refresh_Tick);
             // 
-            // btn_MakeStorage
-            // 
-            this.btn_MakeStorage.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btn_MakeStorage.Location = new System.Drawing.Point(135, 495);
-            this.btn_MakeStorage.Name = "btn_MakeStorage";
-            this.btn_MakeStorage.Size = new System.Drawing.Size(328, 55);
-            this.btn_MakeStorage.TabIndex = 25;
-            this.btn_MakeStorage.Text = "Маке \"Storage\"";
-            this.btn_MakeStorage.UseVisualStyleBackColor = true;
-            this.btn_MakeStorage.Click += new System.EventHandler(this.btn_MakeStorage_Click);
-            // 
             // Form_specimens
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -2699,6 +2686,5 @@
         private System.Windows.Forms.ComboBox comboxTreatInfo;
         private System.Windows.Forms.Label lblStorageFilling;
         private System.Windows.Forms.Label lblSpeciemQuality;
-        private System.Windows.Forms.Button btn_MakeStorage;
     }
 }

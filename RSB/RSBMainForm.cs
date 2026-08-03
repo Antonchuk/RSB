@@ -32,40 +32,49 @@ namespace RSB
         }
         private void CheckForUpdate()
         {
-            string pathFrom = @"\\HOLY-BOX\Public\Обменник 2\Лукьянчук\Release\RBS";
-            string _AppName = @"\\RBSSetup.msi";
-            //сравнение версий
-            var current_ver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            //новая версия
-            string new_ver = "";
-            if (File.Exists(pathFrom + "\\Version.txt"))
+            try
             {
-                new_ver = File.ReadAllText(pathFrom + "\\Version.txt");
-            }
-            if (current_ver != new_ver && new_ver!="")
-            {
-                if (MessageBox.Show("A new update is available! Upgrade?", "Demo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                string pathFrom = @"\\HOLY-BOX\Public\Обменник 2\Лукьянчук\Release\RBS";
+                //string _AppName = @"\\RBSSetup.msi";
+                string _AppName = @"\\setup.exe";
+                //сравнение версий
+                var current_ver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                //новая версия
+                string new_ver = "";
+                if (File.Exists(pathFrom + "\\Version.txt"))
                 {
-                    try
+                    new_ver = File.ReadAllText(pathFrom + "\\Version.txt");
+                }
+                if (current_ver != new_ver && new_ver != "")
+                {
+                    if (MessageBox.Show("A new update is available! Upgrade?", "Demo", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
-                        Process process = new Process();
-                        process.StartInfo.FileName = $"{pathFrom}{_AppName}";
-                        this.Close();
-                        process.Start();
+                        try
+                        {
+                            //MessageBox.Show($"File name {pathFrom}{_AppName}");
+                            Process process = new Process();
+                            process.StartInfo.FileName = $"{pathFrom}{_AppName}";
+                            this.Close();
+                            process.Start();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"erorr in Self Update {ex}");
+                        }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        MessageBox.Show($"erorr in Self Update {ex}");
+                        this.Close();
                     }
                 }
                 else
                 {
-                    this.Close();
+                    if (new_ver == "") MessageBox.Show("Check connection to HOLY-BOX");
                 }
             }
-            else
+            catch ( Exception ex )
             {
-                if (new_ver == "") MessageBox.Show("Check connection to HOLY-BOX");
+                MessageBox.Show($"erorr in Self Update {ex}");
             }
         }
         /// <summary>
@@ -476,7 +485,7 @@ namespace RSB
 
         private void howToBaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start("chrome", @"https://apt-develop.atlassian.net/wiki/spaces/AT/pages/425992/RSB");
+            Process.Start("chrome", @"");
         }
 
         private void RSBMainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -486,7 +495,7 @@ namespace RSB
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show($"Current vertion {Assembly.GetExecutingAssembly().GetName().Version}");
+            MessageBox.Show($"Current vertion {Assembly.GetExecutingAssembly().GetName().Version} 2026 ver 28");
         }
 
         private void switchDiscordOnToolStripMenuItem_CheckedChanged(object sender, EventArgs e)

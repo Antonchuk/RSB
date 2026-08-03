@@ -937,9 +937,19 @@ namespace RSB
             if (combox_showonly.Text != "All") combox_showonly.Text = show_only_spec.ToString();
             btn_up_down.Image = Properties.Resources.down;
             pic_change = false;
-            //combox_material.Text = Properties.Settings.Default.material_add;
             combox_material.Text = "";
-            combox_producer.Text = Properties.Settings.Default.producer;
+            //нужно сделатьпроверку на первую загрузку и ставить дефолтом по логину зашедшего
+            /*if (Properties.Settings.Default.IsFirstStart)
+            {
+                string actor_login = SQL_List_querry("SELECT user_name FROM test2base.producers WHERE (surname = '" + 
+                    Properties.Settings.Default.default_username + "')")[0];
+                combox_producer.Text = actor_login;
+                Properties.Settings.Default.IsFirstStart = false;                
+            }
+            else
+            {
+                combox_producer.Text = Properties.Settings.Default.producer;
+            }   */         
             //combox_producer.Text = "";
             //combox_project.Text = Properties.Settings.Default.project;
             combox_project.Text = "";
@@ -1009,13 +1019,9 @@ namespace RSB
             Refresh_datagrid();
             Fill_information();
             on_load = false;
+            Properties.Settings.Default.Save();
             //запуск таймера на циклическое обновление
             timer_for_refresh.Start();
-            //if (System.Runtime.InteropServices.RuntimeInformation.OSDescription.ToString().Contains("Microsoft Windows 10."))
-            //{
-                //MessageBox.Show($"OS version = {System.Runtime.InteropServices.RuntimeInformation.OSDescription}");
-            //}
-            //
         }
 
         private void Btn_refresh_Click(object sender, EventArgs e)
@@ -1606,22 +1612,24 @@ namespace RSB
             {
                 Properties.Settings.Default.res_laser_power = Convert.ToDecimal(txtbox_las_pow.Text);
             }
-            catch (FormatException)
+            catch (Exception ex)
             {
-                Properties.Settings.Default.res_laser_power = 0;
+                Properties.Settings.Default.res_laser_power = 0;                
+                MessageBox.Show("Вы попытались вписать в поле мощности лазера недопустимый символ. " +
+                    "Просьба вписывать только цифры и запятую. Было вписано: " + txtbox_las_pow.Text);
                 txtbox_las_pow.Text = "0";
-                MessageBox.Show("Вы попытались вписать в поле мощности лазера недопустимый символ. Просьба вписывать только цифры и запятую");
-                
             }
             try
             {
                 Properties.Settings.Default.res_temper = Convert.ToInt32(txtbox_temperature.Text);
             }
-            catch (FormatException)
+            catch (Exception ex)
             {
                 Properties.Settings.Default.res_temper = 0;
+                
+                MessageBox.Show("Вы попытались вписать в поле температуры недопустимый символ. " +
+                    "Просьба вписывать только цифры и запятую. Было вписано: " + txtbox_temperature.Text);
                 txtbox_temperature.Text = "0";
-                MessageBox.Show("Вы попытались вписать в поле температуры недопустимый символ. Просьба вписывать только цифры и запятую");
 
             }
             Properties.Settings.Default.Save();
@@ -4024,7 +4032,8 @@ namespace RSB
             //только в состоянии Ready for APT или Storage 
             string actor_login = SQL_List_querry("SELECT user_name FROM test2base.producers WHERE (surname = '" + actor + "')")[0];
             string resp_login = SQL_List_querry("SELECT user_name FROM test2base.producers WHERE (surname = '" + producer + "')")[0];
-            MessageBox.Show("level = " + level_access.ToString() + "\nCheck pos = " + Check_position_noAPT(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[6].Value.ToString()).ToString() +
+            MessageBox.Show("level = " + level_access.ToString() + "\nCheck pos = " + 
+                Check_position_noAPT(dataGrid_specimens.Rows[dataGrid_specimens.CurrentRow.Index].Cells[6].Value.ToString()).ToString() +
                 "\nState name = " + state_name +
                 "\nproducer = " + actor_login +
                 "\nrespon = " + resp_login);            
@@ -4329,6 +4338,21 @@ namespace RSB
                 Log_action(Properties.Settings.Default.default_username, "mark to storage", "", "", indexx.ToString());
             }
             Refresh_datagrid();
+        }
+
+        private void button1_Click_5(object sender, EventArgs e)
+        {
+            //MessageBox.Show("project = " + txtbox_project_inf.Text);
+            //показываем всех ответственных за проект
+            List<string> id_resp = SQL_List_querry("SELECT Id_responsible FROM test2base.responsible_project " +
+                "WHERE (id_project = (SELECT id_project FROM test2base.projects WHERE (name = '" + txtbox_project_inf.Text + "')));");
+            string _resp = "";
+            foreach (string id in id_resp)
+            {
+                string name = SQL_List_querry("SELECT surname FROM test2base.producers WHERE (id_producer = '" + id + "')")[0];
+                _resp += " " + name;
+            }
+            MessageBox.Show("responsible for project " + txtbox_project_inf.Text + " = " + _resp);
         }
     }
 }
